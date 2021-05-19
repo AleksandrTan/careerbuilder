@@ -2,18 +2,26 @@
 Class Worker
 The main module
 """
-from logsource.logmodule import LogModule
+import json
+import time
+
 from rabbitmodule.rabbitworker import RabbitWorker
 
 
-class Worker(LogModule):
+class Worker:
 
     def __init__(self):
         super().__init__()
         self.rabbit_connect = RabbitWorker()
 
     def start(self):
-        pass
+        self.rabbit_connect.receive(Worker.worker)
+
+    @staticmethod
+    def worker(ch, method, properties, body):
+        message = json.loads(body.decode())
+        print(f"[x] Received {message['link']}")
+        time.sleep(10)
 
 
 if __name__ == "__main__":
