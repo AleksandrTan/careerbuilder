@@ -6,10 +6,10 @@ import time
 import pika
 
 import config
-# from logsource.logmodule import LogModule
+from logsource.logmodule import LogModule
 
 
-class RabbitWorker:
+class RabbitWorker(LogModule):
 
     def __init__(self):
         super().__init__()

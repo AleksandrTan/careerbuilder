@@ -2,13 +2,12 @@ import sys
 import json
 
 from logsource.logconfig import logger
-from settings import coremap
 import config
 
 
 class LogModule:
     def __init__(self):
-        self.map_messages = coremap.MESSAGES_LOG
+        self.map_messages = config.MESSAGES_LOG
         self.is_console = config.IS_CONSOLE
         self.is_file_write = config.IS_LOG_FILE_WRITE
 
