@@ -3,6 +3,8 @@ The class describes a bot object that mimics user behavior in the target portal 
 It is launched from a workflow, initialized, and then executed, accompanying its work with logging at
 the database level, logging to a file or standard output.
 """
+import time
+
 from apimodule.apiworker import ApiWorker
 from logsource.logmodule import LogModule
 
@@ -19,4 +21,5 @@ class BotWorker(LogModule):
         :param data:
         :return: None
         """
-        print(data)
+        time.sleep(2)
+        print(data, 3500)

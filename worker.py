@@ -13,8 +13,6 @@ from botmodule.botworker import BotWorker
 
 class Worker(LogModule):
 
-    bots_array = dict()
-
     def __init__(self):
         super().__init__()
         self.rabbit_connect = RabbitWorker()
@@ -28,16 +26,14 @@ class Worker(LogModule):
         if message["status"]:
             # start bot
             bot_object = BotWorker()
-            Worker.bots_array["id"] = bot_object
             print('Start thread')
-            threading.Thread(target=bot_object.start, args=(message,)).start()
+            bot = threading.Thread(target=bot_object.start, args=(message,)).start()
             # confirm task processing
             time.sleep(10)
             ch.basic_ack(delivery_tag=method.delivery_tag)
             pass
         else:
             pass
-        print(f"[x] Received {message}")
 
 
 if __name__ == "__main__":
