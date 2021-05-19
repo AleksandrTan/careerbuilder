@@ -1,6 +1,11 @@
+TARGET_HOST = "https://www.careerbuilder.com/"
+
+# RabbitMQ
 RABBIT_HOST = 'localhost'
-RABBIT_PORT = 5672
+RABBIT_PORT = 5672\
+
 SYSTEM_HOST = "127.0.0.1:8000"
+
 # Write errors to a log file
 IS_LOG_FILE_WRITE = True
 

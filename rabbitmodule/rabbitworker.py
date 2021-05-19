@@ -18,7 +18,7 @@ class RabbitWorker(LogModule):
 
     def receive(self, callback):
         self.channel.queue_declare(queue="target")
-        self.channel.basic_consume(on_message_callback=callback, queue='target', auto_ack=True)
+        self.channel.basic_consume(on_message_callback=callback, queue='target')
         print(' [*] Waiting for messages. To exit press CTRL+C')
         self.channel.start_consuming()
 
