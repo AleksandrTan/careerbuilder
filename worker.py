@@ -27,7 +27,7 @@ class Worker(LogModule):
             # start bot
             bot_object = BotWorker()
             print('Start thread')
-            bot = threading.Thread(target=bot_object.start, args=(message,)).start()
+            threading.Thread(target=bot_object.start, args=(message,)).start()
             # confirm task processing
             time.sleep(10)
             ch.basic_ack(delivery_tag=method.delivery_tag)
