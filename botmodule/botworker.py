@@ -7,7 +7,8 @@ import time
 
 from apimodule.apiworker import ApiWorker
 from logsource.logmodule import LogModule
-from botmodule.requestmodule import GetContent
+from botmodule.requestmodule import RequestModule
+from botmodule.analyzermodule import AnalyzerModule
 
 
 class BotWorker(LogModule):
@@ -17,10 +18,13 @@ class BotWorker(LogModule):
         self.link = data["link"]
         self.order_id = data["order_id"]
         self.api_worker = ApiWorker()
-        self.content = GetContent()
+        self.request = RequestModule()
+        self.analyzer_module = AnalyzerModule()
 
     def start(self):
-
-        content = self.content.get_content(self.link)
-        print(content)
+        content = self.request.get_content(self.link)
+        if content["status"]:
+            print("Analyser start!!!")
+        else:
+            pass
         print(self.link, 3500)

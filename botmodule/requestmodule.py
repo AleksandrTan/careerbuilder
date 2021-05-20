@@ -1,10 +1,13 @@
+"""
+Module for working with requests to a target resource
+"""
 import requests
 from requests_html import HTMLSession
 
 from botmodule import settings
 
 
-class GetContent:
+class RequestModule:
 
     def get_content(self, link: str):
         """
