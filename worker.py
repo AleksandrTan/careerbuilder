@@ -22,6 +22,7 @@ class Worker(LogModule):
 
     @staticmethod
     def worker(ch, method, properties, body):
+        # get task
         message = json.loads(body.decode())
         if message["status"]:
             # start bot
@@ -29,8 +30,8 @@ class Worker(LogModule):
             print('Start thread')
             threading.Thread(target=bot_object.start, args=(message,)).start()
             # confirm task processing
-            time.sleep(10)
             ch.basic_ack(delivery_tag=method.delivery_tag)
+            time.sleep(10)
             pass
         else:
             pass

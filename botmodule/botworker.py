@@ -22,4 +22,4 @@ class BotWorker(LogModule):
         :return: None
         """
         time.sleep(2)
-        print(data, 3500)
+        print(data["link"], 3500)
