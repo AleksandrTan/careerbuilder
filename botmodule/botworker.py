@@ -12,17 +12,15 @@ from botmodule.requestmodule import GetContent
 
 class BotWorker(LogModule):
 
-    def __init__(self):
+    def __init__(self, data):
         super().__init__()
+        self.link = data["link"]
+        self.order_id = data["order_id"]
         self.api_worker = ApiWorker()
         self.content = GetContent()
 
-    def start(self, data: dict):
-        """
+    def start(self):
 
-        :param data:
-        :return: None
-        """
-        content = self.content.get_content(data["link"])
+        content = self.content.get_content(self.link)
         print(content)
-        print(data["link"], 3500)
+        print(self.link, 3500)

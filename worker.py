@@ -26,9 +26,9 @@ class Worker(LogModule):
         message = json.loads(body.decode())
         if message["status"]:
             # start bot
-            bot_object = BotWorker()
+            bot_object = BotWorker(message)
             print('Start thread')
-            threading.Thread(target=bot_object.start, args=(message,)).start()
+            threading.Thread(target=bot_object.start, args=()).start()
             # confirm task processing
             ch.basic_ack(delivery_tag=method.delivery_tag)
             time.sleep(10)
