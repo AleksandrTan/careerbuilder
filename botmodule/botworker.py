@@ -7,6 +7,7 @@ import time
 
 from apimodule.apiworker import ApiWorker
 from logsource.logmodule import LogModule
+from botmodule.requestmodule import GetContent
 
 
 class BotWorker(LogModule):
@@ -14,6 +15,7 @@ class BotWorker(LogModule):
     def __init__(self):
         super().__init__()
         self.api_worker = ApiWorker()
+        self.content = GetContent()
 
     def start(self, data: dict):
         """
@@ -21,5 +23,6 @@ class BotWorker(LogModule):
         :param data:
         :return: None
         """
-        time.sleep(2)
+        content = self.content.get_content(data["link"])
+        print(content)
         print(data["link"], 3500)
