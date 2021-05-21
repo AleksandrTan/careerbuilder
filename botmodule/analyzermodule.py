@@ -1,11 +1,14 @@
 """
 Content analysis module
 """
+import time
+
 from bs4 import BeautifulSoup as bs
 
 import config
 from botmodule import settings
 from botmodule.requestmodule import RequestModule
+from botmodule.sendermodule import SenderModule
 
 
 class AnalyzerModule:
@@ -16,6 +19,7 @@ class AnalyzerModule:
         self.count_link = 0
         self.count_link_other = 0
         self.request = RequestModule()
+        self.sender = SenderModule(self.request)
 
     def parse_main_page(self, link: str) -> dict:
         """
@@ -87,7 +91,11 @@ class AnalyzerModule:
 
                 if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
                     self.button_links.append(button_link["href"] + settings.TARGET_BUTTON["single_child"]["google_string"])
+            time.sleep(2)
 
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
                 "count_link": self.count_link, "count_link_other": len(self.button_links),
                 "type_res": "analyzer_module"}
+
+    def form_page(self):
+        print(self.button_links)

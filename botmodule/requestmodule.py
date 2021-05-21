@@ -30,3 +30,6 @@ class RequestModule:
 
         return {"status": True, "error": False, "status_code": response.status_code, "message": response.text,
                 "type_res": "request_module"}
+
+    def send_data(self):
+        pass

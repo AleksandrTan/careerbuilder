@@ -26,7 +26,7 @@ class BotWorker(LogModule):
             button_links = self.other_page_worker()
             if button_links["status"]:
                 # open form and send data
-                print(button_links)
+                sender = self.send_worker()
             else:
                 pass
         else:
@@ -46,3 +46,10 @@ class BotWorker(LogModule):
         :return: dict
         """
         return self.analyzer_module.parse_other_page()
+
+    def send_worker(self) -> dict:
+        """
+        Send data
+        :return: dict
+        """
+        return self.analyzer_module.form_page()
