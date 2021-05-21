@@ -39,7 +39,8 @@ TARGET_LIST = {
 Button to go to the form submit page
 """
 TARGET_BUTTON = {
-    "parent": "data-display-header_info-apply dib-m",
+    "parent_tag": "div",
+    "parent_class": "data-display-header_info-apply dib-m",
     "single_child": {
         "target_tag": "a",
         "target_class": "btn btn-linear btn-linear-green btn-block internal-apply-cta",
