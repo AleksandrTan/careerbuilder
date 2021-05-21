@@ -8,11 +8,14 @@ from botmodule import settings
 
 class AnalyzerModule:
 
-    def main_page(self, content: str) -> list:
+    def __init__(self):
+        self.link_list = list()
+
+    def main_page(self, content: str) -> dict:
         """
         Inbound page analyzer
         :param content: str
-        :return: list
+        :return: dict
         """
         soup = bs(content, "html.parser")
         target_obj = soup.find(settings.TARGET_LIST["parent_tag"], class_=settings.TARGET_LIST["parent_class"])
@@ -23,8 +26,14 @@ class AnalyzerModule:
                 for link in target_links:
                     target = link.find(settings.TARGET_LIST["single_child"]["target_tag"],
                                        class_=settings.TARGET_LIST["single_child"]["target_class"])
-                    print(target["href"])
+                    if target:
+                        self.link_list.append(config.TARGET_HOST + target["href"])
+                        continue
+                    else:
+                        continue
+            else:
+                return {"status": False, "link_list": list()}
         else:
-            pass
+            return {"status": False, "link_list": list()}
 
-        return list()
+        return {"status": True, "link_list": self.link_list}

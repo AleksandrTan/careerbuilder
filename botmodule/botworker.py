@@ -26,6 +26,7 @@ class BotWorker(LogModule):
         if content["status"]:
             print("Analyser start!!!")
             target_link = self.analyzer_module.main_page(content["message"])
+            print(target_link)
         else:
             pass
         print(self.link, 3500)

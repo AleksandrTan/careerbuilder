@@ -1,6 +1,6 @@
 TEST_MODE = True
 TEST_HOST = "http://127.0.0.1:8000/mspanel/testpage/"
-TARGET_HOST = "https://www.careerbuilder.com/"
+TARGET_HOST = "https://www.careerbuilder.com"
 
 # RabbitMQ
 RABBIT_HOST = 'localhost'

@@ -29,7 +29,7 @@ TARGET_LIST = {
     "child_tag": "div",
     "child_class": "data-results-content-parent relative",
     "single_child": {
-        "target_tag": "a",
+        "target_tag": "aa",
         "target_class": "data-results-content block job-listing-item",
         "target_attr": "href"
     }
