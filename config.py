@@ -1,5 +1,5 @@
 TEST_MODE = True
-TEST_HOST = "http://127.0.0.1:8000/mspanel/testpage/"
+TEST_HOST = "http://127.0.0.1:8000"
 TARGET_HOST = "https://www.careerbuilder.com"
 
 # RabbitMQ

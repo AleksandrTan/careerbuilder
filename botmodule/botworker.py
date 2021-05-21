@@ -6,7 +6,6 @@ the database level, logging to a file or standard output.
 
 from apimodule.apiworker import ApiWorker
 from logsource.logmodule import LogModule
-from botmodule.requestmodule import RequestModule
 from botmodule.analyzermodule import AnalyzerModule
 
 
@@ -17,20 +16,26 @@ class BotWorker(LogModule):
         self.link = data["link"]
         self.order_id = data["order_id"]
         self.api_worker = ApiWorker()
-        self.request = RequestModule()
         self.analyzer_module = AnalyzerModule()
 
     def start(self):
-        content = self.main_page_worker()
-        if content["status"]:
-            print(content)
+        main_content = self.main_page_worker()
+        if main_content["status"]:
+            print(main_content)
         else:
             # send a report to the server, write log file
-            print(content)
+            print(main_content)
 
-    def main_page_worker(self):
-        content = self.request.get_content(self.link)
-        if content["status"]:
-            return self.analyzer_module.main_page(content["message"])
-        else:
-            return content
+    def main_page_worker(self) -> dict:
+        """
+        Parsing the main link
+        :return: dict
+        """
+        return self.analyzer_module.parse_main_page(self.link)
+
+    def other_page_worker(self):
+        """
+        Parsing the other link on page, and get buttons for form to send data
+        :return:
+        """
+        pass
