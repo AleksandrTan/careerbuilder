@@ -19,7 +19,11 @@ class AnalyzerModule:
         if target_obj:
             target_links = target_obj.find_all(settings.TARGET_LIST["child_tag"],
                                                class_=settings.TARGET_LIST["child_class"])
-            print(target_links[0])
+            if target_links:
+                for link in target_links:
+                    target = link.find(settings.TARGET_LIST["single_child"]["target_tag"],
+                                       class_=settings.TARGET_LIST["single_child"]["target_class"])
+                    print(target["href"])
         else:
             pass
 
