@@ -23,10 +23,10 @@ class BotWorker(LogModule):
     def start(self):
         content = self.main_page_worker()
         if content["status"]:
-            print(content["link_list"])
+            print(content)
         else:
             # send a report to the server, write log file
-            pass
+            print(content)
 
     def main_page_worker(self):
         content = self.request.get_content(self.link)
