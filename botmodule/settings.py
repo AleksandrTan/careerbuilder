@@ -46,6 +46,7 @@ TARGET_BUTTON = {
         "target_class": "btn btn-linear btn-linear-green btn-block internal-apply-cta",
         "target_attr": "href",
         "target_text": "Apply Now",
-        "target_text_company": "Apply on company site"
+        "target_text_company": "Apply on company site",
+        "google_string": "&_ga=2.137065200.1557281988.1621516955-535983977.1621516955"
     }
 }

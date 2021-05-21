@@ -22,6 +22,8 @@ class RequestModule:
             response = session.get(link)
             session.close()
         except requests.exceptions.RequestException as e:
-            return {"status": False, "error": True, "status_code": response.status_code, "message": e}
+            return {"status": False, "error": True, "status_code": response.status_code, "message": e,
+                    "type_res": "request_ module"}
 
-        return {"status": True, "error": False, "status_code": response.status_code, "message": response.text}
+        return {"status": True, "error": False, "status_code": response.status_code, "message": response.text,
+                "type_res": "request_ module"}

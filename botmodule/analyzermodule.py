@@ -20,6 +20,7 @@ class AnalyzerModule:
         :param content: str
         :return: dict
         """
+        status = True
         soup = bs(content, "html.parser")
         # select all job links
         parent_obj = soup.find(settings.TARGET_LIST["parent_tag"], class_=settings.TARGET_LIST["parent_class"])
@@ -35,6 +36,7 @@ class AnalyzerModule:
                         continue
                     else:
                         continue
+                self.count_link_list = len(self.link_list)
 
         # get link to the first vacancy (button)
         button_link_parent = soup.find(settings.TARGET_BUTTON["parent_tag"],
@@ -44,9 +46,10 @@ class AnalyzerModule:
                                                   class_=settings.TARGET_BUTTON["single_child"]["target_class"])
 
             if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
-                self.button_link = button_link["href"] + "&_ga=2.137065200.1557281988.1621516955-535983977.1621516955"
+                self.button_link = button_link["href"] + settings.TARGET_BUTTON["single_child"]["google_string"]
 
-        if self.link_list:
-            return {"status": True, "link_list": self.link_list, "button_link": self.button_link}
+        if not self.link_list:
+            status = False
 
-        return {"status": False, "link_list": self.link_list, "button_link": self.button_link}
+        return {"status": status, "link_list": self.link_list, "button_link": self.button_link,
+                "count_link_list": self.count_link_list, "type_res": "analyzer_module"}

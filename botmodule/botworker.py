@@ -21,17 +21,16 @@ class BotWorker(LogModule):
         self.analyzer_module = AnalyzerModule()
 
     def start(self):
-        content = self.request.get_content(self.link)
+        content = self.main_page_worker()
         if content["status"]:
-            print("Analyser start!!!")
-            target_links = self.analyzer_module.main_page(content["message"])
-            # links found
-            if target_links["status"]:
-                print(target_links)
-            else:
-                # send a report to the server, write log file
-                pass
+            print(content["link_list"])
         else:
             # send a report to the server, write log file
             pass
-        print(self.link, 3500)
+
+    def main_page_worker(self):
+        content = self.request.get_content(self.link)
+        if content["status"]:
+            return self.analyzer_module.main_page(content["message"])
+        else:
+            return content
