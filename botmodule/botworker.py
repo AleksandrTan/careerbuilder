@@ -19,11 +19,13 @@ class BotWorker(LogModule):
         self.analyzer_module = AnalyzerModule()
 
     def start(self):
+        # get main link
         main_content = self.main_page_worker()
         if main_content["status"]:
-            print(main_content)
-            button_links = self.other_page_worker(main_content["link_list"])
+            # get other link
+            button_links = self.other_page_worker()
             if button_links["status"]:
+                # open form and send data
                 print(button_links)
             else:
                 pass
@@ -38,10 +40,9 @@ class BotWorker(LogModule):
         """
         return self.analyzer_module.parse_main_page(self.link)
 
-    def other_page_worker(self, link_list: dict) -> dict:
+    def other_page_worker(self) -> dict:
         """
         Parsing the other link on page, and get buttons for form to send data
-        :param link_list: dict
         :return: dict
         """
-        return self.analyzer_module.parse_other_page(link_list)
+        return self.analyzer_module.parse_other_page()
