@@ -18,9 +18,10 @@ class AnalyzerModule:
         :return: dict
         """
         soup = bs(content, "html.parser")
-        target_obj = soup.find(settings.TARGET_LIST["parent_tag"], class_=settings.TARGET_LIST["parent_class"])
-        if target_obj:
-            target_links = target_obj.find_all(settings.TARGET_LIST["child_tag"],
+        # select all job links
+        parent_obj = soup.find(settings.TARGET_LIST["parent_tag"], class_=settings.TARGET_LIST["parent_class"])
+        if parent_obj:
+            target_links = parent_obj.find_all(settings.TARGET_LIST["child_tag"],
                                                class_=settings.TARGET_LIST["child_class"])
             if target_links:
                 for link in target_links:
@@ -31,9 +32,10 @@ class AnalyzerModule:
                         continue
                     else:
                         continue
-            else:
-                return {"status": False, "link_list": list()}
-        else:
-            return {"status": False, "link_list": list()}
 
-        return {"status": True, "link_list": self.link_list}
+        # link to the first vacancy (button)
+
+        if self.link_list:
+            return {"status": True, "link_list": self.link_list}
+
+        return {"status": False, "link_list": list()}

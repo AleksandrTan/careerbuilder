@@ -3,7 +3,6 @@ The class describes a bot object that mimics user behavior in the target portal 
 It is launched from a workflow, initialized, and then executed, accompanying its work with logging at
 the database level, logging to a file or standard output.
 """
-import time
 
 from apimodule.apiworker import ApiWorker
 from logsource.logmodule import LogModule
@@ -26,7 +25,12 @@ class BotWorker(LogModule):
         if content["status"]:
             print("Analyser start!!!")
             target_link = self.analyzer_module.main_page(content["message"])
-            print(target_link)
+            # links found
+            if target_link["status"]:
+                print(target_link)
+            else:
+                # send a report to the server
+                pass
         else:
             pass
         print(self.link, 3500)
