@@ -17,15 +17,17 @@ headers = {
     "sec-fetch-mode": "navigate",
     "sec-fetch-site": "none",
     "sec-fetch-user": "?1",
-    "upgrade-insecure-requests": 1,
+    "upgrade-insecure-requests": "1",
 }
 
 """
 List of links to vacancies
 """
 TARGET_LIST = {
-    "parent": "data-results fix-elem-content nav-tabs",
-    "child_list": "data-results-content-parent relative",
+    "parent_tag": "div",
+    "parent_class": "data-results fix-elem-content nav-tabs",
+    "child_tag": "div",
+    "child_class": "data-results-content-parent relative",
     "single_child": {
         "target_tag": "a",
         "target_class": "data-results-content block job-listing-item",
