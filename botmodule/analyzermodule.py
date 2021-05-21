@@ -2,6 +2,7 @@
 Content analysis module
 """
 from bs4 import BeautifulSoup as bs
+
 import config
 from botmodule import settings
 
@@ -10,6 +11,7 @@ class AnalyzerModule:
 
     def __init__(self):
         self.link_list = list()
+        self.button_link = ''
         self.count_link_list = 0
 
     def main_page(self, content: str) -> dict:
@@ -34,7 +36,7 @@ class AnalyzerModule:
                     else:
                         continue
 
-        # link to the first vacancy (button)
+        # get link to the first vacancy (button)
         button_link_parent = soup.find(settings.TARGET_BUTTON["parent_tag"],
                                        class_=settings.TARGET_BUTTON["parent_class"])
         if button_link_parent:
@@ -42,10 +44,9 @@ class AnalyzerModule:
                                                   class_=settings.TARGET_BUTTON["single_child"]["target_class"])
 
             if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
-                print(button_link.text)
-                print(button_link["href"] + "&_ga=2.137065200.1557281988.1621516955-535983977.1621516955")
+                self.button_link = button_link["href"] + "&_ga=2.137065200.1557281988.1621516955-535983977.1621516955"
 
         if self.link_list:
-            return {"status": True, "link_list": self.link_list}
+            return {"status": True, "link_list": self.link_list, "button_link": self.button_link}
 
-        return {"status": False, "link_list": list()}
+        return {"status": False, "link_list": self.link_list, "button_link": self.button_link}
