@@ -15,6 +15,10 @@ class BotWorker(LogModule):
         super().__init__()
         self.link = data["link"]
         self.order_id = data["order_id"]
+        self.file_path = data["file_path"]
+        self.name = data["name"]
+        self.lastname = data["last_name"]
+        self.email = data["email"]
         self.api_worker = ApiWorker()
         self.analyzer_module = AnalyzerModule()
 

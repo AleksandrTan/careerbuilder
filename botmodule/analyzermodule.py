@@ -90,7 +90,8 @@ class AnalyzerModule:
                                                       class_=settings.TARGET_BUTTON["single_child"]["target_class"])
 
                 if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
-                    self.button_links.append(button_link["href"] + settings.TARGET_BUTTON["single_child"]["google_string"])
+                    self.button_links.append(button_link["href"] +
+                                             settings.TARGET_BUTTON["single_child"]["google_string"])
             time.sleep(2)
 
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
