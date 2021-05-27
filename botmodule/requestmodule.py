@@ -9,12 +9,14 @@ from botmodule import settings
 
 class RequestModule:
 
-    def get_content(self, link: str):
+    def get_content(self, link: str, proxy: dict):
         """
         Request page content for a given link.
+        :param proxy: dict
         :param link: str
         :return:
         """
+        print(proxy, 3500)
         response = ''
         session = HTMLSession()
         session.headers = settings.headers

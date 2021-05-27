@@ -13,7 +13,8 @@ from botmodule.sendermodule import SenderModule
 
 class AnalyzerModule:
 
-    def __init__(self):
+    def __init__(self, proxy: dict):
+        self.proxy = proxy
         self.links_list = list()
         self.button_links = list()
         self.count_link = 0
@@ -24,10 +25,11 @@ class AnalyzerModule:
     def parse_main_page(self, link: str) -> dict:
         """
         Inbound page analyzer
+        :param proxy: dict
         :param link:
         :return: dict
         """
-        content = self.request.get_content(link)
+        content = self.request.get_content(link, self.proxy)
         if not content["status"]:
             return content
 
@@ -76,7 +78,7 @@ class AnalyzerModule:
         status = True
         for link in self.links_list:
             print(link)
-            content = self.request.get_content(link)
+            content = self.request.get_content(link, self.proxy)
             if not content["status"]:
                 continue
 
