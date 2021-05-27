@@ -6,6 +6,12 @@ TARGET_HOST = "https://www.careerbuilder.com"
 RABBIT_HOST = 'localhost'
 RABBIT_PORT = 5672
 
+# The number of attempts to connect to the Rabbit server.
+ATTEMPTS_TO_CONNECT_RABBIT = 5
+
+# Delay interval, in seconds, after each attempt to connect to the Rabbit server.
+TIME_TO_CONNECT_RABBIT = 5
+
 SYSTEM_HOST = "http://127.0.0.1:8000"
 
 FILE_DOWNLOAD = "/mspanel/bot/get_file"

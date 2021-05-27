@@ -18,6 +18,9 @@ class Worker(LogModule):
         self.rabbit_connect = RabbitWorker()
 
     def start(self):
+        if not self.rabbit_connect:
+            print(4000)
+            return False
         self.rabbit_connect.receive(Worker.worker)
 
     @staticmethod
