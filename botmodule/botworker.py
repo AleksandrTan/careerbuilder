@@ -3,6 +3,7 @@ The class describes a bot object that mimics user behavior in the target portal 
 It is launched from a workflow, initialized, and then executed, accompanying its work with logging at
 the database level, logging to a file or standard output.
 """
+import time
 
 from apimodule.apiworker import ApiWorker
 from logsource.logmodule import LogModule
@@ -36,6 +37,7 @@ class BotWorker(LogModule):
         # check if file for send download
         if not self.file_content:
             # send message for system api
+            print("No file")
             return False
         # get main link
         main_content = self.main_page_worker()
@@ -85,6 +87,7 @@ class BotWorker(LogModule):
         Download file for sending
         :return: None
         """
+        time.sleep(20)
         file = self.api_worker.get_file(self.file_mailing)
         if file["status"]:
             return file["message"]
