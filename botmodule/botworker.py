@@ -13,14 +13,23 @@ class BotWorker(LogModule):
 
     def __init__(self, data):
         super().__init__()
-        self.link = data["link"]
+        self.target_link = data["target_link"]
         self.order_id = data["order_id"]
-        self.file_path = data["file_path"]
-        self.name = data["name"]
-        self.lastname = data["last_name"]
+        self.file_mailing = data["file_mailing"]
+        self.user_name = data["user_name"]
+        self.last_name = data["last_name"]
         self.email = data["email"]
         self.api_worker = ApiWorker()
         self.analyzer_module = AnalyzerModule()
+        self.proxy_id = data["proxy"]["proxy_id"]
+        self.host_proxy = data["proxy"]["host"]
+        self.port_proxy = data["proxy"]["port"]
+        self.protocol_proxy = data["proxy"]["protocol"]
+        self.username_proxy = data["proxy"]["username"]
+        self.password_proxy = data["proxy"]["password"]
+        self.proxies = dict()
+        self.set_proxy(host_proxy=self.host_proxy, port_proxy=self.port_proxy, protocol_proxy=self.protocol_proxy,
+                       username_proxy=self.username_proxy, password_proxy=self.password_proxy)
 
     def start(self):
         # get main link
@@ -42,7 +51,7 @@ class BotWorker(LogModule):
         Parsing the main link
         :return: dict
         """
-        return self.analyzer_module.parse_main_page(self.link)
+        return self.analyzer_module.parse_main_page(self.target_link)
 
     def other_page_worker(self) -> dict:
         """
@@ -57,3 +66,11 @@ class BotWorker(LogModule):
         :return: dict
         """
         return self.analyzer_module.form_page()
+
+    def set_proxy(self, **data):
+        if data["protocol_proxy"] and data["username_proxy"] and data["password_proxy"] and data["host_proxy"] and data["port_proxy"]:
+            self.proxies.update(
+                {'http': data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@"
+                         + data["host_proxy"] + ":" + str(data["port_proxy"])})
+
+        print(self.proxies)
