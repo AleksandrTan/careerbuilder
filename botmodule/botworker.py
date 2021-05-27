@@ -36,7 +36,7 @@ class BotWorker(LogModule):
     def start(self):
         # check if file for send download
         if not self.file_content:
-            # send message for system api
+            # send a report to the server, write log file
             print("No file")
             return False
         # get main link
