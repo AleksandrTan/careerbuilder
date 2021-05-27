@@ -19,7 +19,6 @@ class Worker(LogModule):
 
     def start(self):
         if not self.rabbit_connect:
-            print(4000)
             return False
         self.rabbit_connect.receive(Worker.worker)
 
