@@ -97,6 +97,10 @@ class AnalyzerModule:
                                              settings.TARGET_BUTTON["single_child"]["google_string"])
             time.sleep(2)
 
+        if not self.button_links:
+            # no links found
+            status = False
+
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
                 "count_link": self.count_link, "count_link_other": len(self.button_links),
                 "type_res": "analyzer_module"}

@@ -24,17 +24,13 @@ class Worker(LogModule):
     def worker(ch, method, properties, body):
         # get task
         message = json.loads(body.decode())
-        if message["status"]:
-            # start bot
-            bot_object = BotWorker(message)
-            print('Start thread')
-            threading.Thread(target=bot_object.start, args=()).start()
-            # confirm task processing
-            ch.basic_ack(delivery_tag=method.delivery_tag)
-            time.sleep(10)
-            pass
-        else:
-            pass
+        # start bot
+        bot_object = BotWorker(message)
+        print('Start thread')
+        threading.Thread(target=bot_object.start, args=()).start()
+        # confirm task processing
+        ch.basic_ack(delivery_tag=method.delivery_tag)
+        time.sleep(10)
 
 
 if __name__ == "__main__":

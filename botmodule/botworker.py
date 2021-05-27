@@ -41,6 +41,7 @@ class BotWorker(LogModule):
                 # open form and send data
                 sender = self.send_worker()
             else:
+                # no links found, send a report to the server, write log file
                 pass
         else:
             # no links found, send a report to the server, write log file
