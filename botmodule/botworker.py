@@ -30,6 +30,7 @@ class BotWorker(LogModule):
         self.set_proxy(host_proxy=self.host_proxy, port_proxy=self.port_proxy, protocol_proxy=self.protocol_proxy,
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
         self.analyzer_module = AnalyzerModule(self.proxies)
+        self.file_content = self.download_file()
 
     def start(self):
         # get main link
@@ -69,8 +70,24 @@ class BotWorker(LogModule):
         return self.analyzer_module.form_page()
 
     def set_proxy(self, **data):
-        if data["protocol_proxy"] and data["username_proxy"] and data["password_proxy"] and data["host_proxy"] and data["port_proxy"]:
+        if data["protocol_proxy"] and data["username_proxy"] and data["password_proxy"] and \
+                data["host_proxy"] and data["port_proxy"]:
             self.proxies.update(
-                {'http': data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@"
-                         + data["host_proxy"] + ":" + str(data["port_proxy"])})
+                {'http': data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@" +
+                         data["host_proxy"] + ":" + str(data["port_proxy"])})
 
+    def download_file(self):
+        """
+
+        :return: None
+        """
+        print(self.file_mailing, 3500)
+        return ''
+
+
+if __name__ == "__main__":
+    import requests
+
+    url = 'http://127.0.0.1:8000/mspanel/bot/get_file/?name=files_mailing/IGalgorithm_VhoZFkl.txt'
+    r = requests.get(url)
+    print(r.content)

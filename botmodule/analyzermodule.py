@@ -106,4 +106,8 @@ class AnalyzerModule:
                 "type_res": "analyzer_module"}
 
     def form_page(self):
+        """
+        Open a page with a form, generate data, send to the portal
+        :return:
+        """
         print(self.button_links)

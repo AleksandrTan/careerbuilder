@@ -24,7 +24,8 @@ class RequestModule:
                 response = session.get(link)
                 session.close()
             else:
-                response = session.get(link, proxy=proxy)
+
+                response = session.get(link, proxies=proxy)
                 session.close()
         except requests.exceptions.ConnectionError as e:
             return {"status": False, "error": True, "status_code": 0, "message": e, "type_res": "request_module"}
