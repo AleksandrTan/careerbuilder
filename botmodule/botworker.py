@@ -43,7 +43,7 @@ class BotWorker(LogModule):
             else:
                 pass
         else:
-            # send a report to the server, write log file
+            # no links found, send a report to the server, write log file
             print(main_content)
 
     def main_page_worker(self) -> dict:

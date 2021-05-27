@@ -15,7 +15,7 @@ class AnalyzerModule:
 
     def __init__(self, proxy: dict):
         self.proxy = proxy
-        self.links_list = list()
+        self.links_list = list()  # list of links on the landing page
         self.button_links = list()
         self.count_link = 0
         self.count_link_other = 0
@@ -24,7 +24,7 @@ class AnalyzerModule:
 
     def parse_main_page(self, link: str) -> dict:
         """
-        Inbound page analyzer
+        Select all job links
         :param link:
         :return: dict
         """
@@ -64,6 +64,7 @@ class AnalyzerModule:
                 self.button_links.append(button_link["href"] + settings.TARGET_BUTTON["single_child"]["google_string"])
 
         if not self.links_list:
+            # no links found
             status = False
 
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
@@ -71,7 +72,8 @@ class AnalyzerModule:
 
     def parse_other_page(self) -> dict:
         """
-        Inbound page analyzer
+        Go through all the links in the list
+        and find a link to the submission form
         :return: dict
         """
         status = True
