@@ -33,6 +33,10 @@ class BotWorker(LogModule):
         self.file_content = self.download_file()
 
     def start(self):
+        # check if file for send download
+        if not self.file_content:
+            # send message for system api
+            return False
         # get main link
         main_content = self.main_page_worker()
         if main_content["status"]:
@@ -82,7 +86,10 @@ class BotWorker(LogModule):
         :return: None
         """
         file = self.api_worker.get_file(self.file_mailing)
-        return file
+        if file["status"]:
+            return file["message"]
+
+        return False
 
 
 if __name__ == "__main__":

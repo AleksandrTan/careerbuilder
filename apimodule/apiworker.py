@@ -12,6 +12,12 @@ class ApiWorker:
         self.request = ApiRequestModule()
 
     def get_file(self, target_link):
+        """
+        Get file for download to form
+        :param target_link: str
+        :return:
+        """
         url = config.SYSTEM_HOST + config.FILE_DOWNLOAD + '?name=' + target_link
-        r = self.request.make_get(url)
-        return r
+        result = self.request.make_get(url)
+
+        return result
