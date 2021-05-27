@@ -31,7 +31,6 @@ class BotWorker(LogModule):
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
         self.analyzer_module = AnalyzerModule(self.proxies)
         self.file_content = self.download_file()
-        print(self.file_content, 4000)
 
     def start(self):
         # get main link
@@ -47,7 +46,7 @@ class BotWorker(LogModule):
                 pass
         else:
             # no links found, send a report to the server, write log file
-            print(main_content)
+            print(main_content, 6000)
 
     def main_page_worker(self) -> dict:
         """
