@@ -73,4 +73,3 @@ class BotWorker(LogModule):
                 {'http': data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@"
                          + data["host_proxy"] + ":" + str(data["port_proxy"])})
 
-        print(self.proxies)

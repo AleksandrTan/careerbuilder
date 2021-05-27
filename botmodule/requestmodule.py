@@ -16,13 +16,16 @@ class RequestModule:
         :param link: str
         :return:
         """
-        print(proxy, 3500)
         response = ''
         session = HTMLSession()
         session.headers = settings.headers
         try:
-            response = session.get(link)
-            session.close()
+            if not proxy:
+                response = session.get(link)
+                session.close()
+            else:
+                response = session.get(link, proxy=proxy)
+                session.close()
         except requests.exceptions.ConnectionError as e:
             return {"status": False, "error": True, "status_code": 0, "message": e, "type_res": "request_module"}
 

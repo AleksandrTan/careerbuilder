@@ -25,7 +25,6 @@ class AnalyzerModule:
     def parse_main_page(self, link: str) -> dict:
         """
         Inbound page analyzer
-        :param proxy: dict
         :param link:
         :return: dict
         """
