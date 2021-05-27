@@ -7,4 +7,8 @@ import config
 
 
 class ApiWorker:
-    pass
+
+    def get_file(self, target_link):
+        url = config.SYSTEM_HOST + config.FILE_DOWNLOAD + '?name=' + target_link
+        r = requests.get(url)
+        print(r.content)

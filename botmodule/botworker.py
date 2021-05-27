@@ -31,6 +31,7 @@ class BotWorker(LogModule):
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
         self.analyzer_module = AnalyzerModule(self.proxies)
         self.file_content = self.download_file()
+        print(self.file_content, 4000)
 
     def start(self):
         # get main link
@@ -78,16 +79,16 @@ class BotWorker(LogModule):
 
     def download_file(self):
         """
-
+        Download file for sending
         :return: None
         """
-        print(self.file_mailing, 3500)
-        return ''
+        file = self.api_worker.get_file(self.file_mailing)
+        return file
 
 
 if __name__ == "__main__":
     import requests
 
-    url = 'http://127.0.0.1:8000/mspanel/bot/get_file/?name=files_mailing/IGalgorithm_VhoZFkl.txt'
+    url = 'http://127.0.0.1:8000/mspanel/bot/get_file/?name=/media/files_mailing/IGalgorithm_EjrhH1Z.txt'
     r = requests.get(url)
     print(r.content)

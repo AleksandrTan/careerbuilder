@@ -6,7 +6,9 @@ TARGET_HOST = "https://www.careerbuilder.com"
 RABBIT_HOST = 'localhost'
 RABBIT_PORT = 5672
 
-SYSTEM_HOST = "127.0.0.1:8000"
+SYSTEM_HOST = "http://127.0.0.1:8000"
+
+FILE_DOWNLOAD = "/mspanel/bot/get_file"
 
 # Write errors to a log file
 IS_LOG_FILE_WRITE = True

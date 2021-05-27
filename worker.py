@@ -24,6 +24,7 @@ class Worker(LogModule):
     def worker(ch, method, properties, body):
         # get task
         message = json.loads(body.decode())
+        print(message)
         # start bot
         bot_object = BotWorker(message)
         print('Start thread')
