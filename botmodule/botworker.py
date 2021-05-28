@@ -30,7 +30,7 @@ class BotWorker(LogModule):
         self.proxies = dict()
         self.set_proxy(host_proxy=self.host_proxy, port_proxy=self.port_proxy, protocol_proxy=self.protocol_proxy,
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
-        self.analyzer_module = AnalyzerModule(self.proxies)
+        self.analyzer_module = AnalyzerModule(self.proxies, str(self.order_id))
         self.file_content = self.download_file()
 
     def start(self):
@@ -52,7 +52,8 @@ class BotWorker(LogModule):
                 pass
         else:
             # no links found, send a report to the server, write log file
-            self.api_worker.task_report_fail("target_connect_error")
+            main_content["order"] = str(self.order_id)
+            self.api_worker.task_report_fail("target_connect_error", main_content)
 
     def main_page_worker(self) -> dict:
         """

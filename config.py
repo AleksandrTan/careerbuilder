@@ -39,8 +39,8 @@ MESSAGES_LOG = {
     "target_connect_error": {"message": "Attention! Target resource is not responding! message code"},
     "api_connect_error": {"message": "Attention! The system api is not responding! message code"},
     "no_file": {"message": "Order - order. Mailing file not found."},
-    "main_content_error": "Order - order. When Requesting a start link, the target resource did not respond "
-                          "correctly! code message"
+    "main_content_error": {"message": "Order - order. When Requesting a start link, the target resource did not "
+                                      "respond correctly! code message"}
 }
 
 MESSAGES_ERROR_API = {
@@ -48,6 +48,6 @@ MESSAGES_ERROR_API = {
         "message": "Mailing file not found."
     },
     "target_connect_error": {
-        "message": "Attention! Target resource is not responding! message code"
+        "message": "Attention! Target resource is not responding! \n Code - status_code \n Messages - message"
     },
 }

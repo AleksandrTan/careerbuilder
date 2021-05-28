@@ -13,8 +13,9 @@ from botmodule.sendermodule import SenderModule
 
 class AnalyzerModule:
 
-    def __init__(self, proxy: dict):
+    def __init__(self, proxy: dict, order_id: str):
         self.proxy = proxy
+        self.order_id = order_id
         self.links_list = list()  # list of links on the landing page
         self.button_links = list()
         self.count_link = 0
@@ -28,7 +29,7 @@ class AnalyzerModule:
         :param link:
         :return: dict
         """
-        content = self.request.get_content(link, self.proxy)
+        content = self.request.get_content(link, self.proxy, self.order_id)
         if not content["status"]:
             return content
 

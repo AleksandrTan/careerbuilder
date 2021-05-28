@@ -11,9 +11,10 @@ import config
 
 class RequestModule(LogModule):
 
-    def get_content(self, link: str, proxy: dict):
+    def get_content(self, link: str, proxy: dict, order_id):
         """
         Request page content for a given links.
+        :param order_id: str
         :param proxy: dict
         :param link: str
         :return:
@@ -29,25 +30,25 @@ class RequestModule(LogModule):
                 response = session.get(link, proxies=proxy, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT))
                 session.close()
         except requests.exceptions.ConnectionError as error:
-            self._send_task_report("target_connect_error", data={"message": error.__repr__(),
-                                                                 "code": 0})
+            self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
+                                                                 "order": order_id})
             return {"status": False, "error": True, "status_code": 0, "message": error, "type_res": "request_module"}
         try:
             response.raise_for_status()
 
         except requests.HTTPError as error:
             self._send_task_report("main_content_error", data={"message": error.__repr__(),
-                                                               "code": response.status_code})
-            return {"status": False, "error": True, "status_code": response.status_code, "message": error,
-                    "type_res": "request_module"}
+                                                               "code": str(response.status_code), "order": order_id})
+            return {"status": False, "error": True, "status_code": str(response.status_code),
+                    "message": error.__repr__(), "type_res": "request_module"}
 
         except requests.exceptions.RequestException as error:
             self._send_task_report("main_content_error", data={"message": error.__repr__(),
-                                                               "code": response.status_code})
-            return {"status": False, "error": True, "status_code": response.status_code, "message": error,
-                    "type_res": "request_module"}
+                                                               "code": str(response.status_code), "order": order_id})
+            return {"status": False, "error": True, "status_code": str(response.status_code),
+                    "message": error.__repr__(), "type_res": "request_module"}
 
-        return {"status": True, "error": False, "status_code": response.status_code, "message": response.text,
+        return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
                 "type_res": "request_module"}
 
     def send_data(self):

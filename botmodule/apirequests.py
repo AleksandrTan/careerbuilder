@@ -50,7 +50,7 @@ class ApiRequestModule(LogModule):
             except requests.exceptions.RequestException as error:
                 # write logs and console
                 self._send_task_report("api_connect_error", data={"message": error.__repr__(),
-                                                                  "code": response.status_code})
+                                                                  "code": str(response.status_code)})
                 counter += 1
                 time.sleep(TIME_TO_CONNECT)
                 continue
@@ -58,7 +58,7 @@ class ApiRequestModule(LogModule):
             response.raise_for_status()
         except requests.HTTPError as error:
             self._send_task_report("api_connect_error", data={"message": error.__repr__(),
-                                                              "code": response.status_code})
+                                                              "code": str(response.status_code)})
             return {"status": False}
         if counter == ATTEMPTS_TO_CONNECT:
             self._send_task_report("api_connect_error", data={})
