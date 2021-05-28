@@ -37,7 +37,7 @@ class BotWorker(LogModule):
         # check if file for send download
         if not self.file_content:
             # send a report to the server, write log file
-            self.api_worker.task_report(False, "no_file")
+            self.api_worker.task_report_fail("no_file")
             print("No file")
             return False
         # get main link
@@ -89,10 +89,11 @@ class BotWorker(LogModule):
         Download file for sending
         :return: None
         """
-        time.sleep(20)
+        time.sleep(1)
         file = self.api_worker.get_file(self.file_mailing)
         if file["status"]:
-            return file["message"]
+            # return file["message"]
+            return False
 
         return False
 

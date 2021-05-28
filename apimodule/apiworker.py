@@ -16,6 +16,7 @@ class ApiWorker(LogModule):
         self.api_url = config.API_HOST
         self.url_task_done = config.TASK_RESULT_DONE
         self.url_task_fail = config.TASK_RESULT_FAIL
+        self.messages = config.MESSAGES_ERROR_API
 
     def get_file(self, target_link):
         """
@@ -30,19 +31,20 @@ class ApiWorker(LogModule):
 
         return result
 
-    def task_report(self, status: bool = True, key_report: str = '', data_result: dict = None) -> bool:
+    def task_report_fail(self, key_report: str = '', data_result: dict = None) -> bool:
         """
         Report about task results
-        :param status: bool
         :param key_report:
         :param data_result: dict
         :return: bool
         """
-        if status:
-            url = self.api_url + self.url_task_done
-        else:
-            url = self.api_url + self.url_task_done
-        result = self.request.make_get(url)
+        params = {"status": False}
+        url = self.api_url + self.url_task_fail.replace("order_id", str(self.order_id))
+        params["order_id"] = self.order_id
+        params["message"] = self.messages[key_report]["message"]
+        result = self.request.make_post(url, params)
+        # log in console(file)
+        self._send_task_report("no_file", data={"order": self.order_id})
         if not result["status"]:
             return False
 
