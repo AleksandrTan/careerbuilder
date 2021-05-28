@@ -40,11 +40,11 @@ class ApiWorker(LogModule):
         """
         params = {"status": False}
         url = self.api_url + self.url_task_fail.replace("order_id", str(self.order_id))
-        params["order_id"] = self.order_id
         params["message"] = self.messages[key_report]["message"]
         result = self.request.make_post(url, params)
         # log in console(file)
-        self._send_task_report("no_file", data={"order": self.order_id})
+        if key_report == "no_file":
+            self._send_task_report(key_report, data={"order": self.order_id})
         if not result["status"]:
             return False
 

@@ -38,7 +38,6 @@ class BotWorker(LogModule):
         if not self.file_content:
             # send a report to the server, write log file
             self.api_worker.task_report_fail("no_file")
-            print("No file")
             return False
         # get main link
         main_content = self.main_page_worker()
@@ -53,7 +52,7 @@ class BotWorker(LogModule):
                 pass
         else:
             # no links found, send a report to the server, write log file
-            print(main_content, 6000)
+            self.api_worker.task_report_fail("target_connect_error")
 
     def main_page_worker(self) -> dict:
         """
@@ -89,11 +88,9 @@ class BotWorker(LogModule):
         Download file for sending
         :return: None
         """
-        time.sleep(1)
         file = self.api_worker.get_file(self.file_mailing)
         if file["status"]:
-            # return file["message"]
-            return False
+            return file["message"]
 
         return False
 
