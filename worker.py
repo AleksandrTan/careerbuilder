@@ -49,6 +49,14 @@ class RabbitWorker(LogModule):
 
     @staticmethod
     def worker(ch, method, properties, body):
+        """
+        Handler for receiving a message from the queue
+        :param ch:
+        :param method:
+        :param properties:
+        :param body:
+        :return:
+        """
         # get task
         message = json.loads(body.decode())
         print(message)

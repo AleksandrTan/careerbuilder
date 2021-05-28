@@ -20,7 +20,7 @@ class BotWorker(LogModule):
         self.user_name = data["user_name"]
         self.last_name = data["last_name"]
         self.email = data["email"]
-        self.api_worker = ApiWorker()
+        self.api_worker = ApiWorker(self.order_id)
         self.proxy_id = data["proxy"]["proxy_id"]
         self.host_proxy = data["proxy"]["host"]
         self.port_proxy = data["proxy"]["port"]
@@ -37,6 +37,7 @@ class BotWorker(LogModule):
         # check if file for send download
         if not self.file_content:
             # send a report to the server, write log file
+            self.api_worker.task_report(False, "no_file")
             print("No file")
             return False
         # get main link
@@ -70,7 +71,8 @@ class BotWorker(LogModule):
 
     def send_worker(self) -> dict:
         """
-        Send data
+        Parsing links with submission forms,
+        generating an array of data, submitting a form
         :return: dict
         """
         return self.analyzer_module.form_page()

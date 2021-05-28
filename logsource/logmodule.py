@@ -13,13 +13,14 @@ class LogModule:
 
     def _send_task_report(self, key: str, data: dict = None):
         message = self.map_messages[key]["message"]
-        for key in data:
-            if type(data[key]) is dict:
-                strings = json.dumps(str(data[key]))
-                message = message.replace(key, strings)
+        if data:
+            for key in data:
+                if type(data[key]) is dict:
+                    strings = json.dumps(str(data[key]))
+                    message = message.replace(key, strings)
+                    continue
+                message = message.replace(key, str(data[key]))
                 continue
-            message = message.replace(key, str(data[key]))
-            continue
         if self.is_file_write:
             logger.warning(message)
 
