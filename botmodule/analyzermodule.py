@@ -80,13 +80,12 @@ class AnalyzerModule:
         """
         status = True
         for link in self.links_list:
+            print(link)
             content = self.request.get_content(link, self.proxy, self.order_id)
             if not content["status"]:
-                time.sleep(2)
+                time.sleep(5)
                 continue
-
             soup = bs(content["message"], "html.parser")
-
             # get link to the first vacancy (button)
             button_link_parent = soup.find(settings.TARGET_BUTTON["parent_tag"],
                                            class_=settings.TARGET_BUTTON["parent_class"])
@@ -97,8 +96,7 @@ class AnalyzerModule:
                 if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
                     self.button_links.append(button_link["href"] +
                                              settings.TARGET_BUTTON["single_child"]["google_string"])
-            time.sleep(2)
-
+            time.sleep(5)
         if not self.button_links:
             # no links found
             status = False
