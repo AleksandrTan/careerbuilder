@@ -15,6 +15,7 @@ class BotWorker(LogModule):
     def __init__(self, data):
         super().__init__()
         self.target_link = data["target_link"]
+        self.link_id = self.target_link.split('/')[-1]
         self.order_id = data["order_id"]
         self.file_mailing = data["file_mailing"]
         self.user_name = data["user_name"]
@@ -30,7 +31,7 @@ class BotWorker(LogModule):
         self.proxies = dict()
         self.set_proxy(host_proxy=self.host_proxy, port_proxy=self.port_proxy, protocol_proxy=self.protocol_proxy,
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
-        self.analyzer_module = AnalyzerModule(self.proxies, str(self.order_id))
+        self.analyzer_module = AnalyzerModule(self.proxies, str(self.order_id), self.link_id)
         self.file_content = self.download_file()
 
     def start(self):
@@ -38,6 +39,7 @@ class BotWorker(LogModule):
         if not self.file_content:
             # send a report to the server, write log file
             self.api_worker.task_report_fail("no_file")
+            print("Stop thread")
             return False
         # get main link
         main_content = self.main_page_worker()
@@ -49,11 +51,14 @@ class BotWorker(LogModule):
                 sender = self.send_worker()
             else:
                 # no links found, send a report to the server, write log file
-                pass
+                print("Stop thread")
+                return False
         else:
-            # no links found, send a report to the server, write log file
+            # no links found(or have some errors), send a report to the server, write log file
             main_content["order"] = str(self.order_id)
             self.api_worker.task_report_fail("target_connect_error", main_content)
+            print("Stop thread")
+            return False
 
     def main_page_worker(self) -> dict:
         """

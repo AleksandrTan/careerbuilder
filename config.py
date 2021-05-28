@@ -1,4 +1,5 @@
 TEST_MODE = True
+LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
 TARGET_HOST = "https://www.careerbuilder.com"
 TEST_HOST = "http://127.0.0.1:8000"
 

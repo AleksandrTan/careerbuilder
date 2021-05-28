@@ -13,11 +13,12 @@ from botmodule.sendermodule import SenderModule
 
 class AnalyzerModule:
 
-    def __init__(self, proxy: dict, order_id: str):
+    def __init__(self, proxy: dict, order_id: str, link_id: str):
         self.proxy = proxy
         self.order_id = order_id
-        self.links_list = list()  # list of links on the landing page
-        self.button_links = list()
+        self.link_id = link_id
+        self.links_list = list()  # an array of links on the landing page
+        self.button_links = list()  # an array of links to pages with a form to submit
         self.count_link = 0
         self.count_link_other = 0
         self.request = RequestModule()
@@ -79,9 +80,9 @@ class AnalyzerModule:
         """
         status = True
         for link in self.links_list:
-            print(link)
-            content = self.request.get_content(link, self.proxy)
+            content = self.request.get_content(link, self.proxy, self.order_id)
             if not content["status"]:
+                time.sleep(2)
                 continue
 
             soup = bs(content["message"], "html.parser")
