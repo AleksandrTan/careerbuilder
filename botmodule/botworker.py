@@ -109,7 +109,10 @@ class BotWorker(LogModule):
         """
         file = self.api_worker.get_file(self.file_mailing)
         if file["status"]:
-            return file["content"]
+            files = open(self.file_name, "wb")
+            files.write(file["content"])
+            files.close()
+            return True
 
         return False
 

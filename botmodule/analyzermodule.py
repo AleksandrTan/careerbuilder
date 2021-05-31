@@ -150,11 +150,7 @@ class AnalyzerModule:
         form["email"] = self.email
         form["cv_data"] = "SGVsbG8hCg=="
         form["cv_file_name"] = self.file_name
-
-        binary_file = open(self.file_name, "wb")
-        form["upload_file"] = binary_file.write(self.file_content)
-        # binary_file.close()
-
+        form["upload_file"] = open(self.file_name, "rb")
         form["ai_resume_builder"] = False
         form["dropbox_cv_url"] = ''
         form["copy_paste"] = ''
