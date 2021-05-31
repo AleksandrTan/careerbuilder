@@ -45,7 +45,7 @@ class ApiWorker(LogModule):
         params["message"] = message
         result = self.request.make_post(url, params)
         # log in console(file)
-        if key_report == "no_file" or 'no_links_found':
+        if key_report == "no_file" or 'no_links_found' or "no_button_found":
             self._send_task_report(key_report, data={"order": self.order_id})
         if not result["status"]:
             return False

@@ -42,7 +42,10 @@ MESSAGES_LOG = {
     "main_content_error": {"message": "Order - order. When Requesting a start link, the target resource did not "
                                       "respond correctly! code message"},
     "no_links_found": {"message": "Order - order. An error occurred while executing the task. No links found on the "
-                                  "main page. The target resource may have changed the source code!"}
+                                  "main page. The target resource may have changed the source code!"},
+
+    "no_button_found": {"message": "Order - order. An error occurred while executing the task. No links to form pages "
+                                   "were found. The target resource may have changed the source code!"}
 }
 
 MESSAGES_ERROR_API = {
@@ -53,5 +56,7 @@ MESSAGES_ERROR_API = {
         "message": "Attention! Target resource is not responding! \n Code - status_code \n Messages - message"
     },
     "no_links_found": {"message": "An error occurred while executing the task. No links found on the "
-                                  "main page. The target resource may have changed the source code!"}
+                                  "main page. The target resource may have changed the source code!"},
+    "no_button_found": {"message": "An error occurred while executing the task. No links to form pages were found. "
+                                   "The target resource may have changed the source code!"}
 }

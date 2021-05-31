@@ -3,8 +3,6 @@ The class describes a bot object that mimics user behavior in the target portal 
 It is launched from a workflow, initialized, and then executed, accompanying its work with logging at
 the database level, logging to a file or standard output.
 """
-import time
-
 from apimodule.apiworker import ApiWorker
 from logsource.logmodule import LogModule
 from botmodule.analyzermodule import AnalyzerModule
@@ -51,13 +49,13 @@ class BotWorker(LogModule):
                 sender = self.send_worker()
             else:
                 # no links found, send a report to the server, write log file
-                main_content["order"] = str(self.order_id)
-                if main_content.get("error", False):
+                button_links["order"] = str(self.order_id)
+                if button_links.get("error", False):
                     # wrong request
-                    self.api_worker.task_report_fail("target_connect_error", main_content)
+                    self.api_worker.task_report_fail("target_connect_error", button_links)
                 else:
                     # no links found
-                    self.api_worker.task_report_fail("no_links_found")
+                    self.api_worker.task_report_fail("no_button_found")
                 print("Stop thread")
                 return False
         else:

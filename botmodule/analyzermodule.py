@@ -71,7 +71,6 @@ class AnalyzerModule:
 
             if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
                 self.button_links.append(button_link["href"] + settings.TARGET_BUTTON["single_child"]["google_string"])
-        self.links_list = []
         if not self.links_list:
             # no links found
             status = False
