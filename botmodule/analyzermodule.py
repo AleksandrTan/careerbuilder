@@ -13,13 +13,20 @@ from botmodule.sendermodule import SenderModule
 
 class AnalyzerModule:
 
-    def __init__(self, proxy: dict, order_id: str, link_id: str, user_name: str, last_name: str, email: str):
+    def __init__(self, proxy: dict, order_id: str, link_id: str, user_name: str, last_name: str, email: str,
+                 file_content, file_name):
         """
         Возвращает либо ошибку о соедиенииб либо факт того, что ссылок для дальнейшего анализа не найдено
         :param proxy: dict
         :param order_id: str
         :param link_id: str
+        :param user_name: str
+        :param last_name: str
+        :param email: str
+        :param file_content: bytes
         """
+        self.file_name = file_name
+        self.file_content = file_content
         self.user_name = user_name
         self.last_name = last_name
         self.email = email
@@ -129,17 +136,24 @@ class AnalyzerModule:
             if not content["status"]:
                 time.sleep(5)
                 continue
-            status = self.parse_form(content)
+            status = self.get_data(content)
 
         # print(self.button_links)
 
-    def parse_form(self, contents):
+    def get_data(self, contents) -> dict:
+        # prepare form data
         form = dict()
         soup = bs(contents["message"], "html.parser")
         form["firstname"] = self.user_name
         form["lastname"] = self.last_name
         form["email"] = self.email
-        # get authenticity_token param
+        form["cv_data"] = "SGVsbG8hCg=="
+        form["cv_file_name"] = self.file_name
+        form["upload_file"] = self.file_content
+        form["ai_resume_builder"] = False
+        form["dropbox_cv_url"] = ''
+        form["copy_paste"] = ''
+        # set authenticity_token param
         authenticity_token_name = soup.find(settings.TARGET_FORM["authenticity_token"]["tag"],
                                             attrs={
                                                 "name": settings.TARGET_FORM["authenticity_token"]["name_param"]
@@ -150,3 +164,5 @@ class AnalyzerModule:
                                              }).get("content")
         form[authenticity_token_name] = authenticity_token_value
         print(form)
+
+        return form

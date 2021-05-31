@@ -16,6 +16,7 @@ class BotWorker(LogModule):
         self.link_id = self.target_link.split('/')[-1]
         self.order_id = data["order_id"]
         self.file_mailing = data["file_mailing"]
+        self.file_name = data["file_name"]
         self.user_name = data["user_name"]
         self.last_name = data["last_name"]
         self.email = data["email"]
@@ -29,8 +30,9 @@ class BotWorker(LogModule):
         self.proxies = dict()
         self.set_proxy(host_proxy=self.host_proxy, port_proxy=self.port_proxy, protocol_proxy=self.protocol_proxy,
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
-        self.analyzer_module = AnalyzerModule(self.proxies, str(self.order_id), self.link_id, self.user_name, self.last_name, self.email)
         self.file_content = self.download_file()
+        self.analyzer_module = AnalyzerModule(self.proxies, str(self.order_id), self.link_id, self.user_name,
+                                              self.last_name, self.email, self.file_content, self.file_name)
 
     def start(self):
         # check if file for send download
