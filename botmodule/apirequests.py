@@ -35,7 +35,7 @@ class ApiRequestModule(LogModule):
 
         if response.status_code == 200:
             return {"status": True, "error": False, "status_code": response.status_code, "message": response.text,
-                    "type_res": "api_request_module"}
+                    "type_res": "api_request_module", "content": response.content}
 
     def make_post(self, url: str, data: dict = None):
         response = ''

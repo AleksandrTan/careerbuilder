@@ -131,12 +131,13 @@ class AnalyzerModule:
         :return:
         """
         for button_link in self.button_links:
-            print(button_link)
             content = self.request.get_content(button_link, self.proxy, self.order_id)
             if not content["status"]:
                 time.sleep(5)
                 continue
-            status = self.get_data(content)
+            data = self.get_data(content)
+            send_status = self.send_data(data["url"], self.proxy, self.order_id, data["form"])
+            print(send_status)
 
         # print(self.button_links)
 
@@ -149,7 +150,11 @@ class AnalyzerModule:
         form["email"] = self.email
         form["cv_data"] = "SGVsbG8hCg=="
         form["cv_file_name"] = self.file_name
-        form["upload_file"] = self.file_content
+
+        binary_file = open(self.file_name, "wb")
+        form["upload_file"] = binary_file.write(self.file_content)
+        # binary_file.close()
+
         form["ai_resume_builder"] = False
         form["dropbox_cv_url"] = ''
         form["copy_paste"] = ''
@@ -163,6 +168,16 @@ class AnalyzerModule:
                                                  "name": settings.TARGET_FORM["authenticity_token"]["name_value"]
                                              }).get("content")
         form[authenticity_token_name] = authenticity_token_value
-        print(form)
+        # set url param
+        url = soup.find(settings.TARGET_FORM["parent_tag"],
+                        attrs={"class": settings.TARGET_FORM["parent_class"]}).get("action")
+        if config.TEST_MODE:
+            url = config.TEST_HOST + url
+        else:
+            url = config.TARGET_HOST + url
 
-        return form
+        return {"form": form, "url": url}
+
+    def send_data(self, url, proxy, order_id, data):
+        result = self.request.send_data(url, proxy, order_id, data)
+        return result
