@@ -8,7 +8,6 @@ REQUEST_TIMEOUT = 6
 # response timeout
 RESPONSE_TIMEOUT = 21
 
-
 # ---------------------------------------------------- RabbitMQ--------------------------------------------------
 RABBIT_HOST = 'localhost'
 RABBIT_PORT = 5672
@@ -53,4 +52,6 @@ MESSAGES_ERROR_API = {
     "target_connect_error": {
         "message": "Attention! Target resource is not responding! \n Code - status_code \n Messages - message"
     },
+    "no_links_found": {"message": "An error occurred while executing the task. No links found on the "
+                                  "main page. The target resource may have changed the source code!"}
 }

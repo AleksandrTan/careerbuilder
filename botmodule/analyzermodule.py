@@ -71,7 +71,7 @@ class AnalyzerModule:
 
             if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
                 self.button_links.append(button_link["href"] + settings.TARGET_BUTTON["single_child"]["google_string"])
-
+        self.links_list = []
         if not self.links_list:
             # no links found
             status = False
@@ -88,6 +88,7 @@ class AnalyzerModule:
         :return: dict
         """
         status = True
+        reason = "connection"
         for link in self.links_list:
             print(link)
             content = self.request.get_content(link, self.proxy, self.order_id)
@@ -105,14 +106,15 @@ class AnalyzerModule:
                 if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
                     self.button_links.append(button_link["href"] +
                                              settings.TARGET_BUTTON["single_child"]["google_string"])
-            time.sleep(5)
+            # time.sleep(5)
         if not self.button_links:
             # no links found
             status = False
+            reason = "no_links"
 
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
                 "count_link": self.count_link, "count_link_other": len(self.button_links),
-                "type_res": "analyzer_module"}
+                "type_res": "analyzer_module", "reason": reason}
 
     def form_page(self):
         """

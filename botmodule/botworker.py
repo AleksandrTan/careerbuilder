@@ -51,6 +51,13 @@ class BotWorker(LogModule):
                 sender = self.send_worker()
             else:
                 # no links found, send a report to the server, write log file
+                main_content["order"] = str(self.order_id)
+                if main_content.get("error", False):
+                    # wrong request
+                    self.api_worker.task_report_fail("target_connect_error", main_content)
+                else:
+                    # no links found
+                    self.api_worker.task_report_fail("no_links_found")
                 print("Stop thread")
                 return False
         else:
