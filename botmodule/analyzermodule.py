@@ -120,4 +120,27 @@ class AnalyzerModule:
         Open a page with a form, generate data, send to the portal
         :return:
         """
-        print(self.button_links)
+        for button_link in self.button_links:
+            print(button_link)
+            content = self.request.get_content(button_link, self.proxy, self.order_id)
+            if not content["status"]:
+                time.sleep(5)
+                continue
+            status = self.parse_form(content)
+
+        # print(self.button_links)
+
+    def parse_form(self, contents):
+        form = dict()
+        soup = bs(contents["message"], "html.parser")
+        # get form
+        authenticity_token_name = soup.find(settings.TARGET_FORM["authenticity_token"]["tag"],
+                                            attrs={
+                                                "name": settings.TARGET_FORM["authenticity_token"]["name_param"]
+                                            }).get("content")
+        authenticity_token_value = soup.find(settings.TARGET_FORM["authenticity_token"]["tag"],
+                                             attrs={
+                                                 "name": settings.TARGET_FORM["authenticity_token"]["name_value"]
+                                             }).get("content")
+        form[authenticity_token_name] = authenticity_token_value
+        print(form)

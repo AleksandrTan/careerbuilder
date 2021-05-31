@@ -45,6 +45,19 @@ TARGET_BUTTON = {
         "target_attr": "href",
         "target_text": "Apply Now",
         "target_text_company": "Apply on company site",
-        "google_string": "&_ga=2.137065200.1557281988.1621516955-535983977.1621516955"
+        "google_string": "?&_ga=2.137065200.1557281988.1621516955-535983977.1621516955"
+    }
+}
+
+"""
+Form
+"""
+TARGET_FORM = {
+    "parent_tag": "form",
+    "parent_class": "form-material resume_upload",
+    "authenticity_token": {
+        "tag": "meta",
+        "name_param": "csrf-param",
+        "name_value": "csrf-token"
     }
 }
