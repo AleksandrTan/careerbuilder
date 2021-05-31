@@ -13,13 +13,16 @@ from botmodule.sendermodule import SenderModule
 
 class AnalyzerModule:
 
-    def __init__(self, proxy: dict, order_id: str, link_id: str):
+    def __init__(self, proxy: dict, order_id: str, link_id: str, user_name: str, last_name: str, email: str):
         """
         Возвращает либо ошибку о соедиенииб либо факт того, что ссылок для дальнейшего анализа не найдено
         :param proxy: dict
         :param order_id: str
         :param link_id: str
         """
+        self.user_name = user_name
+        self.last_name = last_name
+        self.email = email
         self.proxy = proxy
         self.order_id = order_id
         self.link_id = link_id
@@ -133,7 +136,10 @@ class AnalyzerModule:
     def parse_form(self, contents):
         form = dict()
         soup = bs(contents["message"], "html.parser")
-        # get form
+        form["firstname"] = self.user_name
+        form["lastname"] = self.last_name
+        form["email"] = self.email
+        # get authenticity_token param
         authenticity_token_name = soup.find(settings.TARGET_FORM["authenticity_token"]["tag"],
                                             attrs={
                                                 "name": settings.TARGET_FORM["authenticity_token"]["name_param"]
