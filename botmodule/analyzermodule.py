@@ -14,6 +14,12 @@ from botmodule.sendermodule import SenderModule
 class AnalyzerModule:
 
     def __init__(self, proxy: dict, order_id: str, link_id: str):
+        """
+        Возвращает либо ошибку о соедиенииб либо факт того, что ссылок для дальнейшего анализа не найдено
+        :param proxy: dict
+        :param order_id: str
+        :param link_id: str
+        """
         self.proxy = proxy
         self.order_id = order_id
         self.link_id = link_id
@@ -35,6 +41,7 @@ class AnalyzerModule:
             return content
 
         status = True
+        reason = "connection"
         soup = bs(content["message"], "html.parser")
         # select all job links
         parent_obj = soup.find(settings.TARGET_LIST["parent_tag"], class_=settings.TARGET_LIST["parent_class"])
@@ -68,9 +75,11 @@ class AnalyzerModule:
         if not self.links_list:
             # no links found
             status = False
+            reason = "no_links"
 
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
-                "count_link": self.count_link, "count_link_other": self.count_link_other, "type_res": "analyzer_module"}
+                "count_link": self.count_link, "count_link_other": self.count_link_other,
+                "type_res": "analyzer_module", "reason": reason}
 
     def parse_other_page(self) -> dict:
         """

@@ -1,8 +1,6 @@
 """
 Class for working with system api
 """
-import requests
-
 import config
 from logsource.logmodule import LogModule
 from botmodule.apirequests import ApiRequestModule

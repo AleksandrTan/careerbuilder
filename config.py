@@ -41,7 +41,9 @@ MESSAGES_LOG = {
     "api_connect_error": {"message": "Attention! The system api is not responding! message code"},
     "no_file": {"message": "Order - order. Mailing file not found."},
     "main_content_error": {"message": "Order - order. When Requesting a start link, the target resource did not "
-                                      "respond correctly! code message"}
+                                      "respond correctly! code message"},
+    "no_links_found": {"message": "Order - order. An error occurred while executing the task. No links found on the "
+                                  "main page. The target resource may have changed the source code!"}
 }
 
 MESSAGES_ERROR_API = {
