@@ -60,6 +60,9 @@ class ApiWorker(LogModule):
         """
         params = {"status": True}
         url = self.api_url + self.url_task_success.replace("order_id", str(self.order_id))
-
+        params["status_order"] = "success"
+        params["all_links"] = data_success["count_link"]
+        params["send_links"] = data_success["success_count_link"]
+        params["fail_links"] = data_success["fail_count_link"]
         result = self.request.make_post(url, params)
         return True

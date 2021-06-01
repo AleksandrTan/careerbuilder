@@ -61,7 +61,7 @@ class RabbitWorker(LogModule):
         message = json.loads(body.decode())
         print(message)
         # start bot
-        if message["portal"] == "":
+        if message["portal"] == "one":
             bot_object = BotWorker(message)
             print('Start thread')
             threading.Thread(target=bot_object.start, args=()).start()

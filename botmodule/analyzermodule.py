@@ -25,6 +25,7 @@ class AnalyzerModule:
         :param email: str
         :param file_content: bytes
         """
+        self.delay_requests = config.DELAY_REQUESTS
         self.file_name = file_name
         self.file_content = file_content
         self.user_name = user_name
@@ -103,7 +104,7 @@ class AnalyzerModule:
         for link in self.links_list:
             content = self.request.get_content(link, self.proxy, self.order_id)
             if not content["status"]:
-                time.sleep(5)
+                time.sleep(self.delay_requests)
                 continue
             soup = bs(content["message"], "html.parser")
             # get link to the first vacancy (button)
@@ -116,7 +117,7 @@ class AnalyzerModule:
                 if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
                     self.button_links.append(button_link["href"] +
                                              settings.TARGET_BUTTON["single_child"]["google_string"])
-            time.sleep(5)
+            time.sleep(self.delay_requests)
         if not self.button_links:
             # no links found
             status = False
@@ -136,7 +137,7 @@ class AnalyzerModule:
             # unsuccessfully submitted form
             if not content["status"]:
                 self.fail_count_link += 1
-                time.sleep(5)
+                time.sleep(self.delay_requests)
                 continue
             data = self.get_data(content)
             send_status = self.send_data(data["url"], self.proxy, self.order_id, data["form"])
@@ -145,7 +146,7 @@ class AnalyzerModule:
                 self.success_count_link += 1
             else:
                 self.fail_count_link += 1
-            time.sleep(5)
+            time.sleep(self.delay_requests)
             continue
         return {"status": True, "link_list": self.links_list, "button_links": self.button_links,
                 "count_link": self.count_link, "count_link_button": len(self.button_links),
