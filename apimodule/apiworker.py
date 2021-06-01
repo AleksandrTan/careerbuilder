@@ -22,7 +22,7 @@ class ApiWorker(LogModule):
         :param target_link: str
         :return:
         """
-        url = config.API_HOST + config.FILE_DOWNLOAD + '?name=' + target_link
+        url = config.API_HOST + config.FILE_DOWNLOAD + '?file_url=' + target_link
         result = self.request.make_get(url)
         if not result["status"]:
             return {"status": False}
