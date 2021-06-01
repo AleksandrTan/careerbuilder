@@ -23,7 +23,7 @@ TIME_TO_CONNECT_RABBIT = 5
 # ------------------------------------------------ systems urls---------------------------------------------------
 API_HOST = "http://127.0.0.1:8000"
 FILE_DOWNLOAD = "/mainsystem/bot/get_file/"
-TASK_RESULT_DONE = "/mainsystem/api/order/order_id/done/"
+TASK_RESULT_SUCCESS = "/mainsystem/api/order/order_id/success/"
 TASK_RESULT_FAIL = "/mainsystem/api/order/order_id/fail/"
 # The number of attempts to connect to the main server.
 ATTEMPTS_TO_CONNECT = 5

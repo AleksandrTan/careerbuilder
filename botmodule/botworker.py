@@ -3,6 +3,9 @@ The class describes a bot object that mimics user behavior in the target portal 
 It is launched from a workflow, initialized, and then executed, accompanying its work with logging at
 the database level, logging to a file or standard output.
 """
+import datetime
+import os
+
 import config
 from apimodule.apiworker import ApiWorker
 from logsource.logmodule import LogModule
@@ -36,20 +39,30 @@ class BotWorker(LogModule):
                                               self.last_name, self.email, self.file_content, self.file_name)
 
     def start(self):
+        begin_time = datetime.datetime.now()
+        print("Start work - ", datetime.datetime.now())
         # check if file for send download
         if not self.file_content:
             # send a report to the server, write log file
             self.api_worker.task_report_fail("no_file")
+            print("End time - ", datetime.datetime.now() - begin_time)
             return False
         # get main link
+        print("Get main page")
         main_content = self.main_page_worker()
         if main_content["status"]:
             # get other link
+            print("Get other page")
             button_links = self.other_page_worker()
             if button_links["status"]:
                 # open form and send data
+                print("Send form")
                 sender = self.send_worker()
+                print(3500)
+                print(sender)
                 # send data to system api
+                self.api_worker.task_report_success(sender)
+
             else:
                 # no links found, send a report to the server, write log file
                 button_links["order"] = str(self.order_id)
@@ -59,6 +72,8 @@ class BotWorker(LogModule):
                 else:
                     # no links found
                     self.api_worker.task_report_fail("no_button_found")
+                print("End time - ", datetime.datetime.now() - begin_time)
+                self.delete_file()
                 return False
         else:
             # no links found(or have some errors), send a report to the server, write log file
@@ -69,7 +84,12 @@ class BotWorker(LogModule):
             else:
                 # no links found
                 self.api_worker.task_report_fail("no_links_found")
+            print(datetime.datetime.now() - begin_time)
+            self.delete_file()
             return False
+        self.delete_file()
+        print("End time - ", datetime.datetime.now() - begin_time)
+        return True
 
     def main_page_worker(self) -> dict:
         """
@@ -113,6 +133,10 @@ class BotWorker(LogModule):
             return True
 
         return False
+
+    def delete_file(self):
+        if os.path.exists(config.BASE_DIR + '/tmp/' + self.file_name):
+            os.remove(config.BASE_DIR + '/tmp/' + self.file_name)
 
 
 if __name__ == "__main__":

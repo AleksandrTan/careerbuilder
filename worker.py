@@ -61,10 +61,11 @@ class RabbitWorker(LogModule):
         message = json.loads(body.decode())
         print(message)
         # start bot
-        bot_object = BotWorker(message)
-        print('Start thread')
-        threading.Thread(target=bot_object.start, args=()).start()
-        # confirm task processing
+        if message["portal"] == "":
+            bot_object = BotWorker(message)
+            print('Start thread')
+            threading.Thread(target=bot_object.start, args=()).start()
+            # confirm task processing
         ch.basic_ack(delivery_tag=method.delivery_tag)
         time.sleep(10)
 

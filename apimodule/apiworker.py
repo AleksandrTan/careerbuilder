@@ -12,7 +12,7 @@ class ApiWorker(LogModule):
         self.request = ApiRequestModule()
         self.order_id = order_id
         self.api_url = config.API_HOST
-        self.url_task_done = config.TASK_RESULT_DONE
+        self.url_task_success = config.TASK_RESULT_SUCCESS
         self.url_task_fail = config.TASK_RESULT_FAIL
         self.messages = config.MESSAGES_ERROR_API
 
@@ -50,4 +50,16 @@ class ApiWorker(LogModule):
         if not result["status"]:
             return False
 
+        return True
+
+    def task_report_success(self, data_success: dict = None) -> bool:
+        """
+        Report about task results
+        :param data_success:
+        :return: bool
+        """
+        params = {"status": True}
+        url = self.api_url + self.url_task_success.replace("order_id", str(self.order_id))
+
+        result = self.request.make_post(url, params)
         return True
