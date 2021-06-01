@@ -143,6 +143,7 @@ class AnalyzerModule:
 
     def get_data(self, contents) -> dict:
         # prepare form data
+        print(config.BASE_DIR, 3500)
         form = dict()
         soup = bs(contents["message"], "html.parser")
         form["firstname"] = self.user_name
@@ -150,7 +151,7 @@ class AnalyzerModule:
         form["email"] = self.email
         form["cv_data"] = "SGVsbG8hCg=="
         form["cv_file_name"] = self.file_name
-        form["upload_file"] = open(self.file_name, "rb")
+        form["upload_file"] = open(config.BASE_DIR + '/tmp/' + self.file_name, "rb")
         form["ai_resume_builder"] = False
         form["dropbox_cv_url"] = ''
         form["copy_paste"] = ''

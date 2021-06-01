@@ -3,6 +3,7 @@ The class describes a bot object that mimics user behavior in the target portal 
 It is launched from a workflow, initialized, and then executed, accompanying its work with logging at
 the database level, logging to a file or standard output.
 """
+import config
 from apimodule.apiworker import ApiWorker
 from logsource.logmodule import LogModule
 from botmodule.analyzermodule import AnalyzerModule
@@ -109,7 +110,7 @@ class BotWorker(LogModule):
         """
         file = self.api_worker.get_file(self.file_mailing)
         if file["status"]:
-            files = open(self.file_name, "wb")
+            files = open(config.BASE_DIR + '/tmp/' + self.file_name, "wb")
             files.write(file["content"])
             files.close()
             return True
