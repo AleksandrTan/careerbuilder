@@ -58,7 +58,6 @@ class BotWorker(LogModule):
                 # open form and send data
                 print("Send form")
                 sender = self.send_worker()
-                print(3500)
                 print(sender)
                 # send data to system api
                 self.api_worker.task_report_success(sender)

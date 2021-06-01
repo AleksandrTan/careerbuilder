@@ -63,7 +63,6 @@ class RabbitWorker(LogModule):
         # start bot
         if message["portal"] == "one":
             bot_object = BotWorker(message)
-            print('Start thread')
             threading.Thread(target=bot_object.start, args=()).start()
             # confirm task processing
         ch.basic_ack(delivery_tag=method.delivery_tag)

@@ -7,7 +7,7 @@ TARGET_HOST = "https://www.careerbuilder.com"
 TEST_HOST = "http://127.0.0.1:8000"
 
 # delay requests
-DELAY_REQUESTS = 5
+DELAY_REQUESTS = 1
 
 # request timeout
 REQUEST_TIMEOUT = 6
