@@ -19,6 +19,10 @@ headers = {
     'X-CSRFToken': 'dfgdgdgdfgsdfgdsfg'
 }
 
+cookies = {
+
+}
+
 """
 List of links to vacancies
 """

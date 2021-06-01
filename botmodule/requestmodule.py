@@ -67,11 +67,11 @@ class RequestModule(LogModule):
         try:
             if not proxy:
                 response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
-                                         files=files, data=data, headers=headers)
+                                         allow_redirects=True, files=files, data=data, headers=headers)
             else:
-                response = requests.post(url, headers=headers, proxies=proxy,
-                                         timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
-                                         files=files, data=data)
+                response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
+                                         headers=headers, proxies=proxy, files=files, data=data,
+                                         allow_redirects=True)
         except requests.exceptions.ConnectionError as error:
             self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
                                                                  "order": order_id})
