@@ -143,7 +143,6 @@ class AnalyzerModule:
 
     def get_data(self, contents) -> dict:
         # prepare form data
-        print(config.BASE_DIR, 3500)
         form = dict()
         soup = bs(contents["message"], "html.parser")
         form["firstname"] = self.user_name

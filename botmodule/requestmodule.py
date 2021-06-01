@@ -60,34 +60,37 @@ class RequestModule(LogModule):
         :param data:
         :return: dict
         """
-        print(data)
-        # headers = settings.headers
-        # try:
-        #     if not proxy:
-        #         response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
-        #                                  files=data, headers=headers)
-        #     else:
-        #         response = requests.post(url, headers=headers, proxies=proxy,
-        #                                  timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
-        #                                  files=data)
-        # except requests.exceptions.ConnectionError as error:
-        #     self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
-        #                                                          "order": order_id})
-        #     return {"status": False, "error": True, "status_code": 0, "message": error, "type_res": "request_module"}
-        # try:
-        #     response.raise_for_status()
-        #
-        # except requests.HTTPError as error:
-        #     self._send_task_report("main_content_error", data={"message": error.__repr__(),
-        #                                                        "code": str(response.status_code), "order": order_id})
-        #     return {"status": False, "error": True, "status_code": str(response.status_code),
-        #             "message": error.__repr__(), "type_res": "request_module"}
-        #
-        # except requests.exceptions.RequestException as error:
-        #     self._send_task_report("main_content_error", data={"message": error.__repr__(),
-        #                                                        "code": str(response.status_code), "order": order_id})
-        #     return {"status": False, "error": True, "status_code": str(response.status_code),
-        #             "message": error.__repr__(), "type_res": "request_module"}
-        #
-        # return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
-        #         "type_res": "request_module"}
+        files = dict()
+        headers = settings.headers
+        files["upload_file"] = data["upload_file"]
+        print(files, type(files))
+        del data["upload_file"]
+        try:
+            if not proxy:
+                response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
+                                         files=files, data=data, headers=headers)
+            else:
+                response = requests.post(url, headers=headers, proxies=proxy,
+                                         timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
+                                         files=files, data=data)
+        except requests.exceptions.ConnectionError as error:
+            self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
+                                                                 "order": order_id})
+            return {"status": False, "error": True, "status_code": 0, "message": error, "type_res": "request_module"}
+        try:
+            response.raise_for_status()
+
+        except requests.HTTPError as error:
+            self._send_task_report("main_content_error", data={"message": error.__repr__(),
+                                                               "code": str(response.status_code), "order": order_id})
+            return {"status": False, "error": True, "status_code": str(response.status_code),
+                    "message": error.__repr__(), "type_res": "request_module"}
+
+        except requests.exceptions.RequestException as error:
+            self._send_task_report("main_content_error", data={"message": error.__repr__(),
+                                                               "code": str(response.status_code), "order": order_id})
+            return {"status": False, "error": True, "status_code": str(response.status_code),
+                    "message": error.__repr__(), "type_res": "request_module"}
+
+        return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
+                "type_res": "request_module"}

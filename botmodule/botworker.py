@@ -119,8 +119,4 @@ class BotWorker(LogModule):
 
 
 if __name__ == "__main__":
-    import requests
-
-    url = 'http://127.0.0.1:8000/mspanel/bot/get_file/?name=/media/files_mailing/IGalgorithm_EjrhH1Z.txt'
-    r = requests.get(url)
-    print(r.content)
+    print(config.BASE_DIR, 3500)
