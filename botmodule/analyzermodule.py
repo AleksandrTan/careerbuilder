@@ -36,7 +36,9 @@ class AnalyzerModule:
         self.links_list = list()  # an array of links on the landing page
         self.button_links = list()  # an array of links to pages with a form to submit
         self.count_link = 0
-        self.count_link_other = 0
+        self.success_count_link = 0  # successfully sent links
+        self.fail_count_link = 0  # unsuccessfully submitted links
+        self.count_link_button = 0
         self.request = RequestModule()
         self.sender = SenderModule(self.request)
 
@@ -87,7 +89,7 @@ class AnalyzerModule:
             reason = "no_links"
 
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
-                "count_link": self.count_link, "count_link_other": self.count_link_other,
+                "count_link": self.count_link, "count_link_button": self.count_link_button,
                 "type_res": "analyzer_module", "reason": reason}
 
     def parse_other_page(self) -> dict:
@@ -99,7 +101,6 @@ class AnalyzerModule:
         status = True
         reason = "connection"
         for link in self.links_list:
-            print(link)
             content = self.request.get_content(link, self.proxy, self.order_id)
             if not content["status"]:
                 time.sleep(5)
@@ -122,7 +123,7 @@ class AnalyzerModule:
             reason = "no_links"
 
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
-                "count_link": self.count_link, "count_link_other": len(self.button_links),
+                "count_link": self.count_link, "count_link_button": len(self.button_links),
                 "type_res": "analyzer_module", "reason": reason}
 
     def form_page(self):
@@ -132,14 +133,24 @@ class AnalyzerModule:
         """
         for button_link in self.button_links:
             content = self.request.get_content(button_link, self.proxy, self.order_id)
+            # unsuccessfully submitted form
             if not content["status"]:
+                self.fail_count_link += 1
                 time.sleep(5)
                 continue
             data = self.get_data(content)
             send_status = self.send_data(data["url"], self.proxy, self.order_id, data["form"])
+            # successfully submitted form
+            if send_status["status"]:
+                self.success_count_link += 1
+            else:
+                self.fail_count_link += 1
             time.sleep(5)
-
-        # print(self.button_links)
+            continue
+        return {"status": True, "link_list": self.links_list, "button_links": self.button_links,
+                "count_link": self.count_link, "count_link_button": len(self.button_links),
+                "type_res": "analyzer_module", "reason": "reason", "success_count_link": self.success_count_link,
+                "fail_count_link": self.fail_count_link}
 
     def get_data(self, contents) -> dict:
         # prepare form data

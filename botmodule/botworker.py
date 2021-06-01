@@ -40,7 +40,6 @@ class BotWorker(LogModule):
         if not self.file_content:
             # send a report to the server, write log file
             self.api_worker.task_report_fail("no_file")
-            print("Stop thread")
             return False
         # get main link
         main_content = self.main_page_worker()
@@ -50,6 +49,7 @@ class BotWorker(LogModule):
             if button_links["status"]:
                 # open form and send data
                 sender = self.send_worker()
+                # send data to system api
             else:
                 # no links found, send a report to the server, write log file
                 button_links["order"] = str(self.order_id)
@@ -59,7 +59,6 @@ class BotWorker(LogModule):
                 else:
                     # no links found
                     self.api_worker.task_report_fail("no_button_found")
-                print("Stop thread")
                 return False
         else:
             # no links found(or have some errors), send a report to the server, write log file
@@ -70,7 +69,6 @@ class BotWorker(LogModule):
             else:
                 # no links found
                 self.api_worker.task_report_fail("no_links_found")
-            print("Stop thread")
             return False
 
     def main_page_worker(self) -> dict:
