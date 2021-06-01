@@ -63,7 +63,6 @@ class RequestModule(LogModule):
         files = dict()
         headers = settings.headers
         files["upload_file"] = data["upload_file"]
-        print(files, type(files))
         del data["upload_file"]
         try:
             if not proxy:

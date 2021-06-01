@@ -32,7 +32,6 @@ class BotWorker(LogModule):
         self.set_proxy(host_proxy=self.host_proxy, port_proxy=self.port_proxy, protocol_proxy=self.protocol_proxy,
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
         self.file_content = self.download_file()
-        print(self.file_content, type(self.file_content))
         self.analyzer_module = AnalyzerModule(self.proxies, str(self.order_id), self.link_id, self.user_name,
                                               self.last_name, self.email, self.file_content, self.file_name)
 

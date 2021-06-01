@@ -115,7 +115,7 @@ class AnalyzerModule:
                 if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
                     self.button_links.append(button_link["href"] +
                                              settings.TARGET_BUTTON["single_child"]["google_string"])
-            # time.sleep(5)
+            time.sleep(5)
         if not self.button_links:
             # no links found
             status = False
@@ -137,7 +137,7 @@ class AnalyzerModule:
                 continue
             data = self.get_data(content)
             send_status = self.send_data(data["url"], self.proxy, self.order_id, data["form"])
-            print(send_status)
+            time.sleep(5)
 
         # print(self.button_links)
 
