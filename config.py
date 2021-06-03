@@ -6,9 +6,9 @@ LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
 TARGET_HOST = "https://www.careerbuilder.com"
 TEST_HOST = "http://127.0.0.1:8000"
 
+# ---------------------------------------------------- Requests--------------------------------------------------
 # delay requests
 DELAY_REQUESTS = 10
-
 # request timeout
 REQUEST_TIMEOUT = 6
 # response timeout
@@ -23,7 +23,7 @@ ATTEMPTS_TO_CONNECT_RABBIT = 5
 # Delay interval, in seconds, after each attempt to connect to the Rabbit server.
 TIME_TO_CONNECT_RABBIT = 5
 
-# ------------------------------------------------ systems urls---------------------------------------------------
+# ------------------------------------------------ Systems urls---------------------------------------------------
 API_HOST = "http://127.0.0.1:8000"
 FILE_DOWNLOAD = "/mainsystem/bot/get_file/"
 TASK_RESULT_SUCCESS = "/mainsystem/api/order/order_id/success/"
