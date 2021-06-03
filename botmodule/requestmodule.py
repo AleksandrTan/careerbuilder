@@ -11,6 +11,10 @@ import config
 
 class RequestModule(LogModule):
 
+    def __init__(self):
+        super().__init__()
+        self.cookie = dict()
+
     def get_content(self, link: str, proxy: dict, order_id):
         """
         Request page content for a given links.
@@ -19,15 +23,17 @@ class RequestModule(LogModule):
         :param link: str
         :return:
         """
-        response = ''
         session = HTMLSession()
         session.headers = settings.headers
+        cookies = self.get_cookie()
         try:
             if not proxy:
-                response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT))
+                response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
+                                       cookies=cookies)
                 session.close()
             else:
-                response = session.get(link, proxies=proxy, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT))
+                response = session.get(link, proxies=proxy,
+                                       timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), cookies=cookies)
                 session.close()
         except requests.exceptions.ConnectionError as error:
             self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
@@ -47,7 +53,8 @@ class RequestModule(LogModule):
                                                                "code": str(response.status_code), "order": order_id})
             return {"status": False, "error": True, "status_code": str(response.status_code),
                     "message": error.__repr__(), "type_res": "request_module"}
-
+        # set cookies
+        self.set_cookie(response.cookies)
         return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
                 "type_res": "request_module"}
 
@@ -64,14 +71,15 @@ class RequestModule(LogModule):
         headers = settings.headers
         files["upload_file"] = data["upload_file"]
         del data["upload_file"]
+        cookies = self.get_cookie()
         try:
             if not proxy:
                 response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
-                                         allow_redirects=True, files=files, data=data, headers=headers)
+                                         allow_redirects=True, files=files, data=data, headers=headers, cookies=cookies)
             else:
                 response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
                                          headers=headers, proxies=proxy, files=files, data=data,
-                                         allow_redirects=True)
+                                         allow_redirects=True, cookies=cookies)
         except requests.exceptions.ConnectionError as error:
             self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
                                                                  "order": order_id})
@@ -90,6 +98,15 @@ class RequestModule(LogModule):
                                                                "code": str(response.status_code), "order": order_id})
             return {"status": False, "error": True, "status_code": str(response.status_code),
                     "message": error.__repr__(), "type_res": "request_module"}
-
+        # set cookies
+        self.set_cookie(response.cookies)
         return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
                 "type_res": "request_module"}
+
+    def set_cookie(self, cookies):
+        if cookies:
+            for cookie in cookies:
+                self.cookie[cookie.name] = cookie.value
+
+    def get_cookie(self):
+        return self.cookie

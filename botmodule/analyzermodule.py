@@ -8,7 +8,6 @@ from bs4 import BeautifulSoup as bs
 import config
 from botmodule import settings
 from botmodule.requestmodule import RequestModule
-from botmodule.sendermodule import SenderModule
 
 
 class AnalyzerModule:
@@ -41,7 +40,6 @@ class AnalyzerModule:
         self.fail_count_link = 0  # unsuccessfully submitted links
         self.count_link_button = 0
         self.request = RequestModule()
-        self.sender = SenderModule(self.request)
 
     def parse_main_page(self, link: str) -> dict:
         """
