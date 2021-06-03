@@ -1,12 +1,12 @@
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TEST_MODE = False
+TEST_MODE = True
 LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
 
 # ---------------------------------------------------- Requests--------------------------------------------------
 # delay requests
-DELAY_REQUESTS = 5
+DELAY_REQUESTS = 1
 # request timeout
 REQUEST_TIMEOUT = 6
 # response timeout
@@ -44,7 +44,7 @@ MESSAGES_LOG = {
     "api_connect_error": {"message": "Attention! The system api is not responding! message code"},
     "no_file": {"message": "Order - order. Mailing file not found."},
     "main_content_error": {"message": "Order - order. When Requesting a start link, the target resource did not "
-                                      "respond correctly! code message"},
+                                      "respond correctly!Perhaps the proxy server did not respond in time. code message"},
     "no_links_found": {"message": "Order - order. An error occurred while executing the task. No links found on the "
                                   "main page. The target resource may have changed the source code!"},
 
@@ -57,7 +57,8 @@ MESSAGES_ERROR_API = {
         "message": "Mailing file not found."
     },
     "target_connect_error": {
-        "message": "Attention! Target resource is not responding! \n Code - status_code \n Messages - message"
+        "message": "Attention! Target resource is not responding! If code 403 - Perhaps the proxy server did not "
+                   "respond in time. \n Code - status_code \n Messages - message"
     },
     "no_links_found": {"message": "An error occurred while executing the task. No links found on the "
                                   "main page. The target resource may have changed the source code!"},

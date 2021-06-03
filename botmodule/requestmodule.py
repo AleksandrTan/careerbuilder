@@ -23,6 +23,7 @@ class RequestModule(LogModule):
         :param link: str
         :return:
         """
+        print(proxy)
         session = HTMLSession()
         session.proxies = proxy
         session.headers = settings.headers
