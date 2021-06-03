@@ -1,7 +1,7 @@
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TEST_MODE = True
+TEST_MODE = False
 LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
 
 # ---------------------------------------------------- Requests--------------------------------------------------

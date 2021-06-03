@@ -24,17 +24,13 @@ class RequestModule(LogModule):
         :return:
         """
         session = HTMLSession()
+        session.proxies = proxy
         session.headers = settings.headers
         cookies = self.get_cookie()
         try:
-            if not proxy:
-                response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
-                                       cookies=cookies)
-                session.close()
-            else:
-                response = session.get(link, proxies=proxy,
-                                       timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), cookies=cookies)
-                session.close()
+            response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), cookies=cookies)
+            print(response.url, response.status_code)
+            session.close()
         except requests.exceptions.ConnectionError as error:
             self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
                                                                  "order": order_id})

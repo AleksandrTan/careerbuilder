@@ -116,8 +116,9 @@ class BotWorker(LogModule):
         if data["protocol_proxy"] and data["username_proxy"] and data["password_proxy"] and \
                 data["host_proxy"] and data["port_proxy"]:
             self.proxies.update(
-                {'http': data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@" +
+                {"http": data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@" +
                          data["host_proxy"] + ":" + str(data["port_proxy"])})
+        print(self.proxies)
 
     def download_file(self):
         """
