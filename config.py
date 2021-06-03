@@ -3,20 +3,18 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_MODE = True
 LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
-TARGET_HOST = "https://www.careerbuilder.com"
-TEST_HOST = "http://127.0.0.1:8000"
 
 # ---------------------------------------------------- Requests--------------------------------------------------
 # delay requests
-DELAY_REQUESTS = 10
+DELAY_REQUESTS = 5
 # request timeout
 REQUEST_TIMEOUT = 6
 # response timeout
 RESPONSE_TIMEOUT = 21
 
 # ---------------------------------------------------- RabbitMQ--------------------------------------------------
-RABBIT_HOST = 'localhost'
-RABBIT_PORT = 5672
+RABBIT_HOST = os.getenv('RABBIT_HOST', default='localhost')
+RABBIT_PORT = os.getenv('RABBIT_PORT', default=5672)
 
 # The number of attempts to connect to the Rabbit server.
 ATTEMPTS_TO_CONNECT_RABBIT = 5
@@ -24,7 +22,7 @@ ATTEMPTS_TO_CONNECT_RABBIT = 5
 TIME_TO_CONNECT_RABBIT = 5
 
 # ------------------------------------------------ Systems urls---------------------------------------------------
-API_HOST = "http://127.0.0.1:8000"
+API_HOST = os.getenv('API_HOST', default="http://127.0.0.1:8000")
 FILE_DOWNLOAD = "/mainsystem/bot/get_file/"
 TASK_RESULT_SUCCESS = "/mainsystem/api/order/order_id/success/"
 TASK_RESULT_FAIL = "/mainsystem/api/order/order_id/fail/"
@@ -66,3 +64,7 @@ MESSAGES_ERROR_API = {
     "no_button_found": {"message": "An error occurred while executing the task. No links to form pages were found. "
                                    "The target resource may have changed the source code!"}
 }
+
+if __name__ == "__main__":
+    print(os.getenv('DELAY_REQUESTS'))
+    print(os.environ.get('DELAY_REQUESTS'))
