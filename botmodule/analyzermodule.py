@@ -105,6 +105,7 @@ class AnalyzerModule:
             if request_counter == config.NUMBER_REQUESTS:
                 proxy = self.api_worker.update_proxy()
                 self.proxy = proxy
+                request_counter = 0
             content = self.request.get_content(link, self.proxy, self.order_id)
             if not content["status"]:
                 time.sleep(self.delay_requests)

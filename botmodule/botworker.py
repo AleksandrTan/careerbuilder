@@ -121,6 +121,8 @@ class BotWorker(LogModule):
                          data["host_proxy"] + ":" + str(data["port_proxy"])})
         else:
             self.proxies.update({"https": "http://3.130.124.100:8080"})
+        if config.TEST_MODE:
+            self.proxies = dict()
 
     def download_file(self):
         """
