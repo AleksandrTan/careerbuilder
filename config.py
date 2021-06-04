@@ -1,12 +1,12 @@
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TEST_MODE = True
+TEST_MODE = False
 LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
 
 # ---------------------------------------------------- Requests--------------------------------------------------
 # delay requests
-DELAY_REQUESTS = 1
+DELAY_REQUESTS = 10
 # request timeout
 REQUEST_TIMEOUT = 6
 # response timeout
@@ -58,7 +58,7 @@ MESSAGES_ERROR_API = {
     },
     "target_connect_error": {
         "message": "Attention! Target resource is not responding! If code 403 - Perhaps the proxy server did not "
-                   "respond in time. \n Code - status_code \n Messages - message"
+                   "respond in time. \n Code - status_code \n Messages - message \n Proxy - proxy"
     },
     "no_links_found": {"message": "An error occurred while executing the task. No links found on the "
                                   "main page. The target resource may have changed the source code!"},

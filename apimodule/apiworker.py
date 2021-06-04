@@ -40,8 +40,10 @@ class ApiWorker(LogModule):
         url = self.api_url + self.url_task_fail.replace("order_id", str(self.order_id))
         message = self.messages[key_report]["message"]
         if data_error:
+            print(data_error)
             message = message.replace("message", data_error["message"])
             message = message.replace("status_code", data_error["status_code"])
+            message = message.replace("proxy", data_error["proxy"]["http"])
         params["message"] = message
         result = self.request.make_post(url, params)
         # log in console(file)

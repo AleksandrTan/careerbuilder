@@ -35,7 +35,8 @@ class RequestModule(LogModule):
         except requests.exceptions.ConnectionError as error:
             self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
                                                                  "order": order_id})
-            return {"status": False, "error": True, "status_code": 0, "message": error, "type_res": "request_module"}
+            return {"status": False, "error": True, "status_code": 0, "message": error, "type_res": "request_module",
+                    "proxy": proxy}
         try:
             response.raise_for_status()
 
@@ -43,17 +44,17 @@ class RequestModule(LogModule):
             self._send_task_report("main_content_error", data={"message": error.__repr__(),
                                                                "code": str(response.status_code), "order": order_id})
             return {"status": False, "error": True, "status_code": str(response.status_code),
-                    "message": error.__repr__(), "type_res": "request_module"}
+                    "message": error.__repr__(), "type_res": "request_module", "proxy": proxy}
 
         except requests.exceptions.RequestException as error:
             self._send_task_report("main_content_error", data={"message": error.__repr__(),
                                                                "code": str(response.status_code), "order": order_id})
             return {"status": False, "error": True, "status_code": str(response.status_code),
-                    "message": error.__repr__(), "type_res": "request_module"}
+                    "message": error.__repr__(), "type_res": "request_module", "proxy": proxy}
         # set cookies
         self.set_cookie(response.cookies)
         return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
-                "type_res": "request_module"}
+                "type_res": "request_module", "proxy": proxy}
 
     def send_data(self, url: str, proxy: dict, order_id, data: dict):
         """
@@ -80,7 +81,8 @@ class RequestModule(LogModule):
         except requests.exceptions.ConnectionError as error:
             self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
                                                                  "order": order_id})
-            return {"status": False, "error": True, "status_code": 0, "message": error, "type_res": "request_module"}
+            return {"status": False, "error": True, "status_code": 0, "message": error, "type_res": "request_module",
+                    "proxy": proxy}
         try:
             response.raise_for_status()
 
@@ -88,17 +90,17 @@ class RequestModule(LogModule):
             self._send_task_report("main_content_error", data={"message": error.__repr__(),
                                                                "code": str(response.status_code), "order": order_id})
             return {"status": False, "error": True, "status_code": str(response.status_code),
-                    "message": error.__repr__(), "type_res": "request_module"}
+                    "message": error.__repr__(), "type_res": "request_module", "proxy": proxy}
 
         except requests.exceptions.RequestException as error:
             self._send_task_report("main_content_error", data={"message": error.__repr__(),
                                                                "code": str(response.status_code), "order": order_id})
             return {"status": False, "error": True, "status_code": str(response.status_code),
-                    "message": error.__repr__(), "type_res": "request_module"}
+                    "message": error.__repr__(), "type_res": "request_module", "proxy": proxy}
         # set cookies
         self.set_cookie(response.cookies)
         return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
-                "type_res": "request_module"}
+                "type_res": "request_module", "proxy": proxy}
 
     def set_cookie(self, cookies):
         if cookies:
