@@ -113,11 +113,12 @@ class BotWorker(LogModule):
         return self.analyzer_module.form_page()
 
     def set_proxy(self, **data):
-        if data["protocol_proxy"] and data["username_proxy"] and data["password_proxy"] and \
-                data["host_proxy"] and data["port_proxy"]:
-            self.proxies.update(
-                {"http": data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@" +
-                         data["host_proxy"] + ":" + str(data["port_proxy"])})
+        # if data["protocol_proxy"] and data["username_proxy"] and data["password_proxy"] and \
+        #         data["host_proxy"] and data["port_proxy"]:
+        #     self.proxies.update(
+        #         {"https": data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@" +
+        #                  data["host_proxy"] + ":" + str(data["port_proxy"])})
+        self.proxies.update({"https": "http://3.130.124.100:8080"})
         print(self.proxies)
 
     def download_file(self):

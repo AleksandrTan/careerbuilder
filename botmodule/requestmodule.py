@@ -33,10 +33,10 @@ class RequestModule(LogModule):
             print(response.url, response.status_code)
             session.close()
         except requests.exceptions.ConnectionError as error:
-            self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
+            self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": '',
                                                                  "order": order_id})
-            return {"status": False, "error": True, "status_code": 0, "message": error, "type_res": "request_module",
-                    "proxy": proxy}
+            return {"status": False, "error": True, "status_code": '0', "message": error.__repr__(),
+                    "type_res": "request_module", "proxy": proxy}
         try:
             response.raise_for_status()
 
@@ -81,8 +81,8 @@ class RequestModule(LogModule):
         except requests.exceptions.ConnectionError as error:
             self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
                                                                  "order": order_id})
-            return {"status": False, "error": True, "status_code": 0, "message": error, "type_res": "request_module",
-                    "proxy": proxy}
+            return {"status": False, "error": True, "status_code": 0, "message": error.__repr__(),
+                    "type_res": "request_module", "proxy": proxy}
         try:
             response.raise_for_status()
 

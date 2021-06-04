@@ -58,7 +58,7 @@ MESSAGES_ERROR_API = {
     },
     "target_connect_error": {
         "message": "Attention! Target resource is not responding! If code 403 - Perhaps the proxy server did not "
-                   "respond in time. \n Code - status_code \n Messages - message \n Proxy - proxy"
+                   "respond in time. \n Code - status_code \n Messages - message \n Proxy - pserver"
     },
     "no_links_found": {"message": "An error occurred while executing the task. No links found on the "
                                   "main page. The target resource may have changed the source code!"},
