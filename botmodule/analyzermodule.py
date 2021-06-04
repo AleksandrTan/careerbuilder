@@ -98,9 +98,13 @@ class AnalyzerModule:
         and find a link to the submission form
         :return: dict
         """
+        request_counter = 0
         status = True
         reason = "connection"
         for link in self.links_list:
+            if request_counter == config.NUMBER_REQUESTS:
+                proxy = self.api_worker.update_proxy()
+                self.proxy = proxy
             content = self.request.get_content(link, self.proxy, self.order_id)
             if not content["status"]:
                 time.sleep(self.delay_requests)
@@ -116,6 +120,7 @@ class AnalyzerModule:
                 if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
                     self.button_links.append(button_link["href"] +
                                              settings.TARGET_BUTTON["single_child"]["google_string"])
+            request_counter += 1
             time.sleep(self.delay_requests)
         if not self.button_links:
             # no links found

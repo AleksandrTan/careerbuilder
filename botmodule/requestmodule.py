@@ -22,6 +22,8 @@ class RequestModule(LogModule):
     def get_content(self, link: str, proxy: dict, order_id):
         """
         Request page content for a given links.
+        If the request status is 403,
+        it requests an updated proxy server from the system api.
         :param order_id: str
         :param proxy: dict
         :param link: str
@@ -127,5 +129,5 @@ class RequestModule(LogModule):
             for cookie in cookies:
                 self.cookie[cookie.name] = cookie.value
 
-    def get_cookie(self):
+    def get_cookie(self) -> dict:
         return self.cookie

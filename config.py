@@ -7,10 +7,13 @@ LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
 # ---------------------------------------------------- Requests--------------------------------------------------
 # The number of attempts to request a change of proxy server
 NUMBER_REQUESTS = 5
+
 # delay requests
 DELAY_REQUESTS = 10
+
 # request timeout
 REQUEST_TIMEOUT = 6
+
 # response timeout
 RESPONSE_TIMEOUT = 21
 
