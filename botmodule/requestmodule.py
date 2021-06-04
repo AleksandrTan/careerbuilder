@@ -29,7 +29,6 @@ class RequestModule(LogModule):
         :param link: str
         :return:
         """
-        print(proxy)
         count = 0
         session = HTMLSession()
         session.proxies = proxy
@@ -51,7 +50,7 @@ class RequestModule(LogModule):
             except requests.HTTPError as error:
                 if response.status_code == 403:
                     print("Update proxy")
-                    # get new proxy
+                    # update proxy server settings
                     proxy = self.api_worker.update_proxy()
                     session.proxies = proxy
                     count += 1

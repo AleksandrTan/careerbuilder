@@ -102,10 +102,12 @@ class AnalyzerModule:
         status = True
         reason = "connection"
         for link in self.links_list:
+            # update proxy server settings if needed
             if request_counter == config.NUMBER_REQUESTS:
                 proxy = self.api_worker.update_proxy()
-                self.proxy = proxy
-                request_counter = 0
+                if proxy:
+                    self.proxy = proxy
+                    request_counter = 0
             content = self.request.get_content(link, self.proxy, self.order_id)
             if not content["status"]:
                 time.sleep(self.delay_requests)
@@ -137,7 +139,14 @@ class AnalyzerModule:
         Open a page with a form, generate data, send to the portal
         :return:
         """
+        request_counter = 0
         for button_link in self.button_links:
+            # update proxy server settings if needed
+            if request_counter == config.NUMBER_REQUESTS:
+                proxy = self.api_worker.update_proxy()
+                if proxy:
+                    self.proxy = proxy
+                    request_counter = 0
             content = self.request.get_content(button_link, self.proxy, self.order_id)
             # unsuccessfully submitted form
             if not content["status"]:
@@ -152,7 +161,9 @@ class AnalyzerModule:
             else:
                 self.fail_count_link += 1
             time.sleep(self.delay_requests)
+            request_counter += 1
             continue
+
         return {"status": True, "link_list": self.links_list, "button_links": self.button_links,
                 "count_link": self.count_link, "count_link_button": len(self.button_links),
                 "type_res": "analyzer_module", "reason": "reason", "success_count_link": self.success_count_link,

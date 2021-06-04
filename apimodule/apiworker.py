@@ -76,6 +76,8 @@ class ApiWorker(LogModule):
         result = self.request.make_get(url)
         if result["status"]:
             return {"https": json.loads(result["message"])["proxy"]}
+        else:
+            return {"status": False}
 
 
 if __name__ == "__main__":
