@@ -36,7 +36,8 @@ class BotWorker(LogModule):
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
         self.file_content = self.download_file()
         self.analyzer_module = AnalyzerModule(self.proxies, str(self.order_id), self.link_id, self.user_name,
-                                              self.last_name, self.email, self.file_content, self.file_name)
+                                              self.last_name, self.email, self.file_content, self.file_name,
+                                              self.api_worker)
 
     def start(self):
         begin_time = datetime.datetime.now()
@@ -113,13 +114,13 @@ class BotWorker(LogModule):
         return self.analyzer_module.form_page()
 
     def set_proxy(self, **data):
-        # if data["protocol_proxy"] and data["username_proxy"] and data["password_proxy"] and \
-        #         data["host_proxy"] and data["port_proxy"]:
-        #     self.proxies.update(
-        #         {"https": data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@" +
-        #                  data["host_proxy"] + ":" + str(data["port_proxy"])})
-        self.proxies.update({"https": "http://3.130.124.100:8080"})
-        print(self.proxies)
+        if data["protocol_proxy"] and data["username_proxy"] and data["password_proxy"] and \
+                data["host_proxy"] and data["port_proxy"]:
+            self.proxies.update(
+                {"https": data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@" +
+                         data["host_proxy"] + ":" + str(data["port_proxy"])})
+        else:
+            self.proxies.update({"https": "http://3.130.124.100:8080"})
 
     def download_file(self):
         """

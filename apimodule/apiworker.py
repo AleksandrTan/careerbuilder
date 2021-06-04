@@ -1,6 +1,8 @@
 """
 Class for working with system api
 """
+import json
+
 import config
 from logsource.logmodule import LogModule
 from botmodule.apirequests import ApiRequestModule
@@ -14,6 +16,7 @@ class ApiWorker(LogModule):
         self.api_url = config.API_HOST
         self.url_task_success = config.TASK_RESULT_SUCCESS
         self.url_task_fail = config.TASK_RESULT_FAIL
+        self.url_update_proxy = config.UPDATE_PROXY
         self.messages = config.MESSAGES_ERROR_API
 
     def get_file(self, target_link):
@@ -44,7 +47,6 @@ class ApiWorker(LogModule):
             message = message.replace("status_code", data_error["status_code"])
             message = message.replace("pserver", list(data_error["proxy"].values())[0])
         params["message"] = message
-        print(params)
         result = self.request.make_post(url, params)
         # log in console(file)
         if key_report == "no_file" or 'no_links_found' or "no_button_found":
@@ -68,3 +70,14 @@ class ApiWorker(LogModule):
         params["fail_links"] = data_success["fail_count_link"]
         result = self.request.make_post(url, params)
         return True
+
+    def update_proxy(self) -> dict:
+        url = self.api_url + self.url_update_proxy
+        result = self.request.make_get(url)
+        if result["status"]:
+            return {"https": json.loads(result["message"])["proxy"]}
+
+
+if __name__ == "__main__":
+    api = ApiWorker(1)
+    print(api.update_proxy())

@@ -5,6 +5,8 @@ TEST_MODE = False
 LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
 
 # ---------------------------------------------------- Requests--------------------------------------------------
+# The number of attempts to request a change of proxy server
+NUMBER_REQUESTS = 5
 # delay requests
 DELAY_REQUESTS = 10
 # request timeout
@@ -26,6 +28,7 @@ API_HOST = os.getenv('API_HOST', default="http://127.0.0.1:8000")
 FILE_DOWNLOAD = "/mainsystem/bot/get_file/"
 TASK_RESULT_SUCCESS = "/mainsystem/api/order/order_id/success/"
 TASK_RESULT_FAIL = "/mainsystem/api/order/order_id/fail/"
+UPDATE_PROXY = "/mainsystem/proxy/update/"
 # The number of attempts to connect to the main server.
 ATTEMPTS_TO_CONNECT = 5
 # Delay interval, in seconds, after each attempt to connect to the main server.

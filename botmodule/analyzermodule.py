@@ -13,7 +13,7 @@ from botmodule.requestmodule import RequestModule
 class AnalyzerModule:
 
     def __init__(self, proxy: dict, order_id: str, link_id: str, user_name: str, last_name: str, email: str,
-                 file_content, file_name):
+                 file_content, file_name, api_worker):
         """
         Возвращает либо ошибку о соедиенииб либо факт того, что ссылок для дальнейшего анализа не найдено
         :param proxy: dict
@@ -24,6 +24,7 @@ class AnalyzerModule:
         :param email: str
         :param file_content: bytes
         """
+        self.api_worker = api_worker
         self.delay_requests = config.DELAY_REQUESTS
         self.file_name = file_name
         self.file_content = file_content
@@ -39,7 +40,7 @@ class AnalyzerModule:
         self.success_count_link = 0  # successfully sent links
         self.fail_count_link = 0  # unsuccessfully submitted links
         self.count_link_button = 0
-        self.request = RequestModule()
+        self.request = RequestModule(api_worker)
 
     def parse_main_page(self, link: str) -> dict:
         """
