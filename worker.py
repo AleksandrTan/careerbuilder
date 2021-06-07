@@ -2,6 +2,7 @@
 Server class RabbitWorker
 """
 import json
+import sys
 import time
 import pika
 import threading
@@ -20,13 +21,16 @@ class RabbitWorker(LogModule):
         self.connect()
 
     def connect(self):
+        sys.stdout.write("Connect to Rabbit\n")
         counter = 0
         while counter < config.ATTEMPTS_TO_CONNECT_RABBIT:
             try:
                 self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=config.RABBIT_HOST))
                 self.channel = self.connection.channel()
+                sys.stdout.write("Connected to Rabbit\n")
                 return self.channel
             except pika.exceptions.AMQPConnectionError as error:
+                sys.stdout.write(f"Connect error {counter}\n")
                 counter += 1
                 time.sleep(config.TIME_TO_CONNECT_RABBIT)
                 continue
