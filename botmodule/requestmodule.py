@@ -37,7 +37,7 @@ class RequestModule(LogModule):
         while count < self.number_attempts:
             try:
                 response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), cookies=cookies)
-                print(response.url, response.status_code)
+                print(response.url, response.status_code, proxy)
                 session.close()
             except requests.exceptions.ConnectionError as error:
                 self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": '',
@@ -52,6 +52,7 @@ class RequestModule(LogModule):
                     print("Update proxy")
                     # update proxy server settings
                     proxy = self.api_worker.update_proxy()
+                    print(proxy)
                     session.proxies = proxy
                     count += 1
                     time.sleep(config.DELAY_REQUESTS)

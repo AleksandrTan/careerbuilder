@@ -118,7 +118,11 @@ class BotWorker(LogModule):
                 data["host_proxy"] and data["port_proxy"]:
             self.proxies.update(
                 {"https": data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@" +
-                         data["host_proxy"] + ":" + str(data["port_proxy"])})
+                          data["host_proxy"] + ":" + str(data["port_proxy"])})
+
+        elif data["protocol_proxy"] and data["host_proxy"] and data["port_proxy"]:
+            self.proxies.update(
+                {"https": data["protocol_proxy"] + "://" + data["host_proxy"] + ":" + str(data["port_proxy"])})
         else:
             self.proxies.update({"https": "http://3.130.124.100:8080"})
         if config.TEST_MODE:
