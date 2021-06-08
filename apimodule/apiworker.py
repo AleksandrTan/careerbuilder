@@ -5,7 +5,7 @@ import json
 
 import config
 from logsource.logmodule import LogModule
-from botmodule.apirequests import ApiRequestModule
+from apimodule.apirequests import ApiRequestModule
 
 
 class ApiWorker(LogModule):
