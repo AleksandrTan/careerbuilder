@@ -36,7 +36,7 @@ class ApiWorker(LogModule):
 
     def task_report_fail(self, key_report: str = '', data_error: dict = None) -> bool:
         """
-        Report about task results
+        Report about fail task results
         :param data_error: dict
         :param key_report:
         :return: bool
@@ -48,7 +48,7 @@ class ApiWorker(LogModule):
         if data_error:
             message = message.replace("message", data_error["message"])
             message = message.replace("status_code", data_error["status_code"])
-            message = message.replace("pserver",self.proxy_worker.get_proxy_dict())
+            message = message.replace("pserver", list(self.proxy_worker.get_proxy_dict().values())[0])
         params["message"] = message
         result = self.request.make_post(url, params)
         # log in console(file)
@@ -89,5 +89,6 @@ class ApiWorker(LogModule):
 
 
 if __name__ == "__main__":
-    api = ApiWorker(1)
+    proxy = ProxyWork()
+    api = ApiWorker(1, proxy)
     print(api.update_proxy(1))
