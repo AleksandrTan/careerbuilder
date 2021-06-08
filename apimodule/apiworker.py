@@ -74,13 +74,14 @@ class ApiWorker(LogModule):
         result = self.request.make_post(url, params)
         return True
 
-    def update_proxy(self, proxy_id: int = 0) -> tuple:
+    def update_proxy(self, proxy_id: int = 0, fail: bool = True) -> tuple:
         """
         If proxy_id != 0  means the request was unsuccessful
+        :param fail: bool
         :param proxy_id: int
         :return:
         """
-        url = self.api_url + self.url_update_proxy + "?proxy_id=" + str(proxy_id)
+        url = self.api_url + self.url_update_proxy + "?proxy_id=" + str(proxy_id) + "&fail=" + str(fail)
         result = self.request.make_get(url)
         if result["status"]:
             return json.loads(result["message"])["proxy_id"], {"https": json.loads(result["message"])["proxy"]}

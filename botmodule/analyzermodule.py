@@ -107,7 +107,7 @@ class AnalyzerModule:
         for link in self.links_list:
             # update proxy server settings if needed
             if request_counter == config.NUMBER_REQUESTS:
-                proxy = self.api_worker.update_proxy()
+                proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id(), False)
                 if proxy:
                     # update proxy settings
                     self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
@@ -147,7 +147,8 @@ class AnalyzerModule:
         for button_link in self.button_links:
             # update proxy server settings if needed
             if request_counter == config.NUMBER_REQUESTS:
-                proxy = self.api_worker.update_proxy()
+                print("Update proxy send form")
+                proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id(), False)
                 if proxy:
                     # update proxy settings
                     self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
