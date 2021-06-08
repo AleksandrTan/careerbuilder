@@ -12,17 +12,19 @@ class LogModule:
         self.is_file_write = config.IS_LOG_FILE_WRITE
 
     def _send_task_report(self, key: str, data: dict = None):
-        message = self.map_messages[key]["message"]
-        if data:
-            for key in data:
-                if type(data[key]) is dict:
-                    strings = json.dumps(str(data[key]))
-                    message = message.replace(key, strings)
+        mes =  self.map_messages.get(key, False)
+        if mes:
+            message = mes["message"]
+            if data:
+                for key in data:
+                    if type(data[key]) is dict:
+                        strings = json.dumps(str(data[key]))
+                        message = message.replace(key, strings)
+                        continue
+                    message = message.replace(key, str(data[key]))
                     continue
-                message = message.replace(key, str(data[key]))
-                continue
-        if self.is_file_write:
-            logger.warning(message)
+            if self.is_file_write:
+                logger.warning(message)
 
-        if self.is_console:
-            sys.stdout.write(message)
+            if self.is_console:
+                sys.stdout.write(message)

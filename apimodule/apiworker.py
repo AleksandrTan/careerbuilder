@@ -45,7 +45,6 @@ class ApiWorker(LogModule):
         params = {"status": False, "proxy_id": self.proxy_worker.get_proxy_id()}
         url = self.api_url + self.url_task_fail.replace("order_id", str(self.order_id))
         message = self.messages[key_report]["message"]
-        print(self.proxy_worker.get_proxy_dict())
         if data_error:
             message = message.replace("message", data_error["message"])
             message = message.replace("status_code", data_error["status_code"])
@@ -53,8 +52,7 @@ class ApiWorker(LogModule):
         params["message"] = message
         result = self.request.make_post(url, params)
         # log in console(file)
-        if key_report == "no_file" or 'no_links_found' or "no_button_found":
-            self._send_task_report(key_report, data={"order": self.order_id})
+        self._send_task_report(key_report, data={"order": self.order_id})
         if not result["status"]:
             return False
 

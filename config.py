@@ -47,7 +47,7 @@ IS_CONSOLE = True
 
 # Messages to log file and console
 MESSAGES_LOG = {
-    "target_connect_error": {"message": "Attention! Target resource is not responding! message code\n"},
+    "target_connect_error": {"message": "Order - order. Attention! Target resource is not responding! message code\n"},
     "api_connect_error": {"message": "Attention! The system api is not responding! message code\n"},
     "no_file": {"message": "Order - order. Mailing file not found.\n"},
     "main_content_error": {"message": "Order - order. When Requesting a start link, the target resource did not "
