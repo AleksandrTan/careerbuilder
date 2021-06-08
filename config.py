@@ -9,7 +9,7 @@ LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
 NUMBER_REQUESTS = 5
 
 # delay requests
-DELAY_REQUESTS = 10
+DELAY_REQUESTS = 2
 
 # request timeout
 REQUEST_TIMEOUT = 6
@@ -20,6 +20,7 @@ RESPONSE_TIMEOUT = 21
 # ---------------------------------------------------- RabbitMQ--------------------------------------------------
 RABBIT_HOST = os.getenv('RABBIT_HOST', default='localhost')
 RABBIT_PORT = os.getenv('RABBIT_PORT', default=5672)
+QUEUE_NAME = os.getenv('QUEUE_NAME', default="jobspamer")
 
 # The number of attempts to connect to the Rabbit server.
 ATTEMPTS_TO_CONNECT_RABBIT = 5
