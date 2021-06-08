@@ -18,7 +18,7 @@ REQUEST_TIMEOUT = 6
 RESPONSE_TIMEOUT = 21
 
 # ---------------------------------------------------- RabbitMQ--------------------------------------------------
-RABBIT_HOST = os.getenv('RABBIT_HOST', default='localhost')
+RABBIT_HOST = os.getenv('RABBIT_HOST', default='172.17.0.2')
 RABBIT_PORT = os.getenv('RABBIT_PORT', default=5672)
 QUEUE_NAME = os.getenv('QUEUE_NAME', default="jobspamer")
 
@@ -47,16 +47,17 @@ IS_CONSOLE = True
 
 # Messages to log file and console
 MESSAGES_LOG = {
-    "target_connect_error": {"message": "Attention! Target resource is not responding! message code"},
-    "api_connect_error": {"message": "Attention! The system api is not responding! message code"},
-    "no_file": {"message": "Order - order. Mailing file not found."},
+    "target_connect_error": {"message": "Attention! Target resource is not responding! message code\n"},
+    "api_connect_error": {"message": "Attention! The system api is not responding! message code\n"},
+    "no_file": {"message": "Order - order. Mailing file not found.\n"},
     "main_content_error": {"message": "Order - order. When Requesting a start link, the target resource did not "
-                                      "respond correctly!Perhaps the proxy server did not respond in time. code message"},
+                                      "respond correctly!Perhaps the proxy server did not respond in time. code "
+                                      "message\n"},
     "no_links_found": {"message": "Order - order. An error occurred while executing the task. No links found on the "
-                                  "main page. The target resource may have changed the source code!"},
+                                  "main page. The target resource may have changed the source code!\n"},
 
     "no_button_found": {"message": "Order - order. An error occurred while executing the task. No links to form pages "
-                                   "were found. The target resource may have changed the source code!"}
+                                   "were found. The target resource may have changed the source code!\n"}
 }
 
 MESSAGES_ERROR_API = {
@@ -65,12 +66,12 @@ MESSAGES_ERROR_API = {
     },
     "target_connect_error": {
         "message": "Attention! Target resource is not responding! If code 403 - Perhaps the proxy server did not "
-                   "respond in time. \n Code - status_code \n Messages - message \n Proxy - pserver"
+                   "respond in time. \n Code - status_code \n Messages - message \n Proxy - pserver\n"
     },
     "no_links_found": {"message": "An error occurred while executing the task. No links found on the "
-                                  "main page. The target resource may have changed the source code!"},
+                                  "main page. The target resource may have changed the source code!\n"},
     "no_button_found": {"message": "An error occurred while executing the task. No links to form pages were found. "
-                                   "The target resource may have changed the source code!"}
+                                   "The target resource may have changed the source code!\n"}
 }
 
 if __name__ == "__main__":

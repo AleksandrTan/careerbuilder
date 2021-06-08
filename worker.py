@@ -25,6 +25,7 @@ class RabbitWorker(LogModule):
         counter = 0
         while counter < config.ATTEMPTS_TO_CONNECT_RABBIT:
             try:
+                print(config.RABBIT_HOST)
                 self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=config.RABBIT_HOST))
                 self.channel = self.connection.channel()
                 sys.stdout.write("Connected to Rabbit\n")
