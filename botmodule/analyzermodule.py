@@ -90,7 +90,7 @@ class AnalyzerModule:
 
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
                 "count_link": self.count_link, "count_link_button": self.count_link_button,
-                "type_res": "analyzer_module", "reason": reason}
+                "type_res": "analyzer_module", "reason": reason, "proxy": self.proxy}
 
     def parse_other_page(self) -> dict:
         """

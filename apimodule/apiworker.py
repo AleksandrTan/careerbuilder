@@ -42,10 +42,12 @@ class ApiWorker(LogModule):
         params = {"status": False}
         url = self.api_url + self.url_task_fail.replace("order_id", str(self.order_id))
         message = self.messages[key_report]["message"]
+        print(data_error)
         if data_error:
             message = message.replace("message", data_error["message"])
             message = message.replace("status_code", data_error["status_code"])
-            message = message.replace("pserver", list(data_error["proxy"].values())[0])
+            if data_error["proxy"]:
+                message = message.replace("pserver", list(data_error["proxy"].values())[0])
         params["message"] = message
         result = self.request.make_post(url, params)
         # log in console(file)
