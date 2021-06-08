@@ -1,5 +1,6 @@
 """
 Class for working with system api
+Use ApiRequestModule to make requests to the main system
 """
 import json
 

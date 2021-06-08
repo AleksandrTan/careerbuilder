@@ -1,5 +1,6 @@
 """
 Content analysis module
+Use RequestModule to make requests to the target resource
 """
 import time
 
@@ -14,7 +15,7 @@ from apimodule.proxy_work import ProxyWork
 class AnalyzerModule:
 
     def __init__(self, order_id: str, link_id: str, user_name: str, last_name: str, email: str,
-                 file_content, file_name, api_worker, proxy_worker:ProxyWork):
+                 file_content, file_name, api_worker, proxy_worker: ProxyWork):
         """
         Возвращает либо ошибку о соедиенииб либо факт того, что ссылок для дальнейшего анализа не найдено
         :param proxy_worker: object
@@ -25,7 +26,6 @@ class AnalyzerModule:
         :param email: str
         :param file_content: bytes
         """
-        super().__init__()
         self.api_worker = api_worker
         self.proxy_worker = proxy_worker
         self.delay_requests = config.DELAY_REQUESTS
@@ -111,7 +111,7 @@ class AnalyzerModule:
                 if proxy:
                     print(proxy)
                     self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
-                    print("Set new proxy analize", self.proxy_worker.get_proxy_data())
+                    print("Set new proxy analize page", self.proxy_worker.get_proxy_data())
                     request_counter = 0
             content = self.request.get_content(link, self.order_id)
             if not content["status"]:
@@ -152,7 +152,7 @@ class AnalyzerModule:
                 if proxy:
                     print(proxy)
                     self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
-                    print("Set new proxy analize", self.proxy_worker.get_proxy_data())
+                    print("Set new proxy analize form", self.proxy_worker.get_proxy_data())
                     request_counter = 0
             content = self.request.get_content(button_link, self.order_id)
             # unsuccessfully submitted form
