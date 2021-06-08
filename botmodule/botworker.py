@@ -39,9 +39,9 @@ class BotWorker(LogModule, ProxyWork):
         self.proxy_worker.set_proxy_data(self.proxies, self.proxy_id)
         self.api_worker = ApiWorker(self.order_id, self.proxy_worker)
         self.file_content = self.download_file()
-        self.analyzer_module = AnalyzerModule(str(self.order_id), self.link_id, self.user_name,
-                                              self.last_name, self.email, self.file_content, self.file_name,
-                                              self.api_worker, self.proxy_worker)
+        self.analyzer_module = AnalyzerModule(str(self.order_id), self.link_id, self.user_name, self.last_name,
+                                              self.email, self.file_content, self.file_name, self.api_worker,
+                                              self.proxy_worker)
 
     def start(self):
         begin_time = datetime.datetime.now()
@@ -66,7 +66,6 @@ class BotWorker(LogModule, ProxyWork):
                 print(sender)
                 # send data to system api
                 self.api_worker.task_report_success(sender)
-
             else:
                 # no links found, send a report to the server, write log file
                 button_links["order"] = str(self.order_id)
@@ -118,6 +117,11 @@ class BotWorker(LogModule, ProxyWork):
         return self.analyzer_module.form_page()
 
     def set_proxy(self, **data):
+        """
+        Init start proxy(self.proxies)
+        :param data: dict
+        :return: None
+        """
         if data["protocol_proxy"] and data["username_proxy"] and data["password_proxy"] and \
                 data["host_proxy"] and data["port_proxy"]:
             self.proxies.update(

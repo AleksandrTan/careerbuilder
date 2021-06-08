@@ -48,7 +48,6 @@ class RequestModule(LogModule):
                                                                       self.proxy_worker.get_proxy_dict()])}
             try:
                 response.raise_for_status()
-
             except requests.HTTPError as error:
                 if response.status_code == 403:
                     print("Update proxy")

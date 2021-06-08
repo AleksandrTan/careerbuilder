@@ -46,7 +46,7 @@ class AnalyzerModule:
 
     def parse_main_page(self, link: str) -> dict:
         """
-        Select all job links
+        Select all job links used main link
         :param link:
         :return: dict
         """
@@ -109,9 +109,8 @@ class AnalyzerModule:
             if request_counter == config.NUMBER_REQUESTS:
                 proxy = self.api_worker.update_proxy()
                 if proxy:
-                    print(proxy)
+                    # update proxy settings
                     self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
-                    print("Set new proxy analize page", self.proxy_worker.get_proxy_data())
                     request_counter = 0
             content = self.request.get_content(link, self.order_id)
             if not content["status"]:
@@ -150,9 +149,8 @@ class AnalyzerModule:
             if request_counter == config.NUMBER_REQUESTS:
                 proxy = self.api_worker.update_proxy()
                 if proxy:
-                    print(proxy)
+                    # update proxy settings
                     self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
-                    print("Set new proxy analize form", self.proxy_worker.get_proxy_data())
                     request_counter = 0
             content = self.request.get_content(button_link, self.order_id)
             # unsuccessfully submitted form
@@ -160,6 +158,7 @@ class AnalyzerModule:
                 self.fail_count_link += 1
                 time.sleep(self.delay_requests)
                 continue
+            # prepare data for form
             data = self.get_data(content)
             send_status = self.send_data(data["url"], self.order_id, data["form"])
             # successfully submitted form
