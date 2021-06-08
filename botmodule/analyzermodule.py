@@ -209,6 +209,6 @@ class AnalyzerModule:
 
         return {"form": form, "url": url}
 
-    def send_data(self, url, proxy, order_id, data):
-        result = self.request.send_data(url, proxy, order_id, data)
+    def send_data(self, url, order_id, data):
+        result = self.request.send_data(url, order_id, data)
         return result
