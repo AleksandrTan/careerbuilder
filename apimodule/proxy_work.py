@@ -12,11 +12,11 @@ class ProxyWork:
         self.proxy_data.append(proxy_dict)
         self.proxy_data.append(proxy_id)
 
-    def get_proxy_data(self):
+    def get_proxy_data(self) -> list :
         return self.proxy_data
 
-    def get_proxy_id(self):
+    def get_proxy_id(self) -> int:
         return self.proxy_id
 
-    def get_proxy_dict(self):
+    def get_proxy_dict(self) -> dict:
         return self.proxy_dict

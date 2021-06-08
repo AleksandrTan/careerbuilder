@@ -37,7 +37,6 @@ class ApiWorker(LogModule):
     def task_report_fail(self, key_report: str = '', data_error: dict = None) -> bool:
         """
         Report about task results
-        :param proxy_data: list
         :param data_error: dict
         :param key_report:
         :return: bool

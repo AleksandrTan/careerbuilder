@@ -92,7 +92,8 @@ class AnalyzerModule:
 
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
                 "count_link": self.count_link, "count_link_button": self.count_link_button,
-                "type_res": "analyzer_module", "reason": reason, "proxy": self.proxy}
+                "type_res": "analyzer_module", "reason": reason, "proxy":  tuple([self.proxy_worker.get_proxy_id(),
+                                                                                  self.proxy_worker.get_proxy_dict()])}
 
     def parse_other_page(self) -> dict:
         """
@@ -111,7 +112,7 @@ class AnalyzerModule:
                     self.proxy = proxy[1]
                     self.proxy_id = proxy[0]
                     request_counter = 0
-            content = self.request.get_content(link, self.proxy, self.order_id)
+            content = self.request.get_content(link, self.order_id)
             if not content["status"]:
                 time.sleep(self.delay_requests)
                 continue
