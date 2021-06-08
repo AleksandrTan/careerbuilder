@@ -7,6 +7,7 @@ class ProxyWork:
         self.proxy_dict = dict()
 
     def set_proxy_data(self, proxy_dict: dict, proxy_id: int):
+        self.proxy_data.clear()
         self.proxy_id = proxy_id
         self.proxy_dict = proxy_dict
         self.proxy_data.append(proxy_dict)

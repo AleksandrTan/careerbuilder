@@ -14,7 +14,7 @@ from apimodule.proxy_work import ProxyWork
 class AnalyzerModule:
 
     def __init__(self, order_id: str, link_id: str, user_name: str, last_name: str, email: str,
-                 file_content, file_name, api_worker, proxy_worker):
+                 file_content, file_name, api_worker, proxy_worker:ProxyWork):
         """
         Возвращает либо ошибку о соедиенииб либо факт того, что ссылок для дальнейшего анализа не найдено
         :param proxy_worker: object
@@ -107,10 +107,11 @@ class AnalyzerModule:
         for link in self.links_list:
             # update proxy server settings if needed
             if request_counter == config.NUMBER_REQUESTS:
-                proxy = self.api_worker.update_proxy()
+                proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id())
                 if proxy:
-                    self.proxy = proxy[1]
-                    self.proxy_id = proxy[0]
+                    print(proxy)
+                    self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
+                    print("Set new proxy analize", self.proxy_worker.get_proxy_data())
                     request_counter = 0
             content = self.request.get_content(link, self.order_id)
             if not content["status"]:
@@ -147,19 +148,20 @@ class AnalyzerModule:
         for button_link in self.button_links:
             # update proxy server settings if needed
             if request_counter == config.NUMBER_REQUESTS:
-                proxy = self.api_worker.update_proxy()
+                proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id())
                 if proxy:
-                    self.proxy = proxy[1]
-                    self.proxy_id = proxy[0]
+                    print(proxy)
+                    self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
+                    print("Set new proxy analize", self.proxy_worker.get_proxy_data())
                     request_counter = 0
-            content = self.request.get_content(button_link, self.proxy, self.order_id)
+            content = self.request.get_content(button_link, self.order_id)
             # unsuccessfully submitted form
             if not content["status"]:
                 self.fail_count_link += 1
                 time.sleep(self.delay_requests)
                 continue
             data = self.get_data(content)
-            send_status = self.send_data(data["url"], self.proxy, self.order_id, data["form"])
+            send_status = self.send_data(data["url"], self.order_id, data["form"])
             # successfully submitted form
             if send_status["status"]:
                 self.success_count_link += 1

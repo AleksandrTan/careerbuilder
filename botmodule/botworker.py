@@ -17,7 +17,7 @@ class BotWorker(LogModule, ProxyWork):
 
     def __init__(self, data):
         super().__init__()
-        ProxyWork.__init__(self)
+        # ProxyWork.__init__(self)
         self.target_link = data["target_link"]
         self.link_id = self.target_link.split('/')[-1]
         self.order_id = data["order_id"]
@@ -129,8 +129,6 @@ class BotWorker(LogModule, ProxyWork):
                 {"https": data["protocol_proxy"] + "://" + data["host_proxy"] + ":" + str(data["port_proxy"])})
         else:
             self.proxies.update({"https": "http://3.130.124.100:8080"})
-        if config.TEST_MODE:
-            self.proxies = dict()
 
     def download_file(self):
         """

@@ -57,6 +57,7 @@ class RequestModule(LogModule):
                     if proxy:
                         print(proxy)
                         self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
+                        print("Set new proxy request", self.proxy_worker.get_proxy_data())
                         session.proxies = self.proxy_worker.get_proxy_dict()
                         count += 1
                     time.sleep(config.DELAY_REQUESTS)
@@ -84,11 +85,10 @@ class RequestModule(LogModule):
                 "message": "Perhaps the proxy server did not respond in time. 403 HTTPError",
                 "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
 
-    def send_data(self, url: str, proxy: dict, order_id, data: dict):
+    def send_data(self, url: str, order_id, data: dict):
         """
         Send form to target portal.
         :param url:
-        :param proxy:
         :param order_id:
         :param data:
         :return: dict
@@ -99,18 +99,18 @@ class RequestModule(LogModule):
         del data["upload_file"]
         cookies = self.get_cookie()
         try:
-            if not proxy:
+            if not self.proxy_worker.get_proxy_dict():
                 response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
                                          allow_redirects=True, files=files, data=data, headers=headers, cookies=cookies)
             else:
                 response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
-                                         headers=headers, proxies=proxy, files=files, data=data,
-                                         allow_redirects=True, cookies=cookies)
+                                         headers=headers, proxies=self.proxy_worker.get_proxy_dict(), files=files,
+                                         data=data, allow_redirects=True, cookies=cookies)
         except requests.exceptions.ConnectionError as error:
             self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
                                                                  "order": order_id})
             return {"status": False, "error": True, "status_code": 0, "message": error.__repr__(),
-                    "type_res": "request_module", "proxy": tuple([self.proxy_id, proxy])}
+                    "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
         try:
             response.raise_for_status()
 
@@ -118,17 +118,20 @@ class RequestModule(LogModule):
             self._send_task_report("main_content_error", data={"message": error.__repr__(),
                                                                "code": str(response.status_code), "order": order_id})
             return {"status": False, "error": True, "status_code": str(response.status_code),
-                    "message": error.__repr__(), "type_res": "request_module", "proxy": tuple([self.proxy_id, proxy])}
+                    "message": error.__repr__(), "type_res": "request_module",
+                    "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
 
         except requests.exceptions.RequestException as error:
             self._send_task_report("main_content_error", data={"message": error.__repr__(),
                                                                "code": str(response.status_code), "order": order_id})
             return {"status": False, "error": True, "status_code": str(response.status_code),
-                    "message": error.__repr__(), "type_res": "request_module", "proxy": tuple([self.proxy_id, proxy])}
+                    "message": error.__repr__(), "type_res": "request_module",
+                    "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
         # set cookies
         self.set_cookie(response.cookies)
         return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
-                "type_res": "request_module", "proxy": tuple([self.proxy_id, proxy])}
+                "type_res": "request_module",
+                "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
 
     def set_cookie(self, cookies):
         if cookies:
