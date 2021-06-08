@@ -3,4 +3,5 @@
 loging_fbi.log
 tmp
 /tmp
+.idea
 config.py

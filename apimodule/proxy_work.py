@@ -1,6 +1,7 @@
 class ProxyWork:
 
     def __init__(self):
+        print(3500)
         self.proxy_data = list()
         self.proxy_id = 0
         self.proxy_dict = dict()

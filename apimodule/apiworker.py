@@ -9,10 +9,11 @@ from apimodule.apirequests import ApiRequestModule
 from apimodule.proxy_work import ProxyWork
 
 
-class ApiWorker(LogModule, ProxyWork):
-    def __init__(self, order_id: int):
+class ApiWorker(LogModule):
+    def __init__(self, order_id: int, proxy_worker: ProxyWork):
         super().__init__()
         self.request = ApiRequestModule()
+        self.proxy_worker = proxy_worker
         self.order_id = order_id
         self.api_url = config.API_HOST
         self.url_task_success = config.TASK_RESULT_SUCCESS
@@ -33,23 +34,22 @@ class ApiWorker(LogModule, ProxyWork):
 
         return result
 
-    def task_report_fail(self, key_report: str = '', data_error: dict = None, proxy_id: int = 0) -> bool:
+    def task_report_fail(self, key_report: str = '', data_error: dict = None) -> bool:
         """
         Report about task results
-        :param proxy_id: int
+        :param proxy_data: list
         :param data_error: dict
         :param key_report:
         :return: bool
         """
-        params = {"status": False, "proxy_id": proxy_id}
+        params = {"status": False, "proxy_id": self.proxy_worker.get_proxy_id()}
         url = self.api_url + self.url_task_fail.replace("order_id", str(self.order_id))
         message = self.messages[key_report]["message"]
         print(data_error)
         if data_error:
             message = message.replace("message", data_error["message"])
             message = message.replace("status_code", data_error["status_code"])
-            if data_error["proxy"]:
-                message = message.replace("pserver", list(data_error["proxy"][1].values())[0])
+            message = message.replace("pserver",self.proxy_worker.get_proxy_dict())
         params["message"] = message
         result = self.request.make_post(url, params)
         # log in console(file)

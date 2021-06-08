@@ -13,10 +13,11 @@ from botmodule.analyzermodule import AnalyzerModule
 from apimodule.proxy_work import ProxyWork
 
 
-class BotWorker(ProxyWork, LogModule):
+class BotWorker(LogModule, ProxyWork):
 
     def __init__(self, data):
         super().__init__()
+        ProxyWork.__init__(self)
         self.target_link = data["target_link"]
         self.link_id = self.target_link.split('/')[-1]
         self.order_id = data["order_id"]
@@ -34,12 +35,13 @@ class BotWorker(ProxyWork, LogModule):
         self.proxies = dict()
         self.set_proxy(host_proxy=self.host_proxy, port_proxy=self.port_proxy, protocol_proxy=self.protocol_proxy,
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
-        self.set_proxy_data(self.proxies, self.proxy_id)
-        self.api_worker = ApiWorker(self.order_id)
+        self.proxy_worker = ProxyWork()
+        self.proxy_worker.set_proxy_data(self.proxies, self.proxy_id)
+        self.api_worker = ApiWorker(self.order_id, self.proxy_worker)
         self.file_content = self.download_file()
         self.analyzer_module = AnalyzerModule(str(self.order_id), self.link_id, self.user_name,
                                               self.last_name, self.email, self.file_content, self.file_name,
-                                              self.api_worker)
+                                              self.api_worker, self.proxy_worker)
 
     def start(self):
         begin_time = datetime.datetime.now()
@@ -47,7 +49,7 @@ class BotWorker(ProxyWork, LogModule):
         # check if file for send download
         if not self.file_content:
             # send a report to the server, write log file
-            self.api_worker.task_report_fail("no_file", proxy_id=self.proxy_id)
+            self.api_worker.task_report_fail("no_file")
             print("End time - ", datetime.datetime.now() - begin_time)
             return False
         # get main link
@@ -70,10 +72,10 @@ class BotWorker(ProxyWork, LogModule):
                 button_links["order"] = str(self.order_id)
                 if button_links.get("error", False):
                     # wrong request
-                    self.api_worker.task_report_fail("target_connect_error", button_links, proxy_id=self.proxy_id)
+                    self.api_worker.task_report_fail("target_connect_error", button_links)
                 else:
                     # no links found
-                    self.api_worker.task_report_fail("no_button_found", proxy_id=self.proxy_id)
+                    self.api_worker.task_report_fail("no_button_found")
                 print("End time - ", datetime.datetime.now() - begin_time)
                 self.delete_file()
                 return False
@@ -82,10 +84,10 @@ class BotWorker(ProxyWork, LogModule):
             main_content["order"] = str(self.order_id)
             if main_content.get("error", False):
                 # wrong request
-                self.api_worker.task_report_fail("target_connect_error", main_content, proxy_id=self.proxy_id)
+                self.api_worker.task_report_fail("target_connect_error", main_content)
             else:
                 # no links found
-                self.api_worker.task_report_fail("no_links_found", proxy_id=self.proxy_id)
+                self.api_worker.task_report_fail("no_links_found")
             print(datetime.datetime.now() - begin_time)
             self.delete_file()
             return False

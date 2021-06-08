@@ -11,14 +11,13 @@ from botmodule.requestmodule import RequestModule
 from apimodule.proxy_work import ProxyWork
 
 
-class AnalyzerModule(ProxyWork):
+class AnalyzerModule:
 
     def __init__(self, order_id: str, link_id: str, user_name: str, last_name: str, email: str,
-                 file_content, file_name, api_worker):
+                 file_content, file_name, api_worker, proxy_worker):
         """
         Возвращает либо ошибку о соедиенииб либо факт того, что ссылок для дальнейшего анализа не найдено
-        :param proxy_id: int
-        :param proxy: dict
+        :param proxy_worker: object
         :param order_id: str
         :param link_id: str
         :param user_name: str
@@ -28,6 +27,7 @@ class AnalyzerModule(ProxyWork):
         """
         super().__init__()
         self.api_worker = api_worker
+        self.proxy_worker = proxy_worker
         self.delay_requests = config.DELAY_REQUESTS
         self.file_name = file_name
         self.file_content = file_content
@@ -42,7 +42,7 @@ class AnalyzerModule(ProxyWork):
         self.success_count_link = 0  # successfully sent links
         self.fail_count_link = 0  # unsuccessfully submitted links
         self.count_link_button = 0
-        self.request = RequestModule(api_worker)
+        self.request = RequestModule(api_worker, proxy_worker)
 
     def parse_main_page(self, link: str) -> dict:
         """

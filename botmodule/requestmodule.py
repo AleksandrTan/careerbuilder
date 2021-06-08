@@ -9,14 +9,14 @@ from requests_html import HTMLSession
 from logsource.logmodule import LogModule
 from botmodule import settings
 import config
-from apimodule.proxy_work import ProxyWork
 
 
-class RequestModule(ProxyWork, LogModule):
+class RequestModule(LogModule):
 
-    def __init__(self, api_worker):
+    def __init__(self, api_worker, proxy_worker:object):
         super().__init__()
         self.api_worker = api_worker
+        self.proxy_worker = proxy_worker
         self.number_attempts = config.NUMBER_REQUESTS
         self.cookie = dict()
 
@@ -25,28 +25,27 @@ class RequestModule(ProxyWork, LogModule):
         Request page content for a given links.
         If the request status is 403,
         it requests an updated proxy server from the system api.
-        :param proxy_id: int
         :param order_id: str
-        :param proxy: dict
         :param link: str
         :return:
         """
         count = 0
         session = HTMLSession()
-        session.proxies = self.get_proxy_dict()
-        proxy_id = self.get_proxy_id()
+        session.proxies = self.api_worker.get_proxy_dict()
+        proxy_id = self.api_worker.get_proxy_id()
         session.headers = settings.headers
         cookies = self.get_cookie()
         while count < self.number_attempts:
             try:
                 response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), cookies=cookies)
-                print(response.url, response.status_code, self.get_proxy_dict())
+                print(response.url, response.status_code, self.api_worker.get_proxy_dict())
                 session.close()
             except requests.exceptions.ConnectionError as error:
                 self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": '',
                                                                      "order": order_id})
                 return {"status": False, "error": True, "status_code": '0', "message": error.__repr__(),
-                        "type_res": "request_module", "proxy": tuple([self.get_proxy_id(), self.get_proxy_dict()])}
+                        "type_res": "request_module", "proxy": tuple([self.api_worker.get_proxy_id(),
+                                                                      self.api_worker.get_proxy_dict()])}
             try:
                 response.raise_for_status()
 
@@ -57,9 +56,9 @@ class RequestModule(ProxyWork, LogModule):
                     proxy = self.api_worker.update_proxy(proxy_id)
                     if proxy:
                         print(proxy)
-                        self.set_proxy_data(proxy[1], proxy[0])
-                        session.proxies = self.get_proxy_dict()
-                        proxy_id = self.get_proxy_id()
+                        self.api_worker.set_proxy_data(proxy[1], proxy[0])
+                        session.proxies = self.api_worker.get_proxy_dict()
+                        proxy_id = self.api_worker.get_proxy_id()
                         count += 1
                     time.sleep(config.DELAY_REQUESTS)
                     continue
@@ -67,24 +66,24 @@ class RequestModule(ProxyWork, LogModule):
                                                                    "code": str(response.status_code),
                                                                    "order": order_id})
                 return {"status": False, "error": True, "status_code": str(response.status_code),
-                        "message": error.__repr__(), "type_res": "request_module", "proxy": tuple([self.get_proxy_id(),
-                                                                                                   self.get_proxy_dict()])}
+                        "message": error.__repr__(), "type_res": "request_module", "proxy": tuple([self.api_worker.get_proxy_id(),
+                                                                                                   self.api_worker.get_proxy_dict()])}
 
             except requests.exceptions.RequestException as error:
                 self._send_task_report("main_content_error", data={"message": error.__repr__(),
                                                                    "code": str(response.status_code),
                                                                    "order": order_id})
                 return {"status": False, "error": True, "status_code": str(response.status_code),
-                        "message": error.__repr__(), "type_res": "request_module", "proxy": tuple([self.get_proxy_id(),
-                                                                                                   self.get_proxy_dict()])}
+                        "message": error.__repr__(), "type_res": "request_module", "proxy": tuple([self.api_worker.get_proxy_id(),
+                                                                                                   self.api_worker.get_proxy_dict()])}
             # set cookies
             self.set_cookie(response.cookies)
             return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
-                    "type_res": "request_module", "proxy": tuple([self.get_proxy_id(), self.get_proxy_dict()])}
+                    "type_res": "request_module", "proxy": tuple([self.api_worker.get_proxy_id(), self.api_worker.get_proxy_dict()])}
 
         return {"status": False, "error": True, "status_code": "403",
                 "message": "Perhaps the proxy server did not respond in time. 403 HTTPError",
-                "type_res": "request_module", "proxy": tuple([self.get_proxy_id(), self.get_proxy_dict()])}
+                "type_res": "request_module", "proxy": tuple([self.api_worker.get_proxy_id(), self.api_worker.get_proxy_dict()])}
 
     def send_data(self, url: str, proxy: dict, order_id, data: dict):
         """
