@@ -142,7 +142,7 @@ class AnalyzerModule:
     def form_page(self):
         """
         Open a page with a form, generate data, send to the portal
-        :return:
+        :return: None
         """
         request_counter = 0
         for button_link in self.button_links:
