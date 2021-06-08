@@ -5,6 +5,7 @@ Use ApiRequestModule to make requests to the main system
 import json
 
 import config
+from botmodule import settings
 from logsource.logmodule import LogModule
 from apimodule.apirequests import ApiRequestModule
 from apimodule.proxy_work import ProxyWork
@@ -20,7 +21,7 @@ class ApiWorker(LogModule):
         self.url_task_success = config.TASK_RESULT_SUCCESS
         self.url_task_fail = config.TASK_RESULT_FAIL
         self.url_update_proxy = config.UPDATE_PROXY
-        self.messages = config.MESSAGES_ERROR_API
+        self.messages = settings.MESSAGES_ERROR_API
 
     def get_file(self, target_link):
         """
