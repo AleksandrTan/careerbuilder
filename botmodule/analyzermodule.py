@@ -13,8 +13,8 @@ from apimodule.proxy_work import ProxyWork
 
 class AnalyzerModule(ProxyWork):
 
-    def __init__(self, proxy: dict, order_id: str, link_id: str, user_name: str, last_name: str, email: str,
-                 file_content, file_name, api_worker, proxy_id):
+    def __init__(self, order_id: str, link_id: str, user_name: str, last_name: str, email: str,
+                 file_content, file_name, api_worker):
         """
         Возвращает либо ошибку о соедиенииб либо факт того, что ссылок для дальнейшего анализа не найдено
         :param proxy_id: int
@@ -27,7 +27,6 @@ class AnalyzerModule(ProxyWork):
         :param file_content: bytes
         """
         super().__init__()
-        self.proxy_id = proxy_id
         self.api_worker = api_worker
         self.delay_requests = config.DELAY_REQUESTS
         self.file_name = file_name
@@ -35,7 +34,6 @@ class AnalyzerModule(ProxyWork):
         self.user_name = user_name
         self.last_name = last_name
         self.email = email
-        self.proxy = proxy
         self.order_id = order_id
         self.link_id = link_id
         self.links_list = list()  # an array of links on the landing page
@@ -52,7 +50,7 @@ class AnalyzerModule(ProxyWork):
         :param link:
         :return: dict
         """
-        content = self.request.get_content(link, self.proxy, self.order_id, self.proxy_id)
+        content = self.request.get_content(link, self.order_id)
         if not content["status"]:
             return content
 

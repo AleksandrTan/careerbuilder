@@ -37,9 +37,9 @@ class BotWorker(LogModule, ProxyWork):
         self.set_proxy_data(self.proxies, self.proxy_id)
         self.file_content = self.download_file()
         self.api_worker = ApiWorker(self.order_id)
-        self.analyzer_module = AnalyzerModule(self.proxies, str(self.order_id), self.link_id, self.user_name,
+        self.analyzer_module = AnalyzerModule(str(self.order_id), self.link_id, self.user_name,
                                               self.last_name, self.email, self.file_content, self.file_name,
-                                              self.api_worker, self.proxy_id)
+                                              self.api_worker)
 
     def start(self):
         begin_time = datetime.datetime.now()
