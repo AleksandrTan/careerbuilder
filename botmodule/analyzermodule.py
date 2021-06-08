@@ -8,9 +8,10 @@ from bs4 import BeautifulSoup as bs
 import config
 from botmodule import settings
 from botmodule.requestmodule import RequestModule
+from apimodule.proxy_work import ProxyWork
 
 
-class AnalyzerModule:
+class AnalyzerModule(ProxyWork):
 
     def __init__(self, proxy: dict, order_id: str, link_id: str, user_name: str, last_name: str, email: str,
                  file_content, file_name, api_worker, proxy_id):
@@ -25,6 +26,7 @@ class AnalyzerModule:
         :param email: str
         :param file_content: bytes
         """
+        super().__init__()
         self.proxy_id = proxy_id
         self.api_worker = api_worker
         self.delay_requests = config.DELAY_REQUESTS
@@ -42,7 +44,7 @@ class AnalyzerModule:
         self.success_count_link = 0  # successfully sent links
         self.fail_count_link = 0  # unsuccessfully submitted links
         self.count_link_button = 0
-        self.request = RequestModule(api_worker, proxy_id)
+        self.request = RequestModule(api_worker)
 
     def parse_main_page(self, link: str) -> dict:
         """
@@ -50,7 +52,7 @@ class AnalyzerModule:
         :param link:
         :return: dict
         """
-        content = self.request.get_content(link, self.proxy, self.order_id)
+        content = self.request.get_content(link, self.proxy, self.order_id, self.proxy_id)
         if not content["status"]:
             return content
 
@@ -106,9 +108,10 @@ class AnalyzerModule:
         for link in self.links_list:
             # update proxy server settings if needed
             if request_counter == config.NUMBER_REQUESTS:
-                proxy = self.api_worker.update_proxy(self.proxy_id)
+                proxy = self.api_worker.update_proxy()
                 if proxy:
-                    self.proxy = proxy
+                    self.proxy = proxy[1]
+                    self.proxy_id = proxy[0]
                     request_counter = 0
             content = self.request.get_content(link, self.proxy, self.order_id)
             if not content["status"]:
@@ -147,7 +150,8 @@ class AnalyzerModule:
             if request_counter == config.NUMBER_REQUESTS:
                 proxy = self.api_worker.update_proxy()
                 if proxy:
-                    self.proxy = proxy
+                    self.proxy = proxy[1]
+                    self.proxy_id = proxy[0]
                     request_counter = 0
             content = self.request.get_content(button_link, self.proxy, self.order_id)
             # unsuccessfully submitted form

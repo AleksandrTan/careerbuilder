@@ -6,9 +6,10 @@ import json
 import config
 from logsource.logmodule import LogModule
 from apimodule.apirequests import ApiRequestModule
+from apimodule.proxy_work import ProxyWork
 
 
-class ApiWorker(LogModule):
+class ApiWorker(LogModule, ProxyWork):
     def __init__(self, order_id: int):
         super().__init__()
         self.request = ApiRequestModule()
@@ -48,7 +49,7 @@ class ApiWorker(LogModule):
             message = message.replace("message", data_error["message"])
             message = message.replace("status_code", data_error["status_code"])
             if data_error["proxy"]:
-                message = message.replace("pserver", list(data_error["proxy"].values())[0])
+                message = message.replace("pserver", list(data_error["proxy"][1].values())[0])
         params["message"] = message
         result = self.request.make_post(url, params)
         # log in console(file)
@@ -74,13 +75,18 @@ class ApiWorker(LogModule):
         result = self.request.make_post(url, params)
         return True
 
-    def update_proxy(self, proxy_id) -> dict:
+    def update_proxy(self, proxy_id: int = 0) -> tuple:
+        """
+        If proxy_id != 0  means the request was unsuccessful
+        :param proxy_id: int
+        :return:
+        """
         url = self.api_url + self.url_update_proxy + "?proxy_id=" + str(proxy_id)
         result = self.request.make_get(url)
         if result["status"]:
-            return {"https": json.loads(result["message"])["proxy"]}
+            return json.loads(result["message"])["proxy_id"], {"https": json.loads(result["message"])["proxy"]}
         else:
-            return {"status": False}
+            return tuple()
 
 
 if __name__ == "__main__":
