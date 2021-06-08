@@ -13,7 +13,7 @@ from botmodule.analyzermodule import AnalyzerModule
 from apimodule.proxy_work import ProxyWork
 
 
-class BotWorker(LogModule, ProxyWork):
+class BotWorker(ProxyWork, LogModule):
 
     def __init__(self, data):
         super().__init__()
@@ -35,8 +35,8 @@ class BotWorker(LogModule, ProxyWork):
         self.set_proxy(host_proxy=self.host_proxy, port_proxy=self.port_proxy, protocol_proxy=self.protocol_proxy,
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
         self.set_proxy_data(self.proxies, self.proxy_id)
-        self.file_content = self.download_file()
         self.api_worker = ApiWorker(self.order_id)
+        self.file_content = self.download_file()
         self.analyzer_module = AnalyzerModule(str(self.order_id), self.link_id, self.user_name,
                                               self.last_name, self.email, self.file_content, self.file_name,
                                               self.api_worker)

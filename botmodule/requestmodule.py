@@ -12,7 +12,7 @@ import config
 from apimodule.proxy_work import ProxyWork
 
 
-class RequestModule(LogModule, ProxyWork):
+class RequestModule(ProxyWork, LogModule):
 
     def __init__(self, api_worker):
         super().__init__()
