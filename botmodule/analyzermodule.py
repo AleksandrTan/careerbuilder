@@ -13,9 +13,10 @@ from botmodule.requestmodule import RequestModule
 class AnalyzerModule:
 
     def __init__(self, proxy: dict, order_id: str, link_id: str, user_name: str, last_name: str, email: str,
-                 file_content, file_name, api_worker):
+                 file_content, file_name, api_worker, proxy_id):
         """
         Возвращает либо ошибку о соедиенииб либо факт того, что ссылок для дальнейшего анализа не найдено
+        :param proxy_id: int
         :param proxy: dict
         :param order_id: str
         :param link_id: str
@@ -24,6 +25,7 @@ class AnalyzerModule:
         :param email: str
         :param file_content: bytes
         """
+        self.proxy_id = proxy_id
         self.api_worker = api_worker
         self.delay_requests = config.DELAY_REQUESTS
         self.file_name = file_name
@@ -40,7 +42,7 @@ class AnalyzerModule:
         self.success_count_link = 0  # successfully sent links
         self.fail_count_link = 0  # unsuccessfully submitted links
         self.count_link_button = 0
-        self.request = RequestModule(api_worker)
+        self.request = RequestModule(api_worker, proxy_id)
 
     def parse_main_page(self, link: str) -> dict:
         """
@@ -104,7 +106,7 @@ class AnalyzerModule:
         for link in self.links_list:
             # update proxy server settings if needed
             if request_counter == config.NUMBER_REQUESTS:
-                proxy = self.api_worker.update_proxy()
+                proxy = self.api_worker.update_proxy(self.proxy_id)
                 if proxy:
                     self.proxy = proxy
                     request_counter = 0

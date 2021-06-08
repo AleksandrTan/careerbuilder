@@ -13,8 +13,9 @@ import config
 
 class RequestModule(LogModule):
 
-    def __init__(self, api_worker):
+    def __init__(self, api_worker, proxy_id):
         super().__init__()
+        self.proxy_id = proxy_id
         self.api_worker = api_worker
         self.number_attempts = config.NUMBER_REQUESTS
         self.cookie = dict()
@@ -51,7 +52,7 @@ class RequestModule(LogModule):
                 if response.status_code == 403:
                     print("Update proxy")
                     # update proxy server settings
-                    proxy = self.api_worker.update_proxy()
+                    proxy = self.api_worker.update_proxy(self.proxy_id)
                     print(proxy)
                     session.proxies = proxy
                     count += 1

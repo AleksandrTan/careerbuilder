@@ -32,14 +32,15 @@ class ApiWorker(LogModule):
 
         return result
 
-    def task_report_fail(self, key_report: str = '', data_error: dict = None) -> bool:
+    def task_report_fail(self, key_report: str = '', data_error: dict = None, proxy_id: int = 0) -> bool:
         """
         Report about task results
+        :param proxy_id: int
         :param data_error: dict
         :param key_report:
         :return: bool
         """
-        params = {"status": False}
+        params = {"status": False, "proxy_id": proxy_id}
         url = self.api_url + self.url_task_fail.replace("order_id", str(self.order_id))
         message = self.messages[key_report]["message"]
         print(data_error)
@@ -73,8 +74,8 @@ class ApiWorker(LogModule):
         result = self.request.make_post(url, params)
         return True
 
-    def update_proxy(self) -> dict:
-        url = self.api_url + self.url_update_proxy
+    def update_proxy(self, proxy_id) -> dict:
+        url = self.api_url + self.url_update_proxy + "?proxy_id=" + str(proxy_id)
         result = self.request.make_get(url)
         if result["status"]:
             return {"https": json.loads(result["message"])["proxy"]}
@@ -84,4 +85,4 @@ class ApiWorker(LogModule):
 
 if __name__ == "__main__":
     api = ApiWorker(1)
-    print(api.update_proxy())
+    print(api.update_proxy(1))

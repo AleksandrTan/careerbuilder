@@ -37,7 +37,7 @@ class BotWorker(LogModule):
         self.file_content = self.download_file()
         self.analyzer_module = AnalyzerModule(self.proxies, str(self.order_id), self.link_id, self.user_name,
                                               self.last_name, self.email, self.file_content, self.file_name,
-                                              self.api_worker)
+                                              self.api_worker, self.proxy_id)
 
     def start(self):
         begin_time = datetime.datetime.now()
@@ -45,7 +45,7 @@ class BotWorker(LogModule):
         # check if file for send download
         if not self.file_content:
             # send a report to the server, write log file
-            self.api_worker.task_report_fail("no_file")
+            self.api_worker.task_report_fail("no_file", proxy_id=self.proxy_id)
             print("End time - ", datetime.datetime.now() - begin_time)
             return False
         # get main link
@@ -68,10 +68,10 @@ class BotWorker(LogModule):
                 button_links["order"] = str(self.order_id)
                 if button_links.get("error", False):
                     # wrong request
-                    self.api_worker.task_report_fail("target_connect_error", button_links)
+                    self.api_worker.task_report_fail("target_connect_error", button_links, proxy_id=self.proxy_id)
                 else:
                     # no links found
-                    self.api_worker.task_report_fail("no_button_found")
+                    self.api_worker.task_report_fail("no_button_found", proxy_id=self.proxy_id)
                 print("End time - ", datetime.datetime.now() - begin_time)
                 self.delete_file()
                 return False
@@ -80,10 +80,10 @@ class BotWorker(LogModule):
             main_content["order"] = str(self.order_id)
             if main_content.get("error", False):
                 # wrong request
-                self.api_worker.task_report_fail("target_connect_error", main_content)
+                self.api_worker.task_report_fail("target_connect_error", main_content, proxy_id=self.proxy_id)
             else:
                 # no links found
-                self.api_worker.task_report_fail("no_links_found")
+                self.api_worker.task_report_fail("no_links_found", proxy_id=self.proxy_id)
             print(datetime.datetime.now() - begin_time)
             self.delete_file()
             return False
