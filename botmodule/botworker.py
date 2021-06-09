@@ -63,7 +63,6 @@ class BotWorker(LogModule):
                 # open form and send data
                 print("Send form")
                 sender = self.send_worker()
-                print(sender)
                 # send data to system api
                 self.api_worker.task_report_success(sender)
             else:
@@ -87,7 +86,6 @@ class BotWorker(LogModule):
             else:
                 # no links found
                 self.api_worker.task_report_fail("no_links_found")
-            print(datetime.datetime.now() - begin_time)
             self.delete_file()
             return False
         self.delete_file()

@@ -9,7 +9,7 @@ LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
 NUMBER_REQUESTS = 5
 
 # delay requests
-DELAY_REQUESTS = 0
+DELAY_REQUESTS = 5
 
 # request timeout
 REQUEST_TIMEOUT = 6
