@@ -1,7 +1,9 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TEST_MODE = False
+TEST_MODE = os.getenv('TEST_MODE', default=False)
 LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
 
 # ---------------------------------------------------- Requests--------------------------------------------------
