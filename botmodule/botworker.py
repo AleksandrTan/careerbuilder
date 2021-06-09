@@ -13,7 +13,7 @@ from botmodule.analyzermodule import AnalyzerModule
 from apimodule.proxy_work import ProxyWork
 
 
-class BotWorker(LogModule, ProxyWork):
+class BotWorker(LogModule):
 
     def __init__(self, data):
         super().__init__()
@@ -33,9 +33,9 @@ class BotWorker(LogModule, ProxyWork):
         self.username_proxy = data["proxy"]["username"]
         self.password_proxy = data["proxy"]["password"]
         self.proxies = dict()
+        self.proxy_worker = ProxyWork()
         self.set_proxy(host_proxy=self.host_proxy, port_proxy=self.port_proxy, protocol_proxy=self.protocol_proxy,
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
-        self.proxy_worker = ProxyWork()
         self.proxy_worker.set_proxy_data(self.proxies, self.proxy_id)
         self.api_worker = ApiWorker(self.order_id, self.proxy_worker)
         self.file_content = self.download_file()
@@ -122,17 +122,7 @@ class BotWorker(LogModule, ProxyWork):
         :param data: dict
         :return: None
         """
-        if data["protocol_proxy"] and data["username_proxy"] and data["password_proxy"] and \
-                data["host_proxy"] and data["port_proxy"]:
-            self.proxies.update(
-                {"https": data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@" +
-                          data["host_proxy"] + ":" + str(data["port_proxy"])})
-
-        elif data["protocol_proxy"] and data["host_proxy"] and data["port_proxy"]:
-            self.proxies.update(
-                {"https": data["protocol_proxy"] + "://" + data["host_proxy"] + ":" + str(data["port_proxy"])})
-        else:
-            self.proxies.update({"https": "http://3.130.124.100:8080"})
+        self.proxies = self.proxy_worker.set_proxy(**data)
 
     def download_file(self):
         """

@@ -2,6 +2,7 @@
 Class for working with proxy servers
 """
 
+
 class ProxyWork:
 
     def __init__(self):
@@ -22,7 +23,7 @@ class ProxyWork:
         self.proxy_data.append(proxy_dict)
         self.proxy_data.append(proxy_id)
 
-    def get_proxy_data(self) -> list :
+    def get_proxy_data(self) -> list:
         """
         Return list with proxy set
         :return: list
@@ -42,3 +43,24 @@ class ProxyWork:
         :return: dict
         """
         return self.proxy_dict
+
+    def set_proxy(self, **data):
+        """
+        Init start proxy(self.proxies)
+        :param data: dict
+        :return: None
+        """
+        proxies = dict()
+        if data["protocol_proxy"] and data["username_proxy"] and data["password_proxy"] and \
+                data["host_proxy"] and data["port_proxy"]:
+            proxies.update(
+                {"https": data["protocol_proxy"] + "://" + data["username_proxy"] + ":" + data["password_proxy"] + "@" +
+                          data["host_proxy"] + ":" + str(data["port_proxy"])})
+
+        elif data["protocol_proxy"] and data["host_proxy"] and data["port_proxy"]:
+            proxies.update(
+                {"https": data["protocol_proxy"] + "://" + data["host_proxy"] + ":" + str(data["port_proxy"])})
+        else:
+            proxies.update({"https": "http://3.130.124.100:8080"})
+
+        return proxies
