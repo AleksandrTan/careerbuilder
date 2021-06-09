@@ -57,6 +57,9 @@ class RequestModule(LogModule):
                         session.proxies = self.proxy_worker.get_proxy_dict()
                         count += 1
                     time.sleep(config.DELAY_REQUESTS)
+                    self._send_task_report("main_content_error", data={"message": error.__repr__(),
+                                                                       "code": str(response.status_code),
+                                                                       "order": order_id})
                     continue
                 self._send_task_report("main_content_error", data={"message": error.__repr__(),
                                                                    "code": str(response.status_code),
@@ -124,9 +127,13 @@ class RequestModule(LogModule):
                         self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
                         count += 1
                     time.sleep(config.DELAY_REQUESTS)
+                    self._send_task_report("main_content_error", data={"message": error.__repr__(),
+                                                                       "code": str(response.status_code),
+                                                                       "order": order_id})
                     continue
                 self._send_task_report("main_content_error", data={"message": error.__repr__(),
-                                                                   "code": str(response.status_code), "order": order_id})
+                                                                   "code": str(response.status_code),
+                                                                   "order": order_id})
                 return {"status": False, "error": True, "status_code": str(response.status_code),
                         "message": error.__repr__(), "type_res": "request_module",
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
