@@ -67,7 +67,7 @@ class AnalyzerModule:
                     target = link.find(settings.TARGET_LIST["single_child"]["target_tag"],
                                        class_=settings.TARGET_LIST["single_child"]["target_class"])
                     if target:
-                        if config.TEST_MODE:
+                        if config.TEST_MODE == "True":
                             self.links_list.append(settings.TEST_HOST + target["href"])
                         else:
                             self.links_list.append(settings.TARGET_HOST + target["href"])
@@ -201,7 +201,7 @@ class AnalyzerModule:
         # set url param
         url = soup.find(settings.TARGET_FORM["parent_tag"],
                         attrs={"class": settings.TARGET_FORM["parent_class"]}).get("action")
-        if config.TEST_MODE:
+        if config.TEST_MODE == "True":
             url = settings.TEST_HOST + url
         else:
             url = settings.TARGET_HOST + url
