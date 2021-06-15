@@ -33,9 +33,10 @@ class RequestModule(LogModule):
         """
         count = 0
         session = HTMLSession()
-        session.proxies = self.proxy_worker.get_proxy_dict()
+        session.proxies = f = self.proxy_worker.get_proxy_dict()
         session.headers = settings.headers
         cookies = self.get_cookie()
+        print(link, f)
         while count < self.number_attempts:
             try:
                 response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), cookies=cookies)
