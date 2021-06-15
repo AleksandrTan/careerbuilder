@@ -15,9 +15,10 @@ from apimodule.proxy_work import ProxyWork
 class AnalyzerModule:
 
     def __init__(self, order_id: str, link_id: str, user_name: str, last_name: str, email: str,
-                 file_content, file_name, api_worker, proxy_worker: ProxyWork):
+                 file_content, file_name, api_worker, proxy_worker: ProxyWork, is_update_proxy: bool):
         """
         Возвращает либо ошибку о соедиенииб либо факт того, что ссылок для дальнейшего анализа не найдено
+        :param is_update_proxy bool
         :param proxy_worker: object
         :param order_id: str
         :param link_id: str
@@ -26,6 +27,7 @@ class AnalyzerModule:
         :param email: str
         :param file_content: bytes
         """
+        self.is_update_proxy = is_update_proxy
         self.api_worker = api_worker
         self.proxy_worker = proxy_worker
         self.delay_requests = config.DELAY_REQUESTS
@@ -42,7 +44,7 @@ class AnalyzerModule:
         self.success_count_link = 0  # successfully sent links
         self.fail_count_link = 0  # unsuccessfully submitted links
         self.count_link_button = 0
-        self.request = RequestModule(api_worker, proxy_worker)
+        self.request = RequestModule(api_worker, proxy_worker, is_update_proxy)
 
     def parse_main_page(self, link: str) -> dict:
         """
@@ -106,7 +108,7 @@ class AnalyzerModule:
         reason = "connection"
         for link in self.links_list:
             # update proxy server settings if needed
-            if request_counter == config.NUMBER_REQUESTS:
+            if request_counter == config.NUMBER_REQUESTS and self.is_update_proxy:
                 proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id(), False)
                 if proxy:
                     # update proxy settings
@@ -146,7 +148,7 @@ class AnalyzerModule:
         request_counter = 0
         for button_link in self.button_links:
             # update proxy server settings if needed
-            if request_counter == config.NUMBER_REQUESTS:
+            if request_counter == config.NUMBER_REQUESTS and self.is_update_proxy:
                 proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id(), False)
                 if proxy:
                     # update proxy settings

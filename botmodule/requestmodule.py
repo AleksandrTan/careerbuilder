@@ -14,8 +14,9 @@ from apimodule.proxy_work import ProxyWork
 
 class RequestModule(LogModule):
 
-    def __init__(self, api_worker, proxy_worker:ProxyWork):
+    def __init__(self, api_worker, proxy_worker: ProxyWork, is_update_proxy: bool):
         super().__init__()
+        self.is_update_proxy = is_update_proxy
         self.api_worker = api_worker
         self.proxy_worker = proxy_worker
         self.number_attempts = config.NUMBER_REQUESTS
@@ -50,16 +51,17 @@ class RequestModule(LogModule):
                 response.raise_for_status()
             except requests.HTTPError as error:
                 if response.status_code == 403:
-                    # update proxy server settings
-                    proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id())
-                    if proxy:
-                        self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
-                        session.proxies = self.proxy_worker.get_proxy_dict()
+                    if self.is_update_proxy:
+                        # update proxy server settings
+                        proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id())
+                        if proxy:
+                            self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
+                            session.proxies = self.proxy_worker.get_proxy_dict()
                         count += 1
-                    time.sleep(config.DELAY_REQUESTS)
-                    self._send_task_report("main_content_error", data={"message": error.__repr__(),
-                                                                       "code": str(response.status_code),
-                                                                       "order": order_id})
+                        time.sleep(config.DELAY_REQUESTS)
+                        self._send_task_report("main_content_error", data={"message": error.__repr__(),
+                                                                           "code": str(response.status_code),
+                                                                           "order": order_id})
                     continue
                 self._send_task_report("main_content_error", data={"message": error.__repr__(),
                                                                    "code": str(response.status_code),
@@ -121,15 +123,16 @@ class RequestModule(LogModule):
                 response.raise_for_status()
             except requests.HTTPError as error:
                 if response.status_code == 403:
-                    # update proxy server settings
-                    proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id())
-                    if proxy:
-                        self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
-                        count += 1
-                    time.sleep(config.DELAY_REQUESTS)
-                    self._send_task_report("main_content_error", data={"message": error.__repr__(),
-                                                                       "code": str(response.status_code),
-                                                                       "order": order_id})
+                    if self.is_update_proxy:
+                        # update proxy server settings
+                        proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id())
+                        if proxy:
+                            self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
+                            count += 1
+                        time.sleep(config.DELAY_REQUESTS)
+                        self._send_task_report("main_content_error", data={"message": error.__repr__(),
+                                                                           "code": str(response.status_code),
+                                                                           "order": order_id})
                     continue
                 self._send_task_report("main_content_error", data={"message": error.__repr__(),
                                                                    "code": str(response.status_code),
@@ -140,7 +143,8 @@ class RequestModule(LogModule):
 
             except requests.exceptions.RequestException as error:
                 self._send_task_report("main_content_error", data={"message": error.__repr__(),
-                                                                   "code": str(response.status_code), "order": order_id})
+                                                                   "code": str(response.status_code),
+                                                                   "order": order_id})
                 return {"status": False, "error": True, "status_code": str(response.status_code),
                         "message": error.__repr__(), "type_res": "request_module",
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}

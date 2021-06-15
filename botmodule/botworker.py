@@ -18,6 +18,7 @@ class BotWorker(LogModule):
     def __init__(self, data):
         super().__init__()
         # ProxyWork.__init__(self)
+        self.is_update_proxy = data["is_update_proxy"]
         self.target_link = data["target_link"]
         self.link_id = self.target_link.split('/')[-1]
         self.order_id = data["order_id"]
@@ -41,7 +42,7 @@ class BotWorker(LogModule):
         self.file_content = self.download_file()
         self.analyzer_module = AnalyzerModule(str(self.order_id), self.link_id, self.user_name, self.last_name,
                                               self.email, self.file_content, self.file_name, self.api_worker,
-                                              self.proxy_worker)
+                                              self.proxy_worker, self.is_update_proxy)
 
     def start(self):
         begin_time = datetime.datetime.now()
