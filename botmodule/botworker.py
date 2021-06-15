@@ -5,6 +5,7 @@ the database level, logging to a file or standard output.
 """
 import datetime
 import os
+import sys
 
 import config
 from apimodule.apiworker import ApiWorker
@@ -46,23 +47,23 @@ class BotWorker(LogModule):
 
     def start(self):
         begin_time = datetime.datetime.now()
-        print("Start work - ", datetime.datetime.now())
+        sys.stdout.write(f"Start work - {datetime.datetime.now()}")
         # check if file for send download
         if not self.file_content:
             # send a report to the server, write log file
             self.api_worker.task_report_fail("no_file")
-            print("End time - ", datetime.datetime.now() - begin_time)
+            sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}")
             return False
         # get main link
-        print("Get main page")
+        sys.stdout.write("Get main page")
         main_content = self.main_page_worker()
         if main_content["status"]:
             # get other link
-            print("Get other page")
+            sys.stdout.write("Get other page")
             button_links = self.other_page_worker()
             if button_links["status"]:
                 # open form and send data
-                print("Send form")
+                sys.stdout.write("Send form")
                 sender = self.send_worker()
                 # send data to system api
                 self.api_worker.task_report_success(sender)
@@ -75,7 +76,7 @@ class BotWorker(LogModule):
                 else:
                     # no links found
                     self.api_worker.task_report_fail("no_button_found")
-                print("End time - ", datetime.datetime.now() - begin_time)
+                sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}")
                 self.delete_file()
                 return False
         else:
@@ -90,7 +91,7 @@ class BotWorker(LogModule):
             self.delete_file()
             return False
         self.delete_file()
-        print("End time - ", datetime.datetime.now() - begin_time)
+        sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}")
         return True
 
     def main_page_worker(self) -> dict:

@@ -13,7 +13,7 @@ class LogModule:
         self.is_file_write = config.IS_LOG_FILE_WRITE
 
     def _send_task_report(self, key: str, data: dict = None):
-        mes =  self.map_messages.get(key, False)
+        mes = self.map_messages.get(key, False)
         if mes:
             message = mes["message"]
             if data:

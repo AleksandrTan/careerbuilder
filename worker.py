@@ -25,7 +25,7 @@ class RabbitWorker(LogModule):
         counter = 0
         while counter < config.ATTEMPTS_TO_CONNECT_RABBIT:
             try:
-                print(config.RABBIT_HOST)
+                sys.stdout.write(config.RABBIT_HOST)
                 self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=config.RABBIT_HOST, port=config.RABBIT_PORT))
                 self.channel = self.connection.channel()
                 sys.stdout.write("Connected to Rabbit\n")
@@ -45,7 +45,7 @@ class RabbitWorker(LogModule):
             try:
                 self.channel.queue_declare(queue="target")
                 self.channel.basic_consume(on_message_callback=callback, queue='target')
-                print(' [*] Waiting for messages. To exit press CTRL+C')
+                sys.stdout.write(' [*] Waiting for messages. To exit press CTRL+C')
                 self.channel.start_consuming()
             except pika.exceptions.ChannelWrongStateError as error:
                 return False
@@ -64,7 +64,7 @@ class RabbitWorker(LogModule):
         """
         # get task
         message = json.loads(body.decode())
-        print(message)
+        sys.stdout.write(message)
         # start bot
         if message["portal"] == "one":
             bot_object = BotWorker(message)

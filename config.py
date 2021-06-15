@@ -47,7 +47,3 @@ IS_LOG_FILE_WRITE = True
 
 # Outputting notifications to the console
 IS_CONSOLE = True
-
-if __name__ == "__main__":
-    print(os.getenv('DELAY_REQUESTS'))
-    print(os.environ.get('DELAY_REQUESTS'))
