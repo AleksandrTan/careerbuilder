@@ -31,7 +31,7 @@ ATTEMPTS_TO_CONNECT_RABBIT = 5
 TIME_TO_CONNECT_RABBIT = 5
 
 # ------------------------------------------------ Systems urls---------------------------------------------------
-API_HOST = os.getenv('API_HOST', default="http://127.0.0.1:8000")
+API_HOST = os.getenv('API_HOST', default="http://127.0.0.1:8001")
 FILE_DOWNLOAD = "/mainsystem/bot/get_file/"
 TASK_RESULT_SUCCESS = "/mainsystem/api/order/order_id/success/"
 TASK_RESULT_FAIL = "/mainsystem/api/order/order_id/fail/"

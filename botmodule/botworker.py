@@ -47,23 +47,23 @@ class BotWorker(LogModule):
 
     def start(self):
         begin_time = datetime.datetime.now()
-        sys.stdout.write(f"Start work - {datetime.datetime.now()}")
+        sys.stdout.write(f"Start work - {datetime.datetime.now()}\n")
         # check if file for send download
         if not self.file_content:
             # send a report to the server, write log file
             self.api_worker.task_report_fail("no_file")
-            sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}")
+            sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}\n")
             return False
         # get main link
-        sys.stdout.write("Get main page")
+        sys.stdout.write("Get main page\n")
         main_content = self.main_page_worker()
         if main_content["status"]:
             # get other link
-            sys.stdout.write("Get other page")
+            sys.stdout.write("Get other page\n")
             button_links = self.other_page_worker()
             if button_links["status"]:
                 # open form and send data
-                sys.stdout.write("Send form")
+                sys.stdout.write("Send form\n")
                 sender = self.send_worker()
                 # send data to system api
                 self.api_worker.task_report_success(sender)
@@ -91,7 +91,7 @@ class BotWorker(LogModule):
             self.delete_file()
             return False
         self.delete_file()
-        sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}")
+        sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}\n")
         return True
 
     def main_page_worker(self) -> dict:

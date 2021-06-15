@@ -64,7 +64,7 @@ class RabbitWorker(LogModule):
         """
         # get task
         message = json.loads(body.decode())
-        sys.stdout.write(message)
+        print(message)
         # start bot
         if message["portal"] == "one":
             bot_object = BotWorker(message)
