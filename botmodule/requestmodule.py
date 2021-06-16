@@ -130,11 +130,11 @@ class RequestModule(LogModule):
                         proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id())
                         if proxy:
                             self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
-                            count += 1
-                        time.sleep(config.DELAY_REQUESTS)
-                        self._send_task_report("main_content_error", data={"message": error.__repr__(),
-                                                                           "code": str(response.status_code),
-                                                                           "order": order_id})
+                    count += 1
+                    time.sleep(config.DELAY_REQUESTS)
+                    self._send_task_report("main_content_error", data={"message": error.__repr__(),
+                                                                       "code": str(response.status_code),
+                                                                       "order": order_id})
                     continue
                 self._send_task_report("main_content_error", data={"message": error.__repr__(),
                                                                    "code": str(response.status_code),
