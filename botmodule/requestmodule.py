@@ -37,11 +37,9 @@ class RequestModule(LogModule):
         session.headers = settings.headers
         cookies = self.get_cookie()
         while count < self.number_attempts:
-            print(count)
             try:
                 response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), cookies=cookies)
                 session.close()
-                print(response)
             except requests.exceptions.ConnectionError as error:
                 self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": '',
                                                                      "order": order_id})
