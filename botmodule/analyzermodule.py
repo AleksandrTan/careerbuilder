@@ -145,7 +145,6 @@ class AnalyzerModule:
         Open a page with a form, generate data, send form to the portal
         :return: None
         """
-        print(self.button_links)
         request_counter = 0
         for button_link in self.button_links:
             # update proxy server settings if needed

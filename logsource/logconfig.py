@@ -24,7 +24,7 @@ LOGGING_CONFIG = {
         'file': {
             'level': 'WARNING',
             'class': 'logging.FileHandler',
-            'filename': BASE_DIR + '/loging_fbi.log',
+            'filename': BASE_DIR + '/loging_jbs.log',
             'formatter': 'default_formatter',
         },
     },

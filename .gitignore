@@ -6,3 +6,4 @@ tmp
 .idea
 config.py
 /.env
+loging_jbs.log
