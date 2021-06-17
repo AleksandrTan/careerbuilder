@@ -76,7 +76,7 @@ class ApiWorker(LogModule):
 
     def update_proxy(self, proxy_id: int = 0, fail: bool = True) -> tuple:
         """
-        If proxy_id != 0  means the request was unsuccessful
+        If fail=True  means the request was unsuccessful with proxy(403 status)
         :param fail: bool
         :param proxy_id: int
         :return:

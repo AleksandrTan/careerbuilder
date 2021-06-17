@@ -20,7 +20,7 @@ class RequestModule(LogModule):
         self.api_worker = api_worker
         self.proxy_worker = proxy_worker
         self.number_attempts = config.NUMBER_REQUESTS
-        self.cookie = dict()
+        self.cookie: dict = dict()
 
     def get_content(self, link: str, order_id: str):
         """
@@ -31,7 +31,7 @@ class RequestModule(LogModule):
         :param link: str
         :return: None
         """
-        count = 0
+        count: int = 0
         session = HTMLSession()
         session.proxies = f = self.proxy_worker.get_proxy_dict()
         session.headers = settings.headers
