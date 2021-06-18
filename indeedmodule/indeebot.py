@@ -49,7 +49,8 @@ class IndeedWorker(LogModule):
                                               self.proxy_worker, self.is_update_proxy)
         self.cookies_work = CookiesWork()
         self.headers_work = HeadersWork()
-        self.auth = AuthModule(data, self.cookies_work, self.headers_work)
+        self.auth = AuthModule(str(self.order_id), data, self.cookies_work, self.headers_work, self.api_worker, self.proxy_worker,
+                               self.is_update_proxy)
 
     def start(self):
         begin_time = datetime.datetime.now()
@@ -60,8 +61,13 @@ class IndeedWorker(LogModule):
             self.api_worker.task_report_fail("no_file")
             sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}\n")
             return False
+
         # Authorization
         auth_status = self.auth.auth()
+        if not auth_status["status"]:
+            self.api_worker.task_report_fail("no_auth_data", {"order": self.order_id})
+            sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}\n")
+            return False
 
         # get main link
         sys.stdout.write("Get main page\n")
