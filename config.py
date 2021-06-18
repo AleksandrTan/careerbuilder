@@ -5,7 +5,6 @@ load_dotenv()
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_MODE = os.getenv('TEST_MODE', default=False)
 print(TEST_MODE, type(TEST_MODE))
-LINK_EXAMPLE = "https://www.careerbuilder.com/job/J301R0620YJ2PPJK564"
 
 # ---------------------------------------------------- Requests--------------------------------------------------
 # The number of attempts to request a change of proxy server
