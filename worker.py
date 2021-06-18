@@ -67,7 +67,6 @@ class RabbitWorker(LogModule):
         message = json.loads(body.decode())
         print(message)
         # start bot
-
         if message["portal"] == "careerbuilder":
             bot_object = BotWorker(message)
             threading.Thread(target=bot_object.start, args=()).start()

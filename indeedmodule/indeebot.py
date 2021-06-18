@@ -31,6 +31,7 @@ class IndeedWorker(LogModule):
         self.last_name = data["last_name"]
         self.password = data["password"]
         self.email = data["email"]
+        self.login = data["login"]
         self.proxy_id = data["proxy"]["proxy_id"]
         self.host_proxy = data["proxy"]["host"]
         self.port_proxy = data["proxy"]["port"]

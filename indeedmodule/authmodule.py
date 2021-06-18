@@ -17,7 +17,7 @@ class AuthModule(LogModule):
         self.user_name = data["user_name"]
         self.last_name = data["last_name"]
         self.password = data["password"]
-        self.email = data["email"]
+        self.login = data["login"]
         self.cookies_work = cookies_work
         self.headers_work = headers_work
         self.is_update_proxy = is_update_proxy
@@ -28,5 +28,5 @@ class AuthModule(LogModule):
 
     def auth(self):
         # check password and email
-        if not self.password or not self.email:
+        if not self.password or not self.login:
             return {"status": False}
