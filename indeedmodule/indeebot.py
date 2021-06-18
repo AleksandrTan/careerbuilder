@@ -12,13 +12,15 @@ from apimodule.apiworker import ApiWorker
 from logsource.logmodule import LogModule
 from indeedmodule.analyzermodule import AnalyzerModule
 from apimodule.proxy_work import ProxyWork
+from indeedmodule.core.cookie_work import CookiesWork
+from indeedmodule.core.headers_work import HeadersWork
+from indeedmodule.authmodule import AuthModule
 
 
 class IndeedWorker(LogModule):
 
     def __init__(self, data):
         super().__init__()
-        # ProxyWork.__init__(self)
         self.is_update_proxy = data["is_update_proxy"]
         self.target_link = data["target_link"]
         self.link_id = self.target_link.split('/')[-1]
@@ -45,6 +47,9 @@ class IndeedWorker(LogModule):
         self.analyzer_module = AnalyzerModule(str(self.order_id), self.link_id, self.user_name, self.last_name,
                                               self.email, self.file_content, self.file_name, self.api_worker,
                                               self.proxy_worker, self.is_update_proxy)
+        self.cookies_work = CookiesWork()
+        self.headers_work = HeadersWork()
+        self.auth = AuthModule(data, self.cookies_work, self.headers_work)
 
     def start(self):
         begin_time = datetime.datetime.now()
@@ -56,6 +61,7 @@ class IndeedWorker(LogModule):
             sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}\n")
             return False
         # Authorization
+        auth_status = self.auth.auth()
 
         # get main link
         sys.stdout.write("Get main page\n")
