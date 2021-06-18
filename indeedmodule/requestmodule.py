@@ -2,28 +2,45 @@
 Module for working with requests to a target resource
 """
 import time
-
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 import requests
-from requests_html import HTMLSession
+from requests_html import HTMLSession, AsyncHTMLSession
 
 from logsource.logmodule import LogModule
-from botmodule import settings
+from indeedmodule import settings
 import config
 from apimodule.proxy_work import ProxyWork
 
 
 class RequestModule(LogModule):
 
-    def __init__(self, api_worker, proxy_worker: ProxyWork, is_update_proxy: bool):
+    def __init__(self, api_worker, proxy_worker: ProxyWork, is_update_proxy: bool, cookies_work, headers_work):
         super().__init__()
         self.is_update_proxy = is_update_proxy
         self.api_worker = api_worker
         self.proxy_worker = proxy_worker
         self.number_attempts = config.NUMBER_REQUESTS
-        self.cookie: dict = dict()
+        self.cookies_work = cookies_work
+        self.headers_work = headers_work
 
     def auth(self):
-        pass
+        # session = HTMLSession()
+        # session.proxies = self.proxy_worker.get_proxy_dict()
+        headers = self.headers_work.get_headers()
+        # session.headers = headers
+        cookies = self.cookies_work.get_cookies()
+        # response = session.get(settings.LOGIN_PAGE, cookies=cookies, headers=headers)
+        # response.html.render()
+        # print(response.html.html)
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        browser = webdriver.Chrome(chrome_options=chrome_options)
+
+        browser.get(settings.LOGIN_PAGE)
+        browser.add_cookie(cookies)
+
+        print(browser.page_source)
 
     def get_content(self, link: str, order_id: str):
         """
@@ -36,7 +53,7 @@ class RequestModule(LogModule):
         """
         count: int = 0
         session = HTMLSession()
-        session.proxies = f = self.proxy_worker.get_proxy_dict()
+        session.proxies = self.proxy_worker.get_proxy_dict()
         session.headers = settings.headers
         cookies = self.get_cookie()
         while count < self.number_attempts:

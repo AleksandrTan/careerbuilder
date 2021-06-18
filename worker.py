@@ -64,17 +64,17 @@ class RabbitWorker(LogModule):
         :return:
         """
         # get task
+        bot_object = object
         message = json.loads(body.decode())
         print(message)
         # start bot
         if message["portal"] == "careerbuilder":
             bot_object = BotWorker(message)
-            threading.Thread(target=bot_object.start, args=()).start()
 
         if message["portal"] == "indeed":
             bot_object = IndeedWorker(message)
-            threading.Thread(target=bot_object.start, args=()).start()
-            # confirm task processing
+        threading.Thread(target=bot_object.start, args=()).start()
+        # confirm task processing
         ch.basic_ack(delivery_tag=method.delivery_tag)
         time.sleep(10)
 

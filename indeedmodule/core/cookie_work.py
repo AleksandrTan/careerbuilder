@@ -9,6 +9,7 @@ class CookiesWork:
     def __init__(self):
         self.cookies_data: dict = dict()
         self.default_cookies = settings.LOGIN_COOKIES
+        self.init_login_cookies()
 
     def get_cookies(self) -> dict:
         return self.cookies_data

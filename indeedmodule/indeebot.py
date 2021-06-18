@@ -50,7 +50,8 @@ class IndeedWorker(LogModule):
                                               self.proxy_worker, self.is_update_proxy)
         self.cookies_work = CookiesWork()
         self.headers_work = HeadersWork()
-        self.auth = AuthModule(str(self.order_id), data, self.cookies_work, self.headers_work, self.api_worker, self.proxy_worker,
+        self.auth = AuthModule(str(self.order_id), data, self.cookies_work, self.headers_work, self.api_worker,
+                               self.proxy_worker,
                                self.is_update_proxy)
 
     def start(self):
@@ -160,4 +161,26 @@ class IndeedWorker(LogModule):
 
 
 if __name__ == "__main__":
-    print(config.BASE_DIR, 3500)
+    data = {'proxy':
+                {'proxy_id': 13,
+                 'host': '196.17.78.225',
+                 'port': 8000,
+                 'protocol': 'http',
+                 'username': '2DxLL0',
+                 'password': 'fwcZsa'
+                 },
+            'status': True,
+            'is_update_proxy': True,
+            'target_link': 'http://127.0.0.1:8000/mainsystem/testpage/',
+            'order_id': 246,
+            'file_mailing': '/media/files_mailing/%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B2%D0%B8%D1%87_%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B9_jV6LGKb.docx',
+            'file_name': 'Андревич_Андрей_jV6LGKb.docx',
+            'user_name': 'dfg',
+            'last_name': 'dfg',
+            'password': '1',
+            'email': 'rumych2013@gmail.com',
+            'login': '1',
+            'portal': 'indeed'
+            }
+    b = IndeedWorker(data)
+    b.start()

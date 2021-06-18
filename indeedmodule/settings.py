@@ -24,7 +24,7 @@ LOGIN_HEADERS = {
     "Sec-Fetch-Mode": "navigate",
     "Sec-Fetch-Site": "same-site",
     "Sec-Fetch-User": "?1",
-    "Upgrade-Insecure-Requests": 1,
+    "Upgrade-Insecure-Requests": '1',
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 "
                   "Safari/537.36 "
 }
