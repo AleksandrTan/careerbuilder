@@ -10,6 +10,7 @@ import threading
 import config
 from logsource.logmodule import LogModule
 from botmodule.botworker import BotWorker
+from indeedmodule.indeebot import IndeedWorker
 
 
 class RabbitWorker(LogModule):
@@ -66,8 +67,13 @@ class RabbitWorker(LogModule):
         message = json.loads(body.decode())
         print(message)
         # start bot
-        if message["portal"] == "one":
+
+        if message["portal"] == "careerbuilder":
             bot_object = BotWorker(message)
+            threading.Thread(target=bot_object.start, args=()).start()
+
+        if message["portal"] == "indeed":
+            bot_object = IndeedWorker(message)
             threading.Thread(target=bot_object.start, args=()).start()
             # confirm task processing
         ch.basic_ack(delivery_tag=method.delivery_tag)

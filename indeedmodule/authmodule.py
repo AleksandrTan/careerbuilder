@@ -3,5 +3,7 @@ Module for authorization on the target resource.
 """
 
 
-class Auth:
-    pass
+class AuthModule:
+
+    def __init__(self, data):
+        self.user_name = data["user_name"]

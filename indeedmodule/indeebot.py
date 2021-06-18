@@ -14,7 +14,7 @@ from indeedmodule.analyzermodule import AnalyzerModule
 from apimodule.proxy_work import ProxyWork
 
 
-class BotWorker(LogModule):
+class IndeedWorker(LogModule):
 
     def __init__(self, data):
         super().__init__()
@@ -27,6 +27,7 @@ class BotWorker(LogModule):
         self.file_name = data["file_name"]
         self.user_name = data["user_name"]
         self.last_name = data["last_name"]
+        self.password = data["password"]
         self.email = data["email"]
         self.proxy_id = data["proxy"]["proxy_id"]
         self.host_proxy = data["proxy"]["host"]
@@ -54,6 +55,8 @@ class BotWorker(LogModule):
             self.api_worker.task_report_fail("no_file")
             sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}\n")
             return False
+        # Authorization
+
         # get main link
         sys.stdout.write("Get main page\n")
         main_content = self.main_page_worker()
