@@ -1,25 +1,68 @@
+user = "rumych2021@ukr.net"
+password = "ufeltfvec"
+
 TARGET_HOST = "https://www.indeed.com/"
+LOGIN_PAGE = "https://secure.indeed.com/account/login?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed.com%2Fhire" \
+             "&tmpl=desktop&from=gnav-util-employer--allspark--employer&_ga=2.159554805.935920425.1623929677" \
+             "-1957672176.1623830126"
+
 TEST_HOST = "http://127.0.0.1:8001"
-headers = {
-    'user-agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 '
-                  'Safari/537.36',
-    "authority": "www.indeed.com",
-    "scheme": "https",
-    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,"
+
+LOGIN_HEADERS = {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,"
               "application/signed-exchange;v=b3;q=0.9",
-    "accept-encoding": "gzip, deflate, br",
-    "accept-language": "en-US,en;q=0.9,ru;q=0.8",
-    "cache-control": "no-cache",
-    "pragma": "no-cache",
-    "sec-ch-ua": 'Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90',
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "en-US,en;q=0.9,ru;q=0.8",
+    "Cache-Control": "no-cache",
+    "Connection": "keep-alive",
+    "Host": "secure.indeed.com",
+    "Pragma": "no-cache",
+    "Referer": "https://www.indeed.com/",
+    "sec-ch-ua": '" Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
     "sec-ch-ua-mobile": "?0",
-    "sec-fetch-dest": "document",
-    "sec-fetch-mode": "navigate",
-    "sec-fetch-site": "none",
-    "sec-fetch-user": "?1",
-    "upgrade-insecure-requests": "1",
-    'X-CSRFToken': 'dfgdgdgdfgsdfgdsfg'
+    "Sec-Fetch-Dest": "document",
+    "Sec-Fetch-Mode": "navigate",
+    "Sec-Fetch-Site": "same-site",
+    "Sec-Fetch-User": "?1",
+    "Upgrade-Insecure-Requests": 1,
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 "
+                  "Safari/537.36 "
 }
+
+LOGIN_COOKIES = {
+    "device": "b306ea4029f29481220b6f8aa6c1274b",
+    "fbredirect": "/account/register",
+    "APPLE_N": "80UurDIR01hkYWWE",
+    "G_ENABLED_IDPS": "google",
+    "LANG": "en_US",
+    "preExtAuthParams": "co=US&continue=https%3A%2F%2Fwww.indeed.com%2Fjobs%3Fq%3Dpython%26jt%3Dfulltime%26"
+                        "taxo1%3D8GQeqOBVSO2eVhu55t0BMg&employer=true&form_tk=1f8f19k8aocb1800&"
+                        "from=gnav-util-jobsearch--jasx&hl=en_US&service=my&surftok=wIxZ2FUlwZTbqkAIuzF0WxwU0MJp292h",
+    "conf_snt": 1,
+    "PPDM": "my=https%3A%2F%2Femployers.indeed.com&draw=https%3A%2F%2Femployers.indeed.com"
+}
+# cache-control: no-store, no-cache, must-revalidate, private
+# Connection: keep-alive
+# content-encoding: gzip
+# content-language: en-US
+# content-security-policy: upgrade-insecure-requests
+# Content-Type: text/html;charset=UTF-8
+# Date: Fri, 18 Jun 2021 07:49:20 GMT
+# expires: Fri, 18 Jun 2021 07:48:20 GMT
+# lb_pool: mesos_external_pool
+# pragma: no-cache
+# Server: nginx
+# set-cookie: CTK=; Max-Age=0; Path=/; Secure; SameSite=None
+# set-cookie: CTK=1f8f1h0tcpi3d800; Domain=.indeed.com; Max-Age=157680000; Path=/; Secure; SameSite=None
+# set-cookie: SURF=APthOKLMdofmR4kn7lDxfD62IdnYdEcT; Domain=.indeed.com; Path=/; Secure; HttpOnly
+# set-cookie: PPSC=""; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; Secure; HttpOnly
+# set-cookie: fbredirect=/account/login
+# set-cookie: APPLE_N=NnpNdQ8W2KLFQgXt; Secure; HttpOnly
+# strict-transport-security: max-age=86400
+# Transfer-Encoding: chunked
+# vary: Accept-Encoding
+# x-frame-options: SAMEORIGIN
+#
 
 """
 Number of vacancies by reference. Used for pagination.
