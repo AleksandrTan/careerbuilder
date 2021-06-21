@@ -75,7 +75,7 @@ class RabbitWorker(LogModule):
 
         if message["portal"] == "indeed":
             bot_object = IndeedWorker(message)
-            process1 = Process(target=bot_object.start(), args=())
+            process1 = Process(target=bot_object.start, args=())
             process1.start()
             # threading.Thread(target=bot_object.start, args=()).start()
         # confirm task processing

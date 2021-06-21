@@ -38,7 +38,7 @@ class RequestModule(LogModule):
             chrome_options.add_extension(pluginfile)
         if user_agent:
             chrome_options.add_argument('--user-agent=%s' % settings.LOGIN_HEADERS["User-Agent"])
-            # chrome_options.add_argument("--headless")
+            # chrome_options.add_argument("--headless") not work
         driver = webdriver.Chrome(chrome_options=chrome_options)
 
         return driver
@@ -56,7 +56,8 @@ class RequestModule(LogModule):
         cookies = self.cookies_work.get_cookies()
         response = session.get(settings.LOGIN_PAGE, cookies=cookies)
         response.html.render()
-        print(response.html.html)
+        data = response.html.html
+        print(data)
 
     def get_content(self, link: str, order_id: str):
         """
@@ -114,15 +115,6 @@ class RequestModule(LogModule):
                         "message": error.__repr__(), "type_res": "request_module",
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
             # set cookies
-
-            # print(response.text)
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument("--headless")
-            driver = webdriver.Chrome(chrome_options=chrome_options)
-
-            driver.get("data:text/html;charset=utf-8,{html_content}".format(html_content=response.text))
-            html = driver.page_source
-            print(html, driver)
 
             return {"status": False, "error": False, "status_code": str(response.status_code), "message": response.text,
                     "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),

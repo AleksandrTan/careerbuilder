@@ -4,17 +4,17 @@ It is launched from a workflow, initialized, and then executed, accompanying its
 the database level, logging to a file or standard output.
 """
 import datetime
-import os
+import os, signal
 import sys
 
 import config
 from apimodule.apiworker import ApiWorker
-from logsource.logmodule import LogModule
-from indeedmodule.analyzermodule import AnalyzerModule
 from apimodule.proxy_work import ProxyWork
+from indeedmodule.analyzermodule import AnalyzerModule
+from indeedmodule.authmodule import AuthModule
 from indeedmodule.core.cookie_work import CookiesWork
 from indeedmodule.core.headers_work import HeadersWork
-from indeedmodule.authmodule import AuthModule
+from logsource.logmodule import LogModule
 
 
 class IndeedWorker(LogModule):
@@ -68,6 +68,9 @@ class IndeedWorker(LogModule):
         auth_status = self.auth.auth()
         if not auth_status["status"]:
             self.api_worker.task_report_fail("no_auth_data", {"order": self.order_id})
+            pid = os.fork()
+            os.kill(pid, signal.SIGCONT)
+
             return False
 
         # get main link
