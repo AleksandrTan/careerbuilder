@@ -1,11 +1,14 @@
 """
 Module for working with requests to a target resource
 """
+import os
 import time
+import zipfile
+
+from selenium.common.exceptions import WebDriverException
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 import requests
-from requests_html import HTMLSession, AsyncHTMLSession
+from requests_html import HTMLSession
 
 from logsource.logmodule import LogModule
 from indeedmodule import settings
@@ -24,23 +27,36 @@ class RequestModule(LogModule):
         self.cookies_work = cookies_work
         self.headers_work = headers_work
 
-    def auth(self):
-        # session = HTMLSession()
-        # session.proxies = self.proxy_worker.get_proxy_dict()
-        headers = self.headers_work.get_headers()
-        # session.headers = headers
-        cookies = self.cookies_work.get_cookies()
-        # response = session.get(settings.LOGIN_PAGE, cookies=cookies, headers=headers)
-        # response.html.render()
-        # print(response.html.html)
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        browser = webdriver.Chrome(chrome_options=chrome_options)
+    def get_chromedriver(self, use_proxy=False, user_agent=None):
+        path = os.path.dirname(os.path.abspath(__file__))
+        chrome_options = webdriver.ChromeOptions()
+        if use_proxy:
+            pluginfile = 'proxy_auth_plugin.zip'
+            with zipfile.ZipFile(pluginfile, 'w') as zp:
+                zp.writestr("manifest.json", self.proxy_worker.get_manifest_json())
+                zp.writestr("background.js", self.proxy_worker.get_background_js())
+            chrome_options.add_extension(pluginfile)
+        if user_agent:
+            chrome_options.add_argument('--user-agent=%s' % settings.LOGIN_HEADERS["User-Agent"])
+            # chrome_options.add_argument("--headless")
+        driver = webdriver.Chrome(chrome_options=chrome_options)
 
+        return driver
+
+    def auth_selenium(self):
+        browser = self.get_chromedriver(use_proxy=True, user_agent=True)
         browser.get(settings.LOGIN_PAGE)
-        browser.add_cookie(cookies)
+        html = browser.page_source
+        print(html, browser)
 
-        print(browser.page_source)
+    def auth_html(self):
+        session = HTMLSession()
+        session.proxies = self.proxy_worker.get_proxy_dict()
+        session.headers = self.headers_work.get_headers()
+        cookies = self.cookies_work.get_cookies()
+        response = session.get(settings.LOGIN_PAGE, cookies=cookies)
+        response.html.render()
+        print(response.html.html)
 
     def get_content(self, link: str, order_id: str):
         """
@@ -54,8 +70,8 @@ class RequestModule(LogModule):
         count: int = 0
         session = HTMLSession()
         session.proxies = self.proxy_worker.get_proxy_dict()
-        session.headers = settings.headers
-        cookies = self.get_cookie()
+        session.headers = settings.LOGIN_HEADERS
+        cookies = self.cookies_work.get_cookies()
         while count < self.number_attempts:
             try:
                 response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), cookies=cookies)
@@ -98,8 +114,17 @@ class RequestModule(LogModule):
                         "message": error.__repr__(), "type_res": "request_module",
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
             # set cookies
-            self.set_cookie(response.cookies)
-            return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
+
+            # print(response.text)
+            chrome_options = webdriver.ChromeOptions()
+            chrome_options.add_argument("--headless")
+            driver = webdriver.Chrome(chrome_options=chrome_options)
+
+            driver.get("data:text/html;charset=utf-8,{html_content}".format(html_content=response.text))
+            html = driver.page_source
+            print(html, driver)
+
+            return {"status": False, "error": False, "status_code": str(response.status_code), "message": response.text,
                     "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
                                                                   self.proxy_worker.get_proxy_dict()])}
 
@@ -122,7 +147,7 @@ class RequestModule(LogModule):
         headers = settings.headers
         files["upload_file"] = data["upload_file"]
         del data["upload_file"]
-        cookies = self.get_cookie()
+        cookies = self.cookies_work.get_cookies()
         while count < self.number_attempts:
             try:
                 if not self.proxy_worker.get_proxy_dict():
@@ -169,17 +194,9 @@ class RequestModule(LogModule):
                         "message": error.__repr__(), "type_res": "request_module",
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
             # set cookies
-            self.set_cookie(response.cookies)
+
             break
 
         return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
                 "type_res": "request_module",
                 "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
-
-    def set_cookie(self, cookies):
-        if cookies:
-            for cookie in cookies:
-                self.cookie[cookie.name] = cookie.value
-
-    def get_cookie(self) -> dict:
-        return self.cookie

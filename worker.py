@@ -6,6 +6,7 @@ import sys
 import time
 import pika
 import threading
+from multiprocessing import Process
 
 import config
 from logsource.logmodule import LogModule
@@ -70,10 +71,13 @@ class RabbitWorker(LogModule):
         # start bot
         if message["portal"] == "careerbuilder":
             bot_object = BotWorker(message)
+            threading.Thread(target=bot_object.start, args=()).start()
 
         if message["portal"] == "indeed":
             bot_object = IndeedWorker(message)
-        threading.Thread(target=bot_object.start, args=()).start()
+            process1 = Process(target=bot_object.start(), args=())
+            process1.start()
+            # threading.Thread(target=bot_object.start, args=()).start()
         # confirm task processing
         ch.basic_ack(delivery_tag=method.delivery_tag)
         time.sleep(10)

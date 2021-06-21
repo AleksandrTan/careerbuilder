@@ -2,6 +2,7 @@
 Module for authorization on the target resource.
 """
 import config
+from indeedmodule import settings
 from indeedmodule.core.cookie_work import CookiesWork
 from indeedmodule.core.headers_work import HeadersWork
 from indeedmodule.requestmodule import RequestModule
@@ -31,5 +32,5 @@ class AuthModule(LogModule):
         if not self.password or not self.login:
             return {"status": False}
 
-        auth_data = self.request.auth()
+        auth_data = self.request.auth_html()
         return {"status": False}

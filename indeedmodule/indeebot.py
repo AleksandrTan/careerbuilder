@@ -39,7 +39,8 @@ class IndeedWorker(LogModule):
         self.username_proxy = data["proxy"]["username"]
         self.password_proxy = data["proxy"]["password"]
         self.proxies = dict()
-        self.proxy_worker = ProxyWork()
+        self.proxy_worker = ProxyWork({"host": self.host_proxy, "port": self.port_proxy,
+                                       "username": self.username_proxy, "password": self.password_proxy})
         self.set_proxy(host_proxy=self.host_proxy, port_proxy=self.port_proxy, protocol_proxy=self.protocol_proxy,
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
         self.proxy_worker.set_proxy_data(self.proxies, self.proxy_id)
@@ -61,14 +62,12 @@ class IndeedWorker(LogModule):
         if not self.file_content:
             # send a report to the server, write log file
             self.api_worker.task_report_fail("no_file")
-            sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}\n")
             return False
 
         # Authorization
         auth_status = self.auth.auth()
         if not auth_status["status"]:
             self.api_worker.task_report_fail("no_auth_data", {"order": self.order_id})
-            sys.stdout.write(f"End time - {datetime.datetime.now() - begin_time}\n")
             return False
 
         # get main link
@@ -161,26 +160,26 @@ class IndeedWorker(LogModule):
 
 
 if __name__ == "__main__":
-    data = {'proxy':
-                {'proxy_id': 13,
-                 'host': '196.17.78.225',
-                 'port': 8000,
-                 'protocol': 'http',
-                 'username': '2DxLL0',
-                 'password': 'fwcZsa'
-                 },
-            'status': True,
-            'is_update_proxy': True,
-            'target_link': 'http://127.0.0.1:8000/mainsystem/testpage/',
-            'order_id': 246,
-            'file_mailing': '/media/files_mailing/%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B2%D0%B8%D1%87_%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B9_jV6LGKb.docx',
-            'file_name': 'Андревич_Андрей_jV6LGKb.docx',
-            'user_name': 'dfg',
-            'last_name': 'dfg',
-            'password': '1',
-            'email': 'rumych2013@gmail.com',
-            'login': '1',
-            'portal': 'indeed'
-            }
+    data = {'proxy': {
+        'proxy_id': 13,
+        'host': '196.17.78.225',
+        'port': 8000,
+        'protocol': 'http',
+        'username': '2DxLL0',
+        'password': 'fwcZsa'
+    },
+        'status': True,
+        'is_update_proxy': True,
+        'target_link': 'http://127.0.0.1:8000/mainsystem/testpage/',
+        'order_id': 246,
+        'file_mailing': '/media/files_mailing/%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B2%D0%B8%D1%87_%D0%90%D0%BD%D0%B4%D1%80%D0%B5%D0%B9_jV6LGKb.docx',
+        'file_name': 'Андревич_Андрей_jV6LGKb.docx',
+        'user_name': 'dfg',
+        'last_name': 'dfg',
+        'password': '1',
+        'email': 'rumych2013@gmail.com',
+        'login': '1',
+        'portal': 'indeed'
+    }
     b = IndeedWorker(data)
     b.start()

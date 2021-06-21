@@ -7,3 +7,4 @@ tmp
 config.py
 /.env
 loging_jbs.log
+./indeedmodule/ghostdriver.log
