@@ -35,21 +35,29 @@ class AuthModule(LogModule):
         submit a form, set cookies and headers. Check for captcha.
         :return:
         """
-        # check password and email
+        # check whether installed password and login
         if not self.password or not self.login:
             return {"status": False, "key": "no_auth_data"}
+
         # get login page
         auth_data = self.request.auth_html(self.order_id)
         if auth_data["status"]:
-            page = self.auth_page_analyze(auth_data["page_content"])
-            return page
+            # get data for login form
+            submit_login_data = self.auth_page_analyze(auth_data["page_content"])
+            if submit_login_data["status"]:
+                # send form login
+                send_form_status = self.send_login_form(submit_login_data["action_url"],
+                                                        submit_login_data["login_data"])
+                return send_form_status
+            else:
+                return {"status": False, "key": "fail_login"}
 
         else:
             return {"status": False, "key": "fail_login"}
 
     def auth_page_analyze(self, data) -> dict:
         """
-        Parse the login page, generate a form to submit, submit login form.
+        Parse the login page, generate a data to submit.
         :param data: str
         :return:
         """
@@ -60,20 +68,20 @@ class AuthModule(LogModule):
                                               type=settings.LOGIN_FORM_TAGS["input_tag_type_hidden"])
             if input_hidden:
                 login_data = self.get_data(input_hidden)
-                submit_login = self.send_login_form(login_data)
-                return {"status": False, "key": "fail_login_form"}
+                action_url = settings.TARGET_HOST + form_data["action"]
+                return {"status": True, "login_data": login_data, "action_url": action_url}
             else:
                 return {"status": False, "key": "fail_login_form"}
         else:
             return {"status": False, "key": "fail_login_form"}
 
-    def send_login_form(self, login_data):
+    def send_login_form(self, action_url, login_data):
         """
         Submit a login form
         :return:
         """
-        submit = self.request.submit_login("url", self.order_id, login_data)
-        return True
+        submit = self.request.submit_login(action_url, self.order_id, login_data)
+        return {"status": False, "key": "fail_login_form"}
 
     def captcha_work(self):
         pass
@@ -83,8 +91,8 @@ class AuthModule(LogModule):
         login_data: dict = dict()
         for data in input_hidden:
             login_data[data["name"]] = data.get("value", False)
-        login_data["__email"] = self.login
-        login_data["__password"] = self.password
+        login_data[settings.LOGIN_FORM_TAGS["login_field"]] = self.login
+        login_data[settings.LOGIN_FORM_TAGS["password_field"]] = self.password
         login_data["remember"] = 0
 
         return login_data

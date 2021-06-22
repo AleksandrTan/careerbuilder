@@ -256,7 +256,7 @@ class RequestModule(LogModule):
         :param data:
         :return: dict
         """
-        print(data)
+        print(url, order_id, data)
         return True
         count = 0
         response = ''
