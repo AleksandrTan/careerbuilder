@@ -28,6 +28,13 @@ class RequestModule(LogModule):
         self.headers_work = headers_work
 
     def get_chromedriver(self, use_proxy=False, user_agent=None):
+        """
+        Used proxy for Selenium Chrome Driver.
+        Can not work with "--headless"
+        :param use_proxy:
+        :param user_agent:
+        :return:
+        """
         path = os.path.dirname(os.path.abspath(__file__))
         chrome_options = webdriver.ChromeOptions()
         if use_proxy:
@@ -51,13 +58,14 @@ class RequestModule(LogModule):
 
     def auth_html(self):
         session = HTMLSession()
+        print(self.proxy_worker.get_proxy_dict())
         session.proxies = self.proxy_worker.get_proxy_dict()
         session.headers = self.headers_work.get_headers()
         cookies = self.cookies_work.get_cookies()
         response = session.get(settings.LOGIN_PAGE, cookies=cookies)
         response.html.render()
         data = response.html.html
-        print(data)
+        # print(data)
 
     def get_content(self, link: str, order_id: str):
         """

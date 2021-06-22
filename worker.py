@@ -65,7 +65,7 @@ class RabbitWorker(LogModule):
         :return:
         """
         # get task
-        bot_object = object
+        bot_objects = list()
         message = json.loads(body.decode())
         print(message)
         # start bot
@@ -77,6 +77,15 @@ class RabbitWorker(LogModule):
             bot_object = IndeedWorker(message)
             process1 = Process(target=bot_object.start, args=())
             process1.start()
+            bot_objects.append(process1)
+            # delete zombi process
+            for process in bot_objects:
+                if process.is_alive():
+                    continue
+                else:
+                    process.terminate()
+                    continue
+
             # threading.Thread(target=bot_object.start, args=()).start()
         # confirm task processing
         ch.basic_ack(delivery_tag=method.delivery_tag)

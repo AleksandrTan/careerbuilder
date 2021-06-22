@@ -23,4 +23,8 @@ proxy = {"https": "http://2DxLL0:fwcZsa@196.17.77.122:8000"}
 data1 = requests.get(url="http://www.freeproxylists.net/ru/", proxies=proxy)
 print(data1.status_code)
 data = requests.get(url="https://www.careerbuilder.com/job/J301R0620YJ2PPJK564", proxies=proxy)
+data2 = requests.get(url="https://secure.indeed.com/account/login?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed"
+                         ".com%2Fhire&tmpl=desktop&from=gnav-util-employer--allspark--employer&_ga=2.159554805"
+                         ".935920425.1623929677-1957672176.1623830126", proxies=proxy)
 print(data.status_code)
+print(data2.status_code)

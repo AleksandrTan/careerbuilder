@@ -6,6 +6,7 @@ the database level, logging to a file or standard output.
 import datetime
 import os, signal
 import sys
+import time
 
 import config
 from apimodule.apiworker import ApiWorker
@@ -68,8 +69,6 @@ class IndeedWorker(LogModule):
         auth_status = self.auth.auth()
         if not auth_status["status"]:
             self.api_worker.task_report_fail("no_auth_data", {"order": self.order_id})
-            pid = os.fork()
-            os.kill(pid, signal.SIGCONT)
 
             return False
 
