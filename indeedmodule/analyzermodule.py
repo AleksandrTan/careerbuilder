@@ -3,7 +3,6 @@ Content analysis module
 Use RequestModule to make requests to the target resource
 """
 import time
-
 from bs4 import BeautifulSoup as bs
 
 import config

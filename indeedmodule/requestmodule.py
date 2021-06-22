@@ -55,7 +55,6 @@ class RequestModule(LogModule):
         print(html, browser)
 
     def auth_html(self, order_id: str):
-        data: str = ''
         count: int = 0
         session = HTMLSession()
         session.proxies = self.proxy_worker.get_proxy_dict()
@@ -106,7 +105,7 @@ class RequestModule(LogModule):
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
                 # set cookies
 
-            return {"status": True, "error": False, "status_code": str(response.status_code), "message": data,
+            return {"status": True, "error": False, "status_code": str(response.status_code), "page_content": data,
                     "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
                                                                   self.proxy_worker.get_proxy_dict()])}
 

@@ -41,17 +41,24 @@ class AuthModule(LogModule):
 
         auth_data = self.request.auth_html(self.order_id)
         if auth_data["status"]:
-            return auth_data
+            page = self.auth_page_analyze(auth_data["page_content"])
+            return page
+
         else:
             return {"status": False, "key": "fail_login"}
 
-    def auth_page_analyze(self, data: str):
+    def auth_page_analyze(self, data) -> dict:
         """
         Parse the login page, generate a form to submit.
         :param data: str
         :return:
         """
-        pass
+        soup = bs(data, "html.parser")
+        form_data = soup.find(settings.LOGIN_FORM_TAGS["parent_tag"], id=settings.LOGIN_FORM_TAGS["parent_id"])
+        input_hidden = soup.find_all(settings.LOGIN_FORM_TAGS["input_tag_hidden"],
+                                     type=settings.LOGIN_FORM_TAGS["input_tag_type_hidden"])
+        print(input_hidden[0]["value"])
+        return {"status": False, "key": "fail_login"}
 
     def send_login_form(self):
         """

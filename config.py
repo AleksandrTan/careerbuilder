@@ -4,7 +4,6 @@ load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_MODE = os.getenv('TEST_MODE', default=False)
-print(TEST_MODE, type(TEST_MODE))
 
 # ---------------------------------------------------- Requests--------------------------------------------------
 # The number of attempts to request a change of proxy server
