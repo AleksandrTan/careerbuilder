@@ -68,7 +68,7 @@ class IndeedWorker(LogModule):
         # Authorization
         auth_status = self.auth.auth()
         if not auth_status["status"]:
-            self.api_worker.task_report_fail("no_auth_data", {"order": self.order_id})
+            self.api_worker.task_report_fail(auth_status["key"], {"order": self.order_id})
 
             return False
 

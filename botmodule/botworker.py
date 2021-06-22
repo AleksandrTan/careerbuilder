@@ -35,7 +35,8 @@ class BotWorker(LogModule):
         self.username_proxy = data["proxy"]["username"]
         self.password_proxy = data["proxy"]["password"]
         self.proxies = dict()
-        self.proxy_worker = ProxyWork()
+        self.proxy_worker = ProxyWork({"host": self.host_proxy, "port": self.port_proxy,
+                                       "username": self.username_proxy, "password": self.password_proxy})
         self.set_proxy(host_proxy=self.host_proxy, port_proxy=self.port_proxy, protocol_proxy=self.protocol_proxy,
                        username_proxy=self.username_proxy, password_proxy=self.password_proxy)
         self.proxy_worker.set_proxy_data(self.proxies, self.proxy_id)

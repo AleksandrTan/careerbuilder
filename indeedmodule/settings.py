@@ -1,12 +1,10 @@
 user = "rumych2021@ukr.net"
 password = "ufeltfvec"
-
+TEST_HOST = "http://127.0.0.1:8001"
 TARGET_HOST = "https://www.indeed.com/"
 LOGIN_PAGE = "https://secure.indeed.com/account/login?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed.com%2Fhire" \
              "&tmpl=desktop&from=gnav-util-employer--allspark--employer&_ga=2.159554805.935920425.1623929677" \
              "-1957672176.1623830126"
-
-TEST_HOST = "http://127.0.0.1:8001"
 
 LOGIN_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,"
@@ -41,28 +39,15 @@ LOGIN_COOKIES = {
     "conf_snt": 1,
     "PPDM": "my=https%3A%2F%2Femployers.indeed.com&draw=https%3A%2F%2Femployers.indeed.com"
 }
-# cache-control: no-store, no-cache, must-revalidate, private
-# Connection: keep-alive
-# content-encoding: gzip
-# content-language: en-US
-# content-security-policy: upgrade-insecure-requests
-# Content-Type: text/html;charset=UTF-8
-# Date: Fri, 18 Jun 2021 07:49:20 GMT
-# expires: Fri, 18 Jun 2021 07:48:20 GMT
-# lb_pool: mesos_external_pool
-# pragma: no-cache
-# Server: nginx
-# set-cookie: CTK=; Max-Age=0; Path=/; Secure; SameSite=None
-# set-cookie: CTK=1f8f1h0tcpi3d800; Domain=.indeed.com; Max-Age=157680000; Path=/; Secure; SameSite=None
-# set-cookie: SURF=APthOKLMdofmR4kn7lDxfD62IdnYdEcT; Domain=.indeed.com; Path=/; Secure; HttpOnly
-# set-cookie: PPSC=""; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/; Secure; HttpOnly
-# set-cookie: fbredirect=/account/login
-# set-cookie: APPLE_N=NnpNdQ8W2KLFQgXt; Secure; HttpOnly
-# strict-transport-security: max-age=86400
-# Transfer-Encoding: chunked
-# vary: Accept-Encoding
-# x-frame-options: SAMEORIGIN
-#
+"""
+Login form fields
+"""
+LOGIN_FORM_TAGS = {
+    "parent_tag": "form",
+    "parent_id": "loginform",
+    "input_tag_hidden": "input",
+    "input_tag_type_hidden": "hidden",
+}
 
 """
 Number of vacancies by reference. Used for pagination.
