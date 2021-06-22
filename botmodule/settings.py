@@ -70,6 +70,8 @@ MESSAGES_LOG = {
     "no_auth_data": {"message": "Order - order. Attention! Authorization data not installed! Check the presence of a "
                                 "email and password when creating a task!!!\n"},
     "fail_login": {"message": "Order - order. Attention! Login procedure aborted.!\n"},
+    "fail_login_form": {"message": "Order - order. Attention! Login form not found or the source code of the target "
+                                   "portal page has been changed..!\n"},
     "target_connect_error": {"message": "Order - order. Attention! Target resource is not responding! message code\n"},
     "api_connect_error": {"message": "Attention! The system api is not responding! message code\n"},
     "no_file": {"message": "Order - order. Mailing file not found.\n"},
@@ -87,6 +89,8 @@ MESSAGES_ERROR_API = {
     "no_auth_data": {"message": "Order - order. Attention! Authorization data not installed! Check the presence of a "
                                 "email and password when creating a task!!!\n"},
     "fail_login": {"message": "Order - order. Attention! Login procedure aborted.!\n"},
+    "fail_login_form": {"message": "Order - order. Attention! Login form not found or the source code of the target "
+                                   "portal page has been changed..!\n"},
     "no_file": {
         "message": "Mailing file not found."
     },

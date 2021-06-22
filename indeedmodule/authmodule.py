@@ -38,7 +38,7 @@ class AuthModule(LogModule):
         # check password and email
         if not self.password or not self.login:
             return {"status": False, "key": "no_auth_data"}
-
+        # get login page
         auth_data = self.request.auth_html(self.order_id)
         if auth_data["status"]:
             page = self.auth_page_analyze(auth_data["page_content"])
@@ -49,58 +49,44 @@ class AuthModule(LogModule):
 
     def auth_page_analyze(self, data) -> dict:
         """
-        Parse the login page, generate a form to submit.
+        Parse the login page, generate a form to submit, submit login form.
         :param data: str
         :return:
         """
         soup = bs(data, "html.parser")
         form_data = soup.find(settings.LOGIN_FORM_TAGS["parent_tag"], id=settings.LOGIN_FORM_TAGS["parent_id"])
-        input_hidden = soup.find_all(settings.LOGIN_FORM_TAGS["input_tag_hidden"],
-                                     type=settings.LOGIN_FORM_TAGS["input_tag_type_hidden"])
-        print(input_hidden[0]["value"])
-        return {"status": False, "key": "fail_login"}
+        if form_data:
+            input_hidden = form_data.find_all(settings.LOGIN_FORM_TAGS["input_tag_hidden"],
+                                              type=settings.LOGIN_FORM_TAGS["input_tag_type_hidden"])
+            if input_hidden:
+                login_data = self.get_data(input_hidden)
+                submit_login = self.send_login_form(login_data)
+                return {"status": False, "key": "fail_login_form"}
+            else:
+                return {"status": False, "key": "fail_login_form"}
+        else:
+            return {"status": False, "key": "fail_login_form"}
 
-    def send_login_form(self):
+    def send_login_form(self, login_data):
         """
         Submit a login form
         :return:
         """
-        pass
+        submit = self.request.submit_login("url", self.order_id, login_data)
+        return True
 
     def captcha_work(self):
         pass
 
-    def get_data(self, contents) -> dict:
+    def get_data(self, input_hidden) -> dict:
         # prepare form data
-        form = dict()
-        soup = bs(contents["message"], "html.parser")
-        form["firstname"] = self.user_name
-        form["lastname"] = self.last_name
-        form["email"] = self.email
-        form["cv_data"] = "SGVsbG8hCg=="
-        form["cv_file_name"] = self.file_name
-        form["upload_file"] = open(config.BASE_DIR + '/tmp/' + self.file_name, "rb")
-        form["ai_resume_builder"] = False
-        form["dropbox_cv_url"] = ''
-        form["copy_paste"] = ''
-        # set authenticity_token param
-        authenticity_token_name = soup.find(settings.TARGET_FORM["authenticity_token"]["tag"],
-                                            attrs={
-                                                "name": settings.TARGET_FORM["authenticity_token"]["name_param"]
-                                            }).get("content")
-        authenticity_token_value = soup.find(settings.TARGET_FORM["authenticity_token"]["tag"],
-                                             attrs={
-                                                 "name": settings.TARGET_FORM["authenticity_token"]["name_value"]
-                                             }).get("content")
-        form[authenticity_token_name] = authenticity_token_value
-        # set url param
-        url = soup.find(settings.TARGET_FORM["parent_tag"],
-                        attrs={"class": settings.TARGET_FORM["parent_class"]}).get("action")
-        if config.TEST_MODE == "True":
-            url = settings.TEST_HOST + url
-        else:
-            url = settings.TARGET_HOST + url
+        login_data: dict = dict()
+        for data in input_hidden:
+            login_data[data["name"]] = data.get("value", False)
+        login_data["__email"] = self.login
+        login_data["__password"] = self.password
+        login_data["remember"] = 0
 
-        return {"form": form, "url": url}
+        return login_data
 
 
