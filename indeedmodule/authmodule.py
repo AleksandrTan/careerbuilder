@@ -53,7 +53,7 @@ class AuthModule(LogModule):
                 return {"status": False, "key": "fail_login"}
 
         else:
-            return {"status": False, "key": "fail_login"}
+            return {"status": False, "key": "fail_login", "data": auth_data}
 
     def auth_page_analyze(self, data) -> dict:
         """
