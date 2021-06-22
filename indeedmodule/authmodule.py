@@ -41,9 +41,9 @@ class AuthModule(LogModule):
 
         auth_data = self.request.auth_html(self.order_id)
         if auth_data["status"]:
-            pass
-        else:
             return auth_data
+        else:
+            return {"status": False, "key": "fail_login"}
 
     def auth_page_analyze(self, data: str):
         """

@@ -1,8 +1,14 @@
+import os
+
 user = "rumych2021@ukr.net"
 password = "ufeltfvec"
+TEST_MODE = os.getenv('TEST_MODE', default=False)
 TEST_HOST = "http://127.0.0.1:8001"
 TARGET_HOST = "https://www.indeed.com/"
-LOGIN_PAGE = "https://secure.indeed.com/account/login?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed.com%2Fhire" \
+if TEST_MODE == "True":
+    LOGIN_PAGE = "http://127.0.0.1:8001/mainsystem/testauthpageindeed/"
+else:
+    LOGIN_PAGE = "https://secure.indeed.com/account/login?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed.com%2Fhire" \
              "&tmpl=desktop&from=gnav-util-employer--allspark--employer&_ga=2.159554805.935920425.1623929677" \
              "-1957672176.1623830126"
 

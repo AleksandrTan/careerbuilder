@@ -22,7 +22,7 @@ class HeadersWork:
         self.initialization_headers["Accept-Language"] = self.default_headers["Accept-Language"]
         self.initialization_headers["Cache-Control"] = self.default_headers['Cache-Control']
         self.initialization_headers["Connection"] = self.default_headers['Connection']
-        self.initialization_headers["Host"] = self.default_headers['Host']
+        # self.initialization_headers["Host"] = self.default_headers['Host']
         self.initialization_headers["Pragma"] = self.default_headers['Pragma']
         self.initialization_headers["Referer"] = self.default_headers['Referer']
         self.initialization_headers["sec-ch-ua"] = self.default_headers['sec-ch-ua']

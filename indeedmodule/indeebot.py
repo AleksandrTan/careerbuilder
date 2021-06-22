@@ -67,11 +67,13 @@ class IndeedWorker(LogModule):
 
         # Authorization
         auth_status = self.auth.auth()
+        print(auth_status)
         if not auth_status["status"]:
             self.api_worker.task_report_fail(auth_status["key"], {"order": self.order_id})
 
             return False
-
+        else:
+            return False
         # get main link
         sys.stdout.write("Get main page\n")
         main_content = self.main_page_worker()

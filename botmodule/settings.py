@@ -68,9 +68,8 @@ TARGET_FORM = {
 # Messages to log file and console
 MESSAGES_LOG = {
     "no_auth_data": {"message": "Order - order. Attention! Authorization data not installed! Check the presence of a "
-                                "email and password when creating a task!\n"},
-    "fail_login": {"message": "Order - order. Attention! Authorization data not installed! Check the presence of a "
-                              "email and password when creating a task!\n"},
+                                "email and password when creating a task!!!\n"},
+    "fail_login": {"message": "Order - order. Attention! Login procedure aborted.!\n"},
     "target_connect_error": {"message": "Order - order. Attention! Target resource is not responding! message code\n"},
     "api_connect_error": {"message": "Attention! The system api is not responding! message code\n"},
     "no_file": {"message": "Order - order. Mailing file not found.\n"},
@@ -86,9 +85,8 @@ MESSAGES_LOG = {
 
 MESSAGES_ERROR_API = {
     "no_auth_data": {"message": "Order - order. Attention! Authorization data not installed! Check the presence of a "
-                                "email and password when creating a task!\n"},
-    "fail_login": {"message": "Order - order. Attention! Authorization data not installed! Check the presence of a "
-                              "email and password when creating a task!\n"},
+                                "email and password when creating a task!!!\n"},
+    "fail_login": {"message": "Order - order. Attention! Login procedure aborted.!\n"},
     "no_file": {
         "message": "Mailing file not found."
     },
