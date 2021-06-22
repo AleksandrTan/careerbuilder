@@ -50,7 +50,7 @@ class AuthModule(LogModule):
                                                         submit_login_data["login_data"])
                 return send_form_status
             else:
-                return {"status": False, "key": "fail_login"}
+                return {"status": False, "key": "fail_login", "data": submit_login_data}
 
         else:
             return {"status": False, "key": "fail_login", "data": auth_data}
@@ -69,6 +69,7 @@ class AuthModule(LogModule):
             if input_hidden:
                 login_data = self.get_data(input_hidden)
                 action_url = settings.TARGET_HOST + form_data["action"]
+
                 return {"status": True, "login_data": login_data, "action_url": action_url}
             else:
                 return {"status": False, "key": "fail_login_form"}
@@ -81,7 +82,7 @@ class AuthModule(LogModule):
         :return:
         """
         submit = self.request.submit_login(action_url, self.order_id, login_data)
-        return {"status": False, "key": "fail_login_form"}
+        return {"status": False, "key": "fail_login_form", "data": ""}
 
     def captcha_work(self):
         pass

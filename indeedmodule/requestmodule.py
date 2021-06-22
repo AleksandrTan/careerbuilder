@@ -256,21 +256,16 @@ class RequestModule(LogModule):
         :param data:
         :return: dict
         """
-        print(url, order_id, data)
+        print(url, data)
         return True
         count = 0
         response = ''
-        files = dict()
-        headers = settings.headers
-        files["upload_file"] = data["upload_file"]
-        del data["upload_file"]
         cookies = self.cookies_work.get_cookies()
         while count < self.number_attempts:
             try:
                 if not self.proxy_worker.get_proxy_dict():
                     response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
-                                             allow_redirects=True, files=files, data=data, headers=headers,
-                                             cookies=cookies)
+                                             allow_redirects=True, data=data, headers=headers, cookies=cookies)
                 else:
                     response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
                                              headers=headers, proxies=self.proxy_worker.get_proxy_dict(), files=files,
@@ -310,8 +305,6 @@ class RequestModule(LogModule):
                 return {"status": False, "error": True, "status_code": str(response.status_code),
                         "message": error.__repr__(), "type_res": "request_module",
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
-            # set cookies
-
             break
 
         return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
