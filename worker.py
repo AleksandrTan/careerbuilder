@@ -47,7 +47,7 @@ class RabbitWorker(LogModule):
             try:
                 self.channel.queue_declare(queue="target")
                 self.channel.basic_consume(on_message_callback=callback, queue='target')
-                sys.stdout.write(' [*] Waiting for messages. To exit press CTRL+C')
+                sys.stdout.write(' [*] Waiting for messages. To exit press CTRL+C\n')
                 self.channel.start_consuming()
             except pika.exceptions.ChannelWrongStateError as error:
                 return False
@@ -67,7 +67,6 @@ class RabbitWorker(LogModule):
         # get task
         bot_objects = list()
         message = json.loads(body.decode())
-        print(message)
         # start bot
         if message["portal"] == "careerbuilder":
             bot_object = BotWorker(message)

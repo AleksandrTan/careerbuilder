@@ -82,6 +82,7 @@ class AuthModule(LogModule):
         :return:
         """
         submit = self.request.submit_login(action_url, self.order_id, login_data)
+
         return {"status": False, "key": "fail_login_form", "data": ""}
 
     def captcha_work(self):

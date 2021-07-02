@@ -10,6 +10,9 @@ class HeadersWork:
         self.default_headers = settings.LOGIN_HEADERS
         self.make_headers()
 
+    def set_headers(self, headers_data):
+        pass
+
     def get_headers(self) -> dict:
         return self.initialization_headers
 

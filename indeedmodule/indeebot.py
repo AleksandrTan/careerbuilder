@@ -61,11 +61,11 @@ class IndeedWorker(LogModule):
         sys.stdout.write(f"Start work - {datetime.datetime.now()}\n")
         # check if file for send download
         if not self.file_content:
-            # send a report to the server, write log file
             self.api_worker.task_report_fail("no_file")
             return False
 
         # Authorization
+        sys.stdout.write(f"Autorization start!\n")
         auth_status = self.auth.auth()
         print(auth_status)
         if not auth_status["status"]:

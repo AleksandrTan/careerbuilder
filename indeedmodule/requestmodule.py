@@ -62,7 +62,6 @@ class RequestModule(LogModule):
         """
         count: int = 0
         session = HTMLSession()
-        print(session.cookies)
         session.proxies = self.proxy_worker.get_proxy_dict()
         session.headers = self.headers_work.get_headers()
         # start_cookies = self.cookies_work.get_cookies()
@@ -114,6 +113,7 @@ class RequestModule(LogModule):
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
             # set cookies and headers
             self.cookies_work.set_cookies(response.cookies)
+
             return {"status": True, "error": False, "status_code": str(response.status_code), "page_content": data,
                     "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
                                                                   self.proxy_worker.get_proxy_dict()])}
@@ -257,18 +257,19 @@ class RequestModule(LogModule):
                 "type_res": "request_module",
                 "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
 
-    def submit_login(self, url: str, order_id, data: dict):
+    def submit_login(self, url: str, order_id, data: dict) -> dict:
         """
         Send form to target portal.
-        :param url:
+        :param url: url to login
         :param order_id:
-        :param data:
+        :param data: form to login
         :return: dict
         """
-        print(url, data)
-        return True
+        print(url, data, 6000)
         count = 0
         response = ''
+        proxies = self.proxy_worker.get_proxy_dict()
+        headers = self.headers_work.get_headers()
         cookies = self.cookies_work.get_cookies()
         while count < self.number_attempts:
             try:
@@ -276,9 +277,8 @@ class RequestModule(LogModule):
                     response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
                                              allow_redirects=True, data=data, headers=headers, cookies=cookies)
                 else:
-                    response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
-                                             headers=headers, proxies=self.proxy_worker.get_proxy_dict(), files=files,
-                                             data=data, allow_redirects=True, cookies=cookies)
+                    response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), data=data,
+                                             headers=headers, proxies=proxies, allow_redirects=True, cookies=cookies)
             except requests.exceptions.ConnectionError as error:
                 self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
                                                                      "order": order_id})
@@ -316,6 +316,8 @@ class RequestModule(LogModule):
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
             break
         # set cookies and headers
+        self.cookies_work.set_cookies(response.cookies)
+        self.headers_work.get_headers(response.headers)
         return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
                 "type_res": "request_module",
                 "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
