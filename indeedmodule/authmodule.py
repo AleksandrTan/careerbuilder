@@ -37,7 +37,7 @@ class AuthModule(LogModule):
         """
         # check whether installed password and login
         if not self.password or not self.login:
-            return {"status": False, "key": "no_auth_data"}
+            return {"status": False, "key": "no_auth_data", "data": dict()}
 
         # get login page
         auth_data = self.request.auth_html(self.order_id)

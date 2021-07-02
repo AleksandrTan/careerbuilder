@@ -85,8 +85,6 @@ class RabbitWorker(LogModule):
                 else:
                     process.terminate()
                     continue
-
-            # threading.Thread(target=bot_object.start, args=()).start()
         # confirm task processing
         ch.basic_ack(delivery_tag=method.delivery_tag)
         time.sleep(10)

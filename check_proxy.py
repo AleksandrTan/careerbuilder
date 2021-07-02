@@ -1,6 +1,6 @@
 import requests
 
-proxy = {"https": "http://2DxLL0:fwcZsa@196.17.77.122:8000"}
+# proxy = {"https": "http://2DxLL0:fwcZsa@196.17.77.122:8000"}
 # proxy = {"https": "http://2DxLL0:fwcZsa@196.17.77.121:8000"}
 # proxy = {"https": "http://2DxLL0:fwcZsa@196.17.79.157:8000"}
 # proxy = {"https": "http://2DxLL0:fwcZsa@196.17.76.190:8000"}
@@ -19,8 +19,9 @@ proxy = {"https": "http://2DxLL0:fwcZsa@196.17.77.122:8000"}
 
 
 # proxy = {"https": "http://3.130.124.100:8080"}
+proxy = {"https": "http://dev:0@159.89.9.135:3128"}
 
-data1 = requests.get(url="http://www.freeproxylists.net/ru/", proxies=proxy)
+data1 = requests.get(url="https://www.olx.ua/", proxies=proxy)
 print(data1.status_code)
 data = requests.get(url="https://www.careerbuilder.com/job/J301R0620YJ2PPJK564", proxies=proxy)
 data2 = requests.get(url="https://secure.indeed.com/account/login?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed"
