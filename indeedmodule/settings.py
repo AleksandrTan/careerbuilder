@@ -14,6 +14,10 @@ else:
              "-1957672176.1623830126"
     TARGET_HOST = "https://www.indeed.com"
 
+TWO_FACTOR_URL = "https://secure.indeed.com/account/login/emailtwofactorauth?hl=en_US&co=US&service=my&continue=https" \
+                 "%3A%2F%2Fwww.indeed.com%2F&from=gnav-util-homepage&jsContinue=https%3A%2F%2Fwww.indeed.com%2F" \
+                 "&empContinue=https%3A%2F%2Faccount.indeed.com%2Fmyaccess&__email=rumych2021%40ukr.net"
+
 LOGIN_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,"
               "application/signed-exchange;v=b3;q=0.9",
