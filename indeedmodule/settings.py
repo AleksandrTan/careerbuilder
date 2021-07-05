@@ -45,7 +45,7 @@ LOGIN_HEADERS = {
 }
 
 LOGIN_COOKIES = {
-    # "device": "b306ea4029f29481220b6f8aa6c1274b",
+    "device": "b306ea4029f29481220b6f8aa6c1274b",
     "fbredirect": "/account/login",
     "APPLE_N": "80UurDIR01hkYWWE",
     "G_ENABLED_IDPS": "google",
@@ -53,8 +53,8 @@ LOGIN_COOKIES = {
     "preExtAuthParams": "co=US&continue=https%3A%2F%2Fwww.indeed.com%2Fjobs%3Fq%3Dpython%26jt%3Dfulltime%26"
                         "taxo1%3D8GQeqOBVSO2eVhu55t0BMg&employer=true&form_tk=1f8f19k8aocb1800&"
                         "from=gnav-util-jobsearch--jasx&hl=en_US&service=my&surftok=wIxZ2FUlwZTbqkAIuzF0WxwU0MJp292h",
-    # "conf_snt": 1,
-    # "PPDM": "my=https%3A%2F%2Femployers.indeed.com&draw=https%3A%2F%2Femployers.indeed.com"
+    "conf_snt": 1,
+    "PPDM": "my=https%3A%2F%2Femployers.indeed.com&draw=https%3A%2F%2Femployers.indeed.com"
 }
 """
 Login form fields
