@@ -7,12 +7,17 @@ TEST_HOST = "http://127.0.0.1:8001"
 TARGET_HOST = "https://www.indeed.com/"
 if TEST_MODE == "True":
     LOGIN_PAGE = "http://127.0.0.1:8001/mainsystem/testauthpageindeed/"
+    TARGET_HOST_LOGIN = "http://127.0.0.1:8001"
     TARGET_HOST = "http://127.0.0.1:8001"
 else:
-    LOGIN_PAGE = "https://secure.indeed.com/account/login?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed.com%2Fhire" \
-             "&tmpl=desktop&from=gnav-util-employer--allspark--employer&_ga=2.159554805.935920425.1623929677" \
-             "-1957672176.1623830126"
+    LOGIN_PAGE = "https://secure.indeed.com/account/login"
+    REDIRECT_ONE_LOGIN = "location: https://my.indeed.com/account/checklogin?dest=%2Fresume%3Ffrom%3Dlogin%26continue" \
+                         "%3Dhttps%253A%252F%252Fwww.indeed.com%252F&passrx=aqRafpB6WB" \
+                         "-6j08Z3CHiIv52iUVmmXNG2lK8DgLS23u5v3i" \
+                         "-ZAazGlN9hMcf9_rAYMrBBnBPxA6NErmFRSnD3pfBpkKpHR2O7G352C0pJgoo_ilX5Ed8fpBcXyoMPWz2qezPHrU0DLltGCAJWrK_xkwx7uo%3D"
+    REDIRECT_TWO_LOGIN = "/resume?from=login&continue=https%3A%2F%2Fwww.indeed.com%2F"
     TARGET_HOST = "https://www.indeed.com"
+    TARGET_HOST_LOGIN = "https://secure.indeed.com"
 
 TWO_FACTOR_URL = "https://secure.indeed.com/account/login/emailtwofactorauth?hl=en_US&co=US&service=my&continue=https" \
                  "%3A%2F%2Fwww.indeed.com%2F&from=gnav-util-homepage&jsContinue=https%3A%2F%2Fwww.indeed.com%2F" \
@@ -40,16 +45,16 @@ LOGIN_HEADERS = {
 }
 
 LOGIN_COOKIES = {
-    "device": "b306ea4029f29481220b6f8aa6c1274b",
-    "fbredirect": "/account/register",
+    # "device": "b306ea4029f29481220b6f8aa6c1274b",
+    "fbredirect": "/account/login",
     "APPLE_N": "80UurDIR01hkYWWE",
     "G_ENABLED_IDPS": "google",
     "LANG": "en_US",
     "preExtAuthParams": "co=US&continue=https%3A%2F%2Fwww.indeed.com%2Fjobs%3Fq%3Dpython%26jt%3Dfulltime%26"
                         "taxo1%3D8GQeqOBVSO2eVhu55t0BMg&employer=true&form_tk=1f8f19k8aocb1800&"
                         "from=gnav-util-jobsearch--jasx&hl=en_US&service=my&surftok=wIxZ2FUlwZTbqkAIuzF0WxwU0MJp292h",
-    "conf_snt": 1,
-    "PPDM": "my=https%3A%2F%2Femployers.indeed.com&draw=https%3A%2F%2Femployers.indeed.com"
+    # "conf_snt": 1,
+    # "PPDM": "my=https%3A%2F%2Femployers.indeed.com&draw=https%3A%2F%2Femployers.indeed.com"
 }
 """
 Login form fields

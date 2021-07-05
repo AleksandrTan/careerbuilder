@@ -11,7 +11,7 @@ class HeadersWork:
         self.make_headers()
 
     def set_headers(self, headers_data):
-        pass
+        print(headers_data)
 
     def get_headers(self) -> dict:
         return self.initialization_headers

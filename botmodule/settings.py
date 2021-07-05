@@ -72,6 +72,8 @@ MESSAGES_LOG = {
     "fail_login": {"message": "Order - order. Attention! Login procedure aborted.!\n"},
     "fail_login_form": {"message": "Order - order. Attention! Login form not found or the source code of the target "
                                    "portal page has been changed..!\n"},
+    "fail_send_login_form": {"message": "Order - order. Attention!Login form data failed validation.\n"},
+
     "target_connect_error": {"message": "Order - order. Attention! Target resource is not responding! message code\n"},
     "api_connect_error": {"message": "Attention! The system api is not responding! message code\n"},
     "no_file": {"message": "Order - order. Mailing file not found.\n"},
@@ -92,6 +94,8 @@ MESSAGES_ERROR_API = {
                               "message \n Proxy - proxy\n"},
     "fail_login_form": {"message": "Order - order. Attention! Login form not found or the source code of the target "
                                    "portal page has been changed..!\n"},
+    "fail_send_login_form": {"message": "Order - order. url Attention!Login form failed validation.\n "
+                                        "status_code message"},
     "no_file": {
         "message": "Mailing file not found."
     },

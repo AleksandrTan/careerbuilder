@@ -251,11 +251,14 @@ class RequestModule(LogModule):
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
             # set cookies
 
-            break
+            return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
+                    "type_res": "request_module",
+                    "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
 
-        return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
-                "type_res": "request_module",
-                "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
+        return {"status": False, "error": True, "status_code": "403",
+                "message": "Perhaps the proxy server did not respond in time. 403 HTTPError",
+                "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
+                                                              self.proxy_worker.get_proxy_dict()])}
 
     def submit_login(self, url: str, order_id, data: dict) -> dict:
         """
@@ -279,12 +282,14 @@ class RequestModule(LogModule):
                 else:
                     response = requests.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), data=data,
                                              headers=headers, proxies=proxies, allow_redirects=True, cookies=cookies)
+                    print(url, response, response.text, 7000)
             except requests.exceptions.ConnectionError as error:
                 self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
                                                                      "order": order_id})
                 return {"status": False, "error": True, "status_code": 0, "message": error.__repr__(),
                         "type_res": "request_module",
-                        "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
+                        "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()]),
+                        "url": url}
             try:
                 response.raise_for_status()
             except requests.HTTPError as error:
@@ -305,7 +310,8 @@ class RequestModule(LogModule):
                                                                    "order": order_id})
                 return {"status": False, "error": True, "status_code": str(response.status_code),
                         "message": error.__repr__(), "type_res": "request_module",
-                        "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
+                        "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()]),
+                        "url": url}
 
             except requests.exceptions.RequestException as error:
                 self._send_task_report("main_content_error", data={"message": error.__repr__(),
@@ -313,11 +319,18 @@ class RequestModule(LogModule):
                                                                    "order": order_id})
                 return {"status": False, "error": True, "status_code": str(response.status_code),
                         "message": error.__repr__(), "type_res": "request_module",
-                        "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
-            break
-        # set cookies and headers
-        self.cookies_work.set_cookies(response.cookies)
-        self.headers_work.get_headers(response.headers)
-        return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
+                        "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()]),
+                        "url": url}
+
+            # set cookies and headers
+            self.cookies_work.set_cookies(response.cookies)
+            self.headers_work.set_headers(response.headers)
+            return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
+                    "type_res": "request_module",
+                    "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
+
+        return {"status": False, "error": True, "status_code": str(response.status_code),
+                "message": "Perhaps the proxy server did not respond in time. 403 HTTPError",
                 "type_res": "request_module",
-                "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
+                "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()]),
+                "url": url}

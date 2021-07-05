@@ -1,6 +1,9 @@
 """
 Module for authorization on the target resource.
 """
+import sys
+import time
+
 from bs4 import BeautifulSoup as bs
 
 import config
@@ -40,17 +43,24 @@ class AuthModule(LogModule):
             return {"status": False, "key": "no_auth_data", "data": dict()}
 
         # get login page
+        sys.stdout.write(f"Get login form!\n")
         auth_data = self.request.auth_html(self.order_id)
         if auth_data["status"]:
             # get data for login form
+            sys.stdout.write(f"Set login data!\n")
             submit_login_data = self.auth_page_analyze(auth_data["page_content"])
             if submit_login_data["status"]:
+                time.sleep(config.DELAY_REQUESTS)
                 # send form login
+                sys.stdout.write(f"Submit login data!\n")
                 send_form_status = self.send_login_form(submit_login_data["action_url"],
                                                         submit_login_data["login_data"])
-                return send_form_status
+                if send_form_status["status"]:
+                    return True
+                else:
+                    return {"status": False, "key": "fail_send_login_form", "data": send_form_status["data"]}
             else:
-                return {"status": False, "key": "fail_login", "data": submit_login_data}
+                return {"status": False, "key": "fail_login_form", "data": submit_login_data}
 
         else:
             return {"status": False, "key": "fail_login", "data": auth_data}
@@ -68,7 +78,7 @@ class AuthModule(LogModule):
                                               type=settings.LOGIN_FORM_TAGS["input_tag_type_hidden"])
             if input_hidden:
                 login_data = self.get_data(input_hidden)
-                action_url = settings.TARGET_HOST + form_data["action"]
+                action_url = settings.TARGET_HOST_LOGIN + form_data["action"]
 
                 return {"status": True, "login_data": login_data, "action_url": action_url}
             else:
@@ -82,8 +92,10 @@ class AuthModule(LogModule):
         :return:
         """
         submit = self.request.submit_login(action_url, self.order_id, login_data)
+        if submit["status"]:
+            return {"status": True}
 
-        return {"status": False, "key": "fail_login_form", "data": ""}
+        return {"status": False, "key": "fail_login_form", "data": submit}
 
     def captcha_work(self):
         pass
