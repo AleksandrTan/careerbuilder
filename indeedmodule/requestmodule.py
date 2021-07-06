@@ -54,6 +54,9 @@ class RequestModule(LogModule):
         html = browser.page_source
         print(html, browser)
 
+    def get_main_page(self) -> dict:
+        return dict()
+
     def auth_html(self, order_id: str) -> dict:
         """
         Get content login page? set cookies and headers
@@ -273,8 +276,10 @@ class RequestModule(LogModule):
         response = ''
         session = requests.Session()
         proxies = self.proxy_worker.get_proxy_dict()
+        proxies = dict()  # test
         headers = self.headers_work.get_headers()
         cookies = self.cookies_work.get_cookies()
+        print(cookies)
         while count < self.number_attempts:
             try:
                 if not self.proxy_worker.get_proxy_dict():
@@ -283,7 +288,7 @@ class RequestModule(LogModule):
                 else:
                     response = session.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), data=data,
                                             headers=headers, proxies=proxies, allow_redirects=True)
-                    print(url, response, response.text, 7000)
+                    print(url, response, 7000)
             except requests.exceptions.ConnectionError as error:
                 self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": 0,
                                                                      "order": order_id})

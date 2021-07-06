@@ -42,6 +42,11 @@ class AuthModule(LogModule):
         if not self.password or not self.login:
             return {"status": False, "key": "no_auth_data", "data": dict()}
 
+        # enter to start page
+        main_page = self.enter_main_page()
+        if not main_page["status"]:
+            return {"status": False, "key": "main_page_fail", "data": main_page}
+
         # get login page
         sys.stdout.write(f"Get login form!\n")
         auth_data = self.request.auth_html(self.order_id)
@@ -64,6 +69,18 @@ class AuthModule(LogModule):
 
         else:
             return {"status": False, "key": "fail_login", "data": auth_data}
+
+    def enter_main_page(self) -> dict:
+        """
+        Open start page, set cookies
+        :return: dict
+        """
+        main_page = self.request.get_main_page()
+
+        if main_page["status"]:
+            return {"status": True}
+
+        return {"status": False, "key": "fail_login_form", "data": main_page}
 
     def auth_page_analyze(self, data) -> dict:
         """

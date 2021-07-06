@@ -69,6 +69,8 @@ TARGET_FORM = {
 MESSAGES_LOG = {
     "no_auth_data": {"message": "Order - order. Attention! Authorization data not installed! Check the presence of a "
                                 "email and password when creating a task!!!\n"},
+    "main_page_fail": {"message": "Order - order. Attention! Authorization data not installed! Check the presence of a "
+                                  "email and password when creating a task!!!\n"},
     "fail_login": {"message": "Order - order. Attention! Login procedure aborted.!\n"},
     "fail_login_form": {"message": "Order - order. Attention! Login form not found or the source code of the target "
                                    "portal page has been changed..!\n"},
@@ -90,6 +92,8 @@ MESSAGES_LOG = {
 MESSAGES_ERROR_API = {
     "no_auth_data": {"message": "Order - order. Attention! Authorization data not installed! Check the presence of a "
                                 "email and password when creating a task!!!\n"},
+    "main_page_fail": {"message": "Order - order. Attention! Authorization data not installed! Check the presence of a "
+                                  "email and password when creating a task!!!\n"},
     "fail_login": {"message": "Order - order. Attention! Login procedure aborted.!\n Messages - "
                               "message \n Proxy - proxy\n"},
     "fail_login_form": {"message": "Order - order. Attention! Login form not found or the source code of the target "
