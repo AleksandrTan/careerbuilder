@@ -47,14 +47,11 @@ class ApiWorker(LogModule):
         url = self.api_url + self.url_task_fail.replace("order_id", str(self.order_id))
         message = self.messages[key_report]["message"]
         del data_error["status"]
-        print(data_error, 4000)
         if data_error:
             for data in data_error:
                 if data == "proxy":
-                    print(20000)
                     message = message.replace("pserver", list(self.proxy_worker.get_proxy_dict().values())[0])
                     continue
-                print(10000)
                 message = message.replace(data, str(data_error[data]))
                 continue
         params["message"] = message

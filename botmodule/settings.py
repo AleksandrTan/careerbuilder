@@ -93,12 +93,12 @@ MESSAGES_ERROR_API = {
                                 "email and password when creating a task!!!\n"},
     "main_page_fail": {"message": "Order - order. Attention! Start page not responding! Code - status_code message "
                                   "Proxy - pserver\n"},
-    "fail_login": {"message": "Order - order. Attention! Login procedure aborted.!\n Messages - "
-                              "message \n Proxy - proxy\n"},
+    "fail_login": {"message": "Order - order. Attention! Login procedure aborted.!\n Code - status_code Messages - "
+                              "message \n Proxy - pserver\n"},
     "fail_login_form": {"message": "Order - order. Attention! Login form not found or the source code of the target "
                                    "portal page has been changed..!\n"},
-    "fail_send_login_form": {"message": "Order - order. url Attention!Login form failed validation.\n "
-                                        "status_code message"},
+    "fail_send_login_form": {"message": "Order - order. Attention!Login form failed validation.\n "
+                                        "Code - status_code. Messages - message."},
     "no_file": {
         "message": "Mailing file not found."
     },

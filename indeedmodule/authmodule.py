@@ -43,9 +43,8 @@ class AuthModule(LogModule):
             return {"status": False, "key": "no_auth_data", "data": dict()}
 
         # enter to start page
+        sys.stdout.write(f"Get main page!\n")
         main_page = self.enter_main_page()
-        print(main_page, 3500)
-        return {"status": False, "key": main_page["key"], "data": main_page["data"]}
         if not main_page["status"]:
             return {"status": False, "key": main_page["key"], "data": main_page["data"]}
 
@@ -65,9 +64,9 @@ class AuthModule(LogModule):
                 if send_form_status["status"]:
                     return True
                 else:
-                    return {"status": False, "key": "fail_send_login_form", "data": send_form_status["data"]}
+                    return {"status": False, "key": send_form_status["key"], "data": send_form_status["data"]}
             else:
-                return {"status": False, "key": "fail_login_form", "data": submit_login_data}
+                return {"status": False, "key": submit_login_data["key"], "data": submit_login_data}
 
         else:
             return {"status": False, "key": "fail_login", "data": auth_data}
@@ -114,7 +113,7 @@ class AuthModule(LogModule):
         if submit["status"]:
             return {"status": True}
 
-        return {"status": False, "key": "fail_login_form", "data": submit}
+        return {"status": False, "key": "fail_send_login_form", "data": submit}
 
     def captcha_work(self):
         pass
