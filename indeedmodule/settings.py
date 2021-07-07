@@ -10,7 +10,10 @@ if TEST_MODE == "True":
     TARGET_HOST_LOGIN = "http://127.0.0.1:8001"
     TARGET_HOST = "http://127.0.0.1:8001"
 else:
-    LOGIN_PAGE = "https://secure.indeed.com/account/login"
+    LOGIN_PAGE = "https://secure.indeed.com/account/login?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed.com%2F" \
+                 "&tmpl=desktop&service=my&from=gnav-util-homepage&jsContinue=https%3A%2F%2Fwww.indeed.com%2F" \
+                 "&empContinue=https%3A%2F%2Faccount.indeed.com%2Fmyaccess&_ga=2.13999671.1808307401.1625664801" \
+                 "-988468960.1625664801 "
     REDIRECT_ONE_LOGIN = "location: https://my.indeed.com/account/checklogin?dest=%2Fresume%3Ffrom%3Dlogin%26continue" \
                          "%3Dhttps%253A%252F%252Fwww.indeed.com%252F&passrx=aqRafpB6WB" \
                          "-6j08Z3CHiIv52iUVmmXNG2lK8DgLS23u5v3i" \

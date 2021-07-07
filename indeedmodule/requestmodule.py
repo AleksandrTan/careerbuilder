@@ -111,6 +111,7 @@ class RequestModule(LogModule):
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
             # set cookies and headers
             self.cookies_work.set_cookies(response.cookies)
+            self.headers_work.set_headers(response.headers)
 
             return {"status": True, "error": False, "status_code": str(response.status_code), "page_content": data,
                     "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
@@ -327,6 +328,7 @@ class RequestModule(LogModule):
             # set cookies and headers
             self.cookies_work.set_cookies(response.cookies)
             self.headers_work.set_headers(response.headers)
+
             return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
                     "type_res": "request_module",
                     "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
@@ -397,6 +399,7 @@ class RequestModule(LogModule):
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
             # set cookies and headers
             self.cookies_work.set_cookies(response.cookies)
+            self.headers_work.set_headers(response.headers)
 
             return {"status": True, "error": False, "status_code": str(response.status_code),
                     "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
