@@ -65,10 +65,10 @@ class RequestModule(LogModule):
         session = HTMLSession()
         session.proxies = self.proxy_worker.get_proxy_dict()
         session.headers = self.headers_work.get_headers()
+        cookies = self.cookies_work.get_cookies()
         while count < self.number_attempts:
             try:
-                print(settings.LOGIN_PAGE, session.headers)
-                response = session.get(settings.LOGIN_PAGE, allow_redirects=False)
+                response = session.get(settings.LOGIN_PAGE, allow_redirects=False, cookies=cookies)
                 response.html.render()
                 data = response.html.html
             except requests.exceptions.ConnectionError as error:
