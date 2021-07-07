@@ -54,12 +54,10 @@ class RequestModule(LogModule):
         html = browser.page_source
         print(html, browser)
 
-    def get_main_page(self) -> dict:
-        return dict()
-
-    def auth_html(self, order_id: str) -> dict:
+    def auth_html(self, order_id: str, is_main: bool = False) -> dict:
         """
-        Get content login page? set cookies and headers
+        Get content login page, set cookies and headers
+        :param is_main: bool (if need enter main page)
         :param order_id: str
         :return:
         """
@@ -67,13 +65,14 @@ class RequestModule(LogModule):
         session = HTMLSession()
         session.proxies = self.proxy_worker.get_proxy_dict()
         session.headers = self.headers_work.get_headers()
+        url = settings.LOGIN_PAGE if is_main else settings.TARGET_HOST
         # start_cookies = self.cookies_work.get_cookies()
         # for cookie in start_cookies:
         #     session.cookies.set(cookie, start_cookies[cookie], domain="secures.indeed.com")
         # print(session.cookies)
         while count < self.number_attempts:
             try:
-                response = session.get(settings.LOGIN_PAGE)
+                response = session.get(url)
                 response.html.render()
                 data = response.html.html
             except requests.exceptions.ConnectionError as error:
@@ -276,7 +275,6 @@ class RequestModule(LogModule):
         response = ''
         session = requests.Session()
         proxies = self.proxy_worker.get_proxy_dict()
-        proxies = dict()  # test
         headers = self.headers_work.get_headers()
         cookies = self.cookies_work.get_cookies()
         print(cookies)

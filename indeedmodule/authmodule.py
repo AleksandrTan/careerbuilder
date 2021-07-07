@@ -44,6 +44,8 @@ class AuthModule(LogModule):
 
         # enter to start page
         main_page = self.enter_main_page()
+        print(main_page)
+        return {"status": False, "key": "main_page_fail", "data": main_page}
         if not main_page["status"]:
             return {"status": False, "key": "main_page_fail", "data": main_page}
 
@@ -75,7 +77,7 @@ class AuthModule(LogModule):
         Open start page, set cookies
         :return: dict
         """
-        main_page = self.request.get_main_page()
+        main_page = self.request.auth_html(self.order_id, is_main=True)
 
         if main_page["status"]:
             return {"status": True}
