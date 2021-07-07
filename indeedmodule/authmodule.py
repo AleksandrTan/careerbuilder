@@ -44,10 +44,10 @@ class AuthModule(LogModule):
 
         # enter to start page
         main_page = self.enter_main_page()
-        print(main_page)
-        return {"status": False, "key": "main_page_fail", "data": main_page}
+        print(main_page, 3500)
+        return {"status": False, "key": main_page["key"], "data": main_page["data"]}
         if not main_page["status"]:
-            return {"status": False, "key": "main_page_fail", "data": main_page}
+            return {"status": False, "key": main_page["key"], "data": main_page["data"]}
 
         # get login page
         sys.stdout.write(f"Get login form!\n")
@@ -82,7 +82,7 @@ class AuthModule(LogModule):
         if main_page["status"]:
             return {"status": True}
 
-        return {"status": False, "key": "fail_login_form", "data": main_page}
+        return {"status": False, "key": "main_page_fail", "data": main_page}
 
     def auth_page_analyze(self, data) -> dict:
         """

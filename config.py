@@ -10,7 +10,7 @@ TEST_MODE = os.getenv('TEST_MODE', default=False)
 NUMBER_REQUESTS = 5
 
 # delay requests
-DELAY_REQUESTS = 5
+DELAY_REQUESTS = 0
 
 # request timeout
 REQUEST_TIMEOUT = 6

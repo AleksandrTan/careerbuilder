@@ -65,7 +65,7 @@ class RequestModule(LogModule):
         session = HTMLSession()
         session.proxies = self.proxy_worker.get_proxy_dict()
         session.headers = self.headers_work.get_headers()
-        url = settings.LOGIN_PAGE if is_main else settings.TARGET_HOST
+        url = settings.TARGET_HOST if is_main else settings.LOGIN_PAGE
         # start_cookies = self.cookies_work.get_cookies()
         # for cookie in start_cookies:
         #     session.cookies.set(cookie, start_cookies[cookie], domain="secures.indeed.com")
@@ -121,7 +121,7 @@ class RequestModule(LogModule):
                                                                   self.proxy_worker.get_proxy_dict()])}
 
         return {"status": False, "error": True, "status_code": "403",
-                "message": "Perhaps the proxy server did not respond in time. 403 HTTPError",
+                "message": "Perhaps the server did not respond in time.",
                 "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
                                                               self.proxy_worker.get_proxy_dict()])}
 
