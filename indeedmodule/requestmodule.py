@@ -72,7 +72,8 @@ class RequestModule(LogModule):
         # print(session.cookies)
         while count < self.number_attempts:
             try:
-                response = session.get(url)
+                print(url, session.headers)
+                response = session.get(url, allow_redirects=False)
                 response.html.render()
                 data = response.html.html
             except requests.exceptions.ConnectionError as error:
@@ -338,3 +339,76 @@ class RequestModule(LogModule):
                 "type_res": "request_module",
                 "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()]),
                 "url": url}
+
+    def main_html(self, order_id: str) -> dict:
+        """
+        Get content main page, set cookies and headers
+        :param order_id: str
+        :return:
+        """
+        count = 0
+        session = requests.Session()
+        proxies = self.proxy_worker.get_proxy_dict()
+        headers = self.headers_work.get_headers()
+        session.headers.update(headers)
+        url = settings.TARGET_HOST
+        while count < self.number_attempts:
+            try:
+                if not self.proxy_worker.get_proxy_dict():
+                    print(url, session.headers)
+                    response = session.get(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
+                                           allow_redirects=True)
+                else:
+                    print(url, session.headers)
+                    response = session.get(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
+                                           proxies=proxies, allow_redirects=True)
+
+            except requests.exceptions.ConnectionError as error:
+                self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": '',
+                                                                     "order": order_id})
+
+                return {"status": False, "error": True, "status_code": '0', "message": error.__repr__(),
+                        "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
+                                                                      self.proxy_worker.get_proxy_dict()])}
+
+            try:
+                response.raise_for_status()
+            except requests.HTTPError as error:
+                if response.status_code == 403:
+                    if self.is_update_proxy:
+                        # update proxy server settings
+                        proxy = self.api_worker.update_proxy(self.proxy_worker.get_proxy_id())
+                        if proxy:
+                            self.proxy_worker.set_proxy_data(proxy[1], proxy[0])
+                            session.proxies = self.proxy_worker.get_proxy_dict()
+                    count += 1
+                    time.sleep(config.DELAY_REQUESTS)
+                    self._send_task_report("main_content_error", data={"message": error.__repr__(),
+                                                                       "code": str(response.status_code),
+                                                                       "order": order_id})
+                    continue
+                self._send_task_report("main_content_error", data={"message": error.__repr__(),
+                                                                   "code": str(response.status_code),
+                                                                   "order": order_id})
+                return {"status": False, "error": True, "status_code": str(response.status_code),
+                        "message": error.__repr__(), "type_res": "request_module",
+                        "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
+
+            except requests.exceptions.RequestException as error:
+                self._send_task_report("main_content_error", data={"message": error.__repr__(),
+                                                                   "code": str(response.status_code),
+                                                                   "order": order_id})
+                return {"status": False, "error": True, "status_code": str(response.status_code),
+                        "message": error.__repr__(), "type_res": "request_module",
+                        "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
+            # set cookies and headers
+            self.cookies_work.set_cookies(response.cookies)
+
+            return {"status": False, "error": False, "status_code": str(response.status_code),
+                    "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
+                                                                  self.proxy_worker.get_proxy_dict()])}
+
+        return {"status": False, "error": True, "status_code": "403",
+                "message": "Perhaps the server did not respond in time.",
+                "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
+                                                              self.proxy_worker.get_proxy_dict()])}

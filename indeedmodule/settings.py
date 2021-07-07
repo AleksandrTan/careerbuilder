@@ -16,7 +16,7 @@ else:
                          "-6j08Z3CHiIv52iUVmmXNG2lK8DgLS23u5v3i" \
                          "-ZAazGlN9hMcf9_rAYMrBBnBPxA6NErmFRSnD3pfBpkKpHR2O7G352C0pJgoo_ilX5Ed8fpBcXyoMPWz2qezPHrU0DLltGCAJWrK_xkwx7uo%3D"
     REDIRECT_TWO_LOGIN = "/resume?from=login&continue=https%3A%2F%2Fwww.indeed.com%2F"
-    TARGET_HOST = "https://www.indeed.com"
+    TARGET_HOST = "https://www.indeed.com/"
     TARGET_HOST_LOGIN = "https://secure.indeed.com"
 
 TWO_FACTOR_URL = "https://secure.indeed.com/account/login/emailtwofactorauth?hl=en_US&co=US&service=my&continue=https" \
@@ -30,9 +30,9 @@ LOGIN_HEADERS = {
     "Accept-Language": "en-US,en;q=0.9,ru;q=0.8",
     "Cache-Control": "no-cache",
     "Connection": "keep-alive",
-    "Host": "secure.indeed.com",
+    # "Host": "indeed.com",
     "Pragma": "no-cache",
-    "Referer": "https://www.indeed.com/",
+    # "Referer": "https://www.indeed.com/",
     "sec-ch-ua": '" Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91"',
     "sec-ch-ua-mobile": "?0",
     "Sec-Fetch-Dest": "document",

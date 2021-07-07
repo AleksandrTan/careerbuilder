@@ -62,7 +62,7 @@ class AuthModule(LogModule):
                 send_form_status = self.send_login_form(submit_login_data["action_url"],
                                                         submit_login_data["login_data"])
                 if send_form_status["status"]:
-                    return True
+                    return {"status": True}
                 else:
                     return {"status": False, "key": send_form_status["key"], "data": send_form_status["data"]}
             else:
@@ -76,7 +76,7 @@ class AuthModule(LogModule):
         Open start page, set cookies
         :return: dict
         """
-        main_page = self.request.auth_html(self.order_id, is_main=True)
+        main_page = self.request.main_html(self.order_id)
 
         if main_page["status"]:
             return {"status": True}
