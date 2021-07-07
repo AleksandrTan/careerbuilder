@@ -65,15 +65,10 @@ class RequestModule(LogModule):
         session = HTMLSession()
         session.proxies = self.proxy_worker.get_proxy_dict()
         session.headers = self.headers_work.get_headers()
-        url = settings.TARGET_HOST if is_main else settings.LOGIN_PAGE
-        # start_cookies = self.cookies_work.get_cookies()
-        # for cookie in start_cookies:
-        #     session.cookies.set(cookie, start_cookies[cookie], domain="secures.indeed.com")
-        # print(session.cookies)
         while count < self.number_attempts:
             try:
-                print(url, session.headers)
-                response = session.get(url, allow_redirects=False)
+                print(settings.LOGIN_PAGE, session.headers)
+                response = session.get(settings.LOGIN_PAGE, allow_redirects=False)
                 response.html.render()
                 data = response.html.html
             except requests.exceptions.ConnectionError as error:
@@ -278,12 +273,14 @@ class RequestModule(LogModule):
         proxies = self.proxy_worker.get_proxy_dict()
         headers = self.headers_work.get_headers()
         cookies = self.cookies_work.get_cookies()
-        print(cookies)
+        for cookie in cookies:
+            session.cookies.set(cookie, cookies[cookie])
+        print(session.cookies)
         while count < self.number_attempts:
             try:
                 if not self.proxy_worker.get_proxy_dict():
                     response = session.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
-                                            allow_redirects=True, data=data, headers=headers, cookies=cookies)
+                                            allow_redirects=True, data=data, headers=headers)
                 else:
                     response = session.post(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), data=data,
                                             headers=headers, proxies=proxies, allow_redirects=True)
@@ -355,14 +352,11 @@ class RequestModule(LogModule):
         while count < self.number_attempts:
             try:
                 if not self.proxy_worker.get_proxy_dict():
-                    print(url, session.headers)
                     response = session.get(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
                                            allow_redirects=True)
                 else:
-                    print(url, session.headers)
                     response = session.get(url, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT),
                                            proxies=proxies, allow_redirects=True)
-
             except requests.exceptions.ConnectionError as error:
                 self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": '',
                                                                      "order": order_id})
@@ -404,7 +398,7 @@ class RequestModule(LogModule):
             # set cookies and headers
             self.cookies_work.set_cookies(response.cookies)
 
-            return {"status": False, "error": False, "status_code": str(response.status_code),
+            return {"status": True, "error": False, "status_code": str(response.status_code),
                     "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
                                                                   self.proxy_worker.get_proxy_dict()])}
 

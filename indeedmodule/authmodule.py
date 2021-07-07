@@ -49,10 +49,12 @@ class AuthModule(LogModule):
             return {"status": False, "key": main_page["key"], "data": main_page["data"]}
 
         # get login page
+        time.sleep(config.DELAY_REQUESTS)
         sys.stdout.write(f"Get login form!\n")
         auth_data = self.request.auth_html(self.order_id)
         if auth_data["status"]:
             # get data for login form
+            time.sleep(config.DELAY_REQUESTS)
             sys.stdout.write(f"Set login data!\n")
             submit_login_data = self.auth_page_analyze(auth_data["page_content"])
             if submit_login_data["status"]:

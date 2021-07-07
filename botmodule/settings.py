@@ -98,7 +98,7 @@ MESSAGES_ERROR_API = {
     "fail_login_form": {"message": "Order - order. Attention! Login form not found or the source code of the target "
                                    "portal page has been changed..!\n"},
     "fail_send_login_form": {"message": "Order - order. Attention!Login form failed validation.\n "
-                                        "Code - status_code. Messages - message."},
+                                        "Code - status_code.\n Messages - message.\nProxy - pserver\n"},
     "no_file": {
         "message": "Mailing file not found."
     },
