@@ -7,10 +7,10 @@ TEST_MODE = os.getenv('TEST_MODE', default=False)
 
 # ---------------------------------------------------- Requests--------------------------------------------------
 # The number of attempts to request a change of proxy server
-NUMBER_REQUESTS = 1
+NUMBER_REQUESTS = 5
 
 # delay requests
-DELAY_REQUESTS = 5
+DELAY_REQUESTS = 0
 
 # request timeout
 REQUEST_TIMEOUT = 6

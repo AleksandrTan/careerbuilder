@@ -21,11 +21,12 @@ import requests
 # proxy = {"https": "http://3.130.124.100:8080"}
 proxy = {"https": "http://dev:0@159.89.9.135:3128"}
 
-data1 = requests.get(url="https://www.indeed.com/")
-print(data1.status_code, data1.cookies)
+# data1 = requests.get(url="https://www.indeed.com/")
+# print(data1.status_code, data1.cookies)
 # data = requests.get(url="https://www.careerbuilder.com/job/J301R0620YJ2PPJK564", proxies=proxy)
 # data2 = requests.get(url="https://secure.indeed.com/account/login?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed"
 #                          ".com%2Fhire&tmpl=desktop&from=gnav-util-employer--allspark--employer&_ga=2.159554805"
 #                          ".935920425.1623929677-1957672176.1623830126", proxies=proxy)
 # print(data.status_code)
 # print(data2.status_code)
+data = requests.post("http://127.0.0.1:3000/mainsystem/api/order/44/fail/", data={"message": "ok"})

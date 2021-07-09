@@ -44,13 +44,13 @@ class ApiRequestModule(LogModule):
             try:
                 if data:
                     response = requests.post(url, data=data)
+                    print(response.text)
                 else:
                     response = requests.post(url)
                 break
             except requests.exceptions.RequestException as error:
                 # write logs and console
-                self._send_task_report("api_connect_error", data={"message": error.__repr__(),
-                                                                  "code": 500})
+                self._send_task_report("api_connect_error", data={"message": error.__repr__(), "code": 500})
                 counter += 1
                 time.sleep(TIME_TO_CONNECT)
                 continue
