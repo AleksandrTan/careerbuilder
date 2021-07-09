@@ -24,7 +24,7 @@ class BotWorker(LogModule):
         self.link_id = self.target_link.split('/')[-1]
         self.order_id = data["order_id"]
         self.file_mailing = data["file_mailing"]
-        self.file_name = data["file_mailing"]
+        self.file_name = data["file_name"]
         self.user_name = data["user_name"]
         self.last_name = data["last_name"]
         self.email = data["email"]
@@ -131,7 +131,6 @@ class BotWorker(LogModule):
         :return: None
         """
         file = self.api_worker.get_file(self.file_mailing)
-        print(self.file_name)
         if file["status"]:
             files = open(config.BASE_DIR + '/tmp/' + self.file_name, "wb")
             files.write(file["content"])

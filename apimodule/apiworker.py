@@ -91,9 +91,3 @@ class ApiWorker(LogModule):
             return json.loads(result["message"])["proxy_id"], {"https": json.loads(result["message"])["proxy"]}
         else:
             return tuple()
-
-
-if __name__ == "__main__":
-    proxy = ProxyWork()
-    api = ApiWorker(1, proxy)
-    print(api.update_proxy(1))
