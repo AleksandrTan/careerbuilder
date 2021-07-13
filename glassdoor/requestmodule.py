@@ -14,13 +14,14 @@ from apimodule.proxy_work import ProxyWork
 
 class RequestModule(LogModule):
 
-    def __init__(self, api_worker, proxy_worker: ProxyWork, is_update_proxy: bool):
+    def __init__(self, api_worker, proxy_worker: ProxyWork, is_update_proxy: bool, cookies_work, headers_work):
         super().__init__()
         self.is_update_proxy = is_update_proxy
         self.api_worker = api_worker
         self.proxy_worker = proxy_worker
         self.number_attempts = config.NUMBER_REQUESTS
-        self.cookie: dict = dict()
+        self.cookies_work = cookies_work
+        self.headers_work = headers_work
 
     def get_content(self, link: str, order_id: str):
         """
@@ -33,13 +34,13 @@ class RequestModule(LogModule):
         """
         count: int = 0
         session = HTMLSession()
-        session.proxies = f = self.proxy_worker.get_proxy_dict()
-        session.headers = settings.headers
-        cookies = self.get_cookie()
+        session.proxies = self.proxy_worker.get_proxy_dict()
+        session.headers = settings.HEADERS
         while count < self.number_attempts:
             try:
-                response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT), cookies=cookies)
+                response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT))
                 session.close()
+                print(response.cookies)
             except requests.exceptions.ConnectionError as error:
                 self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": '',
                                                                      "order": order_id})
@@ -78,7 +79,7 @@ class RequestModule(LogModule):
                         "message": error.__repr__(), "type_res": "request_module",
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
             # set cookies
-            self.set_cookie(response.cookies)
+
             return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
                     "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
                                                                   self.proxy_worker.get_proxy_dict()])}
@@ -99,10 +100,10 @@ class RequestModule(LogModule):
         count = 0
         response = ''
         files = dict()
-        headers = settings.headers
+        headers = settings.HEADERS
         files["upload_file"] = data["upload_file"]
         del data["upload_file"]
-        cookies = self.get_cookie()
+        cookies = dict()
         while count < self.number_attempts:
             try:
                 if not self.proxy_worker.get_proxy_dict():
@@ -149,17 +150,10 @@ class RequestModule(LogModule):
                         "message": error.__repr__(), "type_res": "request_module",
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
             # set cookies
-            self.set_cookie(response.cookies)
+
             break
 
         return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
                 "type_res": "request_module",
                 "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
 
-    def set_cookie(self, cookies):
-        if cookies:
-            for cookie in cookies:
-                self.cookie[cookie.name] = cookie.value
-
-    def get_cookie(self) -> dict:
-        return self.cookie

@@ -15,7 +15,8 @@ from apimodule.proxy_work import ProxyWork
 class AnalyzerModule:
 
     def __init__(self, order_id: str, link_id: str, user_name: str, last_name: str, email: str,
-                 file_content, file_name, api_worker, proxy_worker: ProxyWork, is_update_proxy: bool):
+                 file_content, file_name, api_worker, proxy_worker: ProxyWork, is_update_proxy: bool, cookies_work,
+                 headers_work):
         """
         Возвращает либо ошибку о соедиенииб либо факт того, что ссылок для дальнейшего анализа не найдено
         :param is_update_proxy bool
@@ -44,7 +45,9 @@ class AnalyzerModule:
         self.success_count_link = 0  # successfully sent links
         self.fail_count_link = 0  # unsuccessfully submitted links
         self.count_link_button = 0
-        self.request = RequestModule(api_worker, proxy_worker, is_update_proxy)
+        self.cookies_work = cookies_work
+        self.headers_work = headers_work
+        self.request = RequestModule(api_worker, proxy_worker, is_update_proxy,self.cookies_work, self.headers_work)
 
     def parse_main_page(self, link: str) -> dict:
         """
@@ -55,7 +58,7 @@ class AnalyzerModule:
         content = self.request.get_content(link, self.order_id)
         if not content["status"]:
             return content
-
+        return content
         status = True
         reason = "connection"
         soup = bs(content["message"], "html.parser")

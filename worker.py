@@ -12,6 +12,7 @@ import config
 from logsource.logmodule import LogModule
 from botmodule.botworker import BotWorker
 from indeedmodule.indeebot import IndeedWorker
+from glassdoor.glassbot import GlassWorker
 
 
 class RabbitWorker(LogModule):
@@ -71,7 +72,11 @@ class RabbitWorker(LogModule):
         # start bot
         if message["portal"] == "careerbuilder":
             bot_object = BotWorker(message)
-            threading.Thread(target=bot_object.start, args=()).start( )
+            threading.Thread(target=bot_object.start, args=()).start()
+
+        if message["portal"] == "glassdoor":
+            bot_object = GlassWorker(message)
+            threading.Thread(target=bot_object.start, args=()).start()
 
         if message["portal"] == "indeed":
             bot_object = IndeedWorker(message)

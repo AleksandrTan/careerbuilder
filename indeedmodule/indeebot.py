@@ -53,8 +53,7 @@ class IndeedWorker(LogModule):
         self.cookies_work = CookiesWork()
         self.headers_work = HeadersWork()
         self.auth = AuthModule(str(self.order_id), data, self.cookies_work, self.headers_work, self.api_worker,
-                               self.proxy_worker,
-                               self.is_update_proxy)
+                               self.proxy_worker, self.is_update_proxy)
 
     def start(self):
         begin_time = datetime.datetime.now()

@@ -9,6 +9,8 @@ import sys
 
 import config
 from apimodule.apiworker import ApiWorker
+from glassdoor.core.cookie_work import CookiesWork
+from glassdoor.core.headers_work import HeadersWork
 from logsource.logmodule import LogModule
 from glassdoor.analyzermodule import AnalyzerModule
 from apimodule.proxy_work import ProxyWork
@@ -41,9 +43,12 @@ class GlassWorker(LogModule):
         self.proxy_worker.set_proxy_data(self.proxies, self.proxy_id)
         self.api_worker = ApiWorker(self.order_id, self.proxy_worker)
         self.file_content = self.download_file()
+        self.cookies_work = CookiesWork()
+        self.headers_work = HeadersWork()
         self.analyzer_module = AnalyzerModule(str(self.order_id), self.link_id, self.user_name, self.last_name,
                                               self.email, self.file_content, self.file_name, self.api_worker,
-                                              self.proxy_worker, self.is_update_proxy)
+                                              self.proxy_worker, self.is_update_proxy, self.cookies_work,
+                                              self.headers_work)
 
     def start(self):
         begin_time = datetime.datetime.now()
