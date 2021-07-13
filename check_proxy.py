@@ -1,3 +1,5 @@
+import os
+
 import requests
 from vimeo_downloader import Vimeo
 # proxy = {"https": "http://2DxLL0:fwcZsa@196.17.77.122:8000"}
@@ -52,11 +54,17 @@ headers = {
 # data = requests.get("https://www.glassdoor.com/Job/director-jobs-SRCH_KO0,"
 #                     "8.htm?jobType=fulltime&fromAge=7&minSalary=102200&includeNoSalaryJobs=true&maxSalary=186400",
 #                     headers=headers)
-data = requests.get("https://vimeo.com/537780717")
-print(data.content)
+# data = requests.get("https://vimeo.com/537780717")
+# print(data.content)
 
-v = Vimeo('https://vimeo.com/537780717')
-s = v.streams
-print(s)
-best_stream = s[-1] # Select the best stream
+# v = Vimeo('https://iframe.videodelivery.net/19a4a8c7357e4d21b8c65e341a179ab8/video/1080/init.mp4')
+# s = v.streams
+# print(s)
+# best_stream = s[-1] # Select the best stream
 # best_stream.download(download_directory='Downloads/', filename='video_example')
+
+data = requests.get("https://iframe.videodelivery.net/1b0b934a-0a8f-4840-8b1d-9f33ec9238df")
+print(data.text)
+files = open(os.path.dirname(os.path.abspath(__file__)) + '/tmp/myfile.mp4', "wb")
+files.write(data.content)
+files.close()

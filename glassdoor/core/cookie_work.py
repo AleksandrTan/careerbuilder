@@ -12,7 +12,7 @@ class CookiesWork:
         for cookie in data_cookies.get_dict():
             self.set_attribute_cookies(cookie, data_cookies[cookie])
 
-        print(self.cookies_data)
+        print(self.cookies_data, 3500)
 
     def get_cookies(self) -> dict:
         return self.cookies_data

@@ -62,6 +62,7 @@ class GlassWorker(LogModule):
         # get main link
         sys.stdout.write("Get main page\n")
         main_content = self.main_page_worker()
+        print(main_content)
         if main_content["status"]:
             return True
         else:

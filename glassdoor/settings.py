@@ -1,9 +1,12 @@
-EXAMPLE_LINK = "https://www.glassdoor.com/Job/director-jobs-SRCH_KO0," \
-               "8.htm?jobType=fulltime&fromAge=7&minSalary=102200&includeNoSalaryJobs=true&maxSalary=186400"
+import os
 
-TARGET_HOST = "https://www.glassdoor.com"
+TEST_MODE = os.getenv('TEST_MODE', default=False)
 
-TEST_HOST = "http://127.0.0.1:8001"
+EXAMPLE_LINK = "https://www.glassdoor.com/Job/human-resources-jobs-SRCH_KO0,15.htm?jobType=fulltime&fromAge=7"
+if TEST_MODE == "True":
+    TARGET_HOST = "http://127.0.0.1:8001"
+else:
+    TARGET_HOST = "https://www.glassdoor.com"
 
 HEADERS = {
     'user-agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.101 '
@@ -23,4 +26,21 @@ HEADERS = {
     "sec-fetch-site": "none",
     "sec-fetch-user": "?1",
     "upgrade-insecure-requests": "1",
+}
+
+# List of vacancies in the left column
+
+LEFT_COLUMN_V = {
+    # paren block
+    "parent_tag_name": "ul",
+    "parent_tag_attr": "data-test",
+    "parent_tag_attr_value": "jlGrid",
+    # child blocks
+    "tag_name": "li",
+    "tag_attr": "data-is-easy-apply",
+    "tag_attr_value": "true",
+    # target link
+    "tag_name_link": "a",
+    "tag_attr_link": "data-test",
+    "tag_attr_link_value": "job-link",
 }

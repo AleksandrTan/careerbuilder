@@ -47,7 +47,7 @@ class AnalyzerModule:
         self.count_link_button = 0
         self.cookies_work = cookies_work
         self.headers_work = headers_work
-        self.request = RequestModule(api_worker, proxy_worker, is_update_proxy,self.cookies_work, self.headers_work)
+        self.request = RequestModule(api_worker, proxy_worker, is_update_proxy, self.cookies_work, self.headers_work)
 
     def parse_main_page(self, link: str) -> dict:
         """
@@ -58,47 +58,33 @@ class AnalyzerModule:
         content = self.request.get_content(link, self.order_id)
         if not content["status"]:
             return content
-        return content
         status = True
         reason = "connection"
         soup = bs(content["message"], "html.parser")
-        # select all job links
-        parent_obj = soup.find(settings.TARGET_LIST["parent_tag"], class_=settings.TARGET_LIST["parent_class"])
+        # select all job in left column
+        parent_obj = soup.find(settings.LEFT_COLUMN_V["parent_tag_name"],
+                               attrs={settings.LEFT_COLUMN_V["parent_tag_attr"]: settings.LEFT_COLUMN_V[
+                                   "parent_tag_attr_value"]})
+        print(len(parent_obj))
         if parent_obj:
-            target_links = parent_obj.find_all(settings.TARGET_LIST["child_tag"],
-                                               class_=settings.TARGET_LIST["child_class"])
+            target_links = parent_obj.find_all(settings.LEFT_COLUMN_V["tag_name"],
+                                               attrs={settings.LEFT_COLUMN_V["tag_attr"]: settings.LEFT_COLUMN_V[
+                                                   "tag_attr_value"]})
             if target_links:
                 for link in target_links:
-                    target = link.find(settings.TARGET_LIST["single_child"]["target_tag"],
-                                       class_=settings.TARGET_LIST["single_child"]["target_class"])
+                    target = link.find(settings.LEFT_COLUMN_V["tag_name_link"],
+                                       attrs={settings.LEFT_COLUMN_V["tag_attr_link"]: settings.LEFT_COLUMN_V["tag_attr_link_value"]})
                     if target:
-                        if config.TEST_MODE == "True":
-                            self.links_list.append(settings.TEST_HOST + target["href"])
-                        else:
-                            self.links_list.append(settings.TARGET_HOST + target["href"])
+                        self.links_list.append(settings.TARGET_HOST + target["href"])
                         continue
                     else:
                         continue
                 self.count_link = len(self.links_list)
 
-        # get link to the first vacancy (button)
-        button_link_parent = soup.find(settings.TARGET_BUTTON["parent_tag"],
-                                       class_=settings.TARGET_BUTTON["parent_class"])
-        if button_link_parent:
-            button_link = button_link_parent.find(settings.TARGET_BUTTON["single_child"]["target_tag"],
-                                                  class_=settings.TARGET_BUTTON["single_child"]["target_class"])
-
-            if button_link and button_link.text == settings.TARGET_BUTTON["single_child"]["target_text"]:
-                self.button_links.append(button_link["href"] + settings.TARGET_BUTTON["single_child"]["google_string"])
-        if not self.links_list:
-            # no links found
-            status = False
-            reason = "no_links"
-
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
                 "count_link": self.count_link, "count_link_button": self.count_link_button,
-                "type_res": "analyzer_module", "reason": reason, "proxy":  tuple([self.proxy_worker.get_proxy_id(),
-                                                                                  self.proxy_worker.get_proxy_dict()])}
+                "type_res": "analyzer_module", "reason": reason, "proxy": tuple([self.proxy_worker.get_proxy_id(),
+                                                                                 self.proxy_worker.get_proxy_dict()])}
 
     def parse_other_page(self) -> dict:
         """

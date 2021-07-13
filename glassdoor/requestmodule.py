@@ -34,13 +34,12 @@ class RequestModule(LogModule):
         """
         count: int = 0
         session = HTMLSession()
-        session.proxies = self.proxy_worker.get_proxy_dict()
+        # session.proxies = self.proxy_worker.get_proxy_dict()
         session.headers = settings.HEADERS
         while count < self.number_attempts:
             try:
                 response = session.get(link, timeout=(config.REQUEST_TIMEOUT, config.RESPONSE_TIMEOUT))
                 session.close()
-                print(response.cookies)
             except requests.exceptions.ConnectionError as error:
                 self._send_task_report("target_connect_error", data={"message": error.__repr__(), "code": '',
                                                                      "order": order_id})
@@ -79,7 +78,7 @@ class RequestModule(LogModule):
                         "message": error.__repr__(), "type_res": "request_module",
                         "proxy": tuple([self.proxy_worker.get_proxy_id(), self.proxy_worker.get_proxy_dict()])}
             # set cookies
-
+            self.cookies_work.set_cookies(response.cookies)
             return {"status": True, "error": False, "status_code": str(response.status_code), "message": response.text,
                     "type_res": "request_module", "proxy": tuple([self.proxy_worker.get_proxy_id(),
                                                                   self.proxy_worker.get_proxy_dict()])}
