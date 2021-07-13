@@ -65,7 +65,6 @@ class AnalyzerModule:
         parent_obj = soup.find(settings.LEFT_COLUMN_V["parent_tag_name"],
                                attrs={settings.LEFT_COLUMN_V["parent_tag_attr"]: settings.LEFT_COLUMN_V[
                                    "parent_tag_attr_value"]})
-        print(len(parent_obj))
         if parent_obj:
             target_links = parent_obj.find_all(settings.LEFT_COLUMN_V["tag_name"],
                                                attrs={settings.LEFT_COLUMN_V["tag_attr"]: settings.LEFT_COLUMN_V[
@@ -80,6 +79,10 @@ class AnalyzerModule:
                     else:
                         continue
                 self.count_link = len(self.links_list)
+        if not self.links_list:
+            # no links found
+            status = False
+            reason = "no_links"
 
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
                 "count_link": self.count_link, "count_link_button": self.count_link_button,

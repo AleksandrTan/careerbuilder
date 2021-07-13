@@ -63,8 +63,3 @@ headers = {
 # best_stream = s[-1] # Select the best stream
 # best_stream.download(download_directory='Downloads/', filename='video_example')
 
-data = requests.get("https://iframe.videodelivery.net/1b0b934a-0a8f-4840-8b1d-9f33ec9238df")
-print(data.text)
-files = open(os.path.dirname(os.path.abspath(__file__)) + '/tmp/myfile.mp4', "wb")
-files.write(data.content)
-files.close()
