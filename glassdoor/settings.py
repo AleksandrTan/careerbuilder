@@ -3,6 +3,8 @@ import os
 TEST_MODE = os.getenv('TEST_MODE', default=False)
 
 EXAMPLE_LINK = "https://www.glassdoor.com/Job/human-resources-jobs-SRCH_KO0,15.htm?jobType=fulltime&fromAge=7"
+# ссылка на вакансию
+
 if TEST_MODE == "True":
     TARGET_HOST = "http://127.0.0.1:8001"
 else:
@@ -43,4 +45,10 @@ LEFT_COLUMN_V = {
     "tag_name_link": "a",
     "tag_attr_link": "data-test",
     "tag_attr_link_value": "job-link",
+}
+
+PAGINATE = {
+    "tag_name": "div",
+    "tag_attr": "data-test",
+    "tag_attr_value": "page-x-of-y",
 }

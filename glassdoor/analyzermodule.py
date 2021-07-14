@@ -3,6 +3,7 @@ Content analysis module
 Use RequestModule to make requests to the target resource
 """
 import time
+import re
 
 from bs4 import BeautifulSoup as bs
 
@@ -51,7 +52,8 @@ class AnalyzerModule:
 
     def parse_main_page(self, link: str) -> dict:
         """
-        Select all job links used main link
+        Select all job links used main link.
+        Determine if there is pagination on the page, if so, determine the number of pages.
         :param link:
         :return: dict
         """
@@ -73,7 +75,8 @@ class AnalyzerModule:
             if target_links:
                 for link in target_links:
                     target = link.find(settings.LEFT_COLUMN_V["tag_name_link"],
-                                       attrs={settings.LEFT_COLUMN_V["tag_attr_link"]: settings.LEFT_COLUMN_V["tag_attr_link_value"]})
+                                       attrs={settings.LEFT_COLUMN_V["tag_attr_link"]: settings.LEFT_COLUMN_V[
+                                           "tag_attr_link_value"]})
                     if target:
                         self.links_list.append(settings.TARGET_HOST + target["href"])
                         continue
@@ -84,7 +87,14 @@ class AnalyzerModule:
             # no links found
             status = False
             reason = "no_links"
-
+        # determine the presence of pagination
+        # TODO непонятная работа пагинации ресурса, переходы возвращают одинаковые вакансии!!!
+        paginate_status = soup.find(settings.PAGINATE["tag_name"],
+                                    attrs={settings.PAGINATE["tag_attr"]: settings.PAGINATE["tag_attr_value"]})
+        if paginate_status:
+            paginate = list(map(int, re.findall('\d+', paginate_status.text)))
+        else:
+            pass
         return {"status": status, "link_list": self.links_list, "button_links": self.button_links,
                 "count_link": self.count_link, "count_link_button": self.count_link_button,
                 "type_res": "analyzer_module", "reason": reason, "proxy": tuple([self.proxy_worker.get_proxy_id(),

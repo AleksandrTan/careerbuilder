@@ -62,13 +62,11 @@ class GlassWorker(LogModule):
         # get main link
         sys.stdout.write("Get main page\n")
         main_content = self.main_page_worker()
-        print(main_content)
         if main_content["status"]:
             pass
         else:
             # no links found(or have some errors), send a report to the server, write log file
             main_content["order"] = str(self.order_id)
-            print(main_content)
             if main_content.get("reason", False) == "connection":
                 # wrong request
                 self.api_worker.task_report_fail("target_connect_error", main_content)

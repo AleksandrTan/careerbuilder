@@ -34,7 +34,6 @@ class RequestModule(LogModule):
         """
         count: int = 0
         session = HTMLSession()
-        # session.proxies = self.proxy_worker.get_proxy_dict()
         session.headers = settings.HEADERS
         while count < self.number_attempts:
             try:
