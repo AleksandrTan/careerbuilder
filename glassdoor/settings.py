@@ -31,7 +31,7 @@ HEADERS = {
 # List of vacancies in the left column
 
 LEFT_COLUMN_V = {
-    # paren block
+    # parent block
     "parent_tag_name": "ul",
     "parent_tag_attr": "data-test",
     "parent_tag_attr_value": "jlGrid",

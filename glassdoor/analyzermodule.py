@@ -55,11 +55,12 @@ class AnalyzerModule:
         :param link:
         :return: dict
         """
-        content = self.request.get_content(link, self.order_id)
-        if not content["status"]:
-            return content
         status = True
         reason = "connection"
+        content = self.request.get_content(link, self.order_id)
+        if not content["status"]:
+            content["reason"] = reason
+            return content
         soup = bs(content["message"], "html.parser")
         # select all job in left column
         parent_obj = soup.find(settings.LEFT_COLUMN_V["parent_tag_name"],
